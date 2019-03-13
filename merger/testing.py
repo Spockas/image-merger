@@ -1,5 +1,8 @@
 import merger
+import time
 
+
+beg = time.time()
 merger = merger.Merger()
 design_path = "./designs"
 hoodie_path = "./hoodie.png"
@@ -11,9 +14,20 @@ print(merger.filenames)
 print(merger.step)
 print(merger.output_append)
 # merger.set_design_image(design_path + '/' + merger.filenames[0])
-merger.design_image.show()
-merger.resize_to_fit()
-merger.design_image.show()
+# merger.design_image.show()
+start = time.time()
+merger.resize_for_hoodie(quality=True)
+print((time.time() - start))
+# merger.design_image.show()
+merger.move_down(80)
+merger.move_right(80)
+
+start = time.time()
 merger.merge_current()
-merger.merged_image.show()
+print((time.time() - start))
+# merger.merged_image.show()
+merger.write_to_file()
 # merger.main_image.show()
+
+
+print("Final time:", (time.time() - beg))

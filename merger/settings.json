@@ -1,4 +1,5 @@
 {
   "step": 1,
-  "output_append": "_on_hoodie"
+  "output_append": "_on_hoodie",
+  "overwrite": true
 }
