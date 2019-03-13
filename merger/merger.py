@@ -7,7 +7,6 @@ class Merger:
 
     def __init__(self):
         self.load_settings()
-        self.coord_to_merge = [0, 0]
         self.design_image = None
         self.design_image_resized = None
         self.main_image = None
