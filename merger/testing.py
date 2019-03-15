@@ -25,8 +25,12 @@ merger.move_right(80)
 start = time.time()
 merger.merge_current()
 print((time.time() - start))
+print("Merging all starts")
+start = time.time()
+merger.merge_all()
+print((time.time() - start))
 # merger.merged_image.show()
-merger.write_to_file()
+# merger.write_to_file()
 # merger.main_image.show()
 
 
