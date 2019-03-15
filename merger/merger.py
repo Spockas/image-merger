@@ -118,7 +118,7 @@ class Merger:
         return centre
 
     def get_display(self, size=256):
-        if not ('merged_image' in dir(self)):
+        if self.merged_image is None:
             self.merge_current()
         image_to_display = self.merged_image.resize(int(self.merged_image.size[0] / self.merged_image.size[0] * size), size)
         return ImageTk.PhotoImage(image_to_display)
@@ -168,6 +168,14 @@ class Merger:
         if step is None:
             step = self.step
         self.offset[0] -= step
+        return
+
+    def increase_size(self):
+        # TODO
+        return
+
+    def increase_size(self):
+        # TODO
         return
 
 

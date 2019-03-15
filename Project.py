@@ -2,6 +2,7 @@ import PIL
 from tkinter import *
 from tkinter import messagebox, font
 from PIL import ImageTk, Image
+from merger import merger as mg
 
 class program_interface(Frame):
     def __init__(self):
@@ -9,6 +10,9 @@ class program_interface(Frame):
             frame = Frame()
             Clothing = ''
             Designs = ''
+
+            merger = mg.Merger()
+
             # Pavadinimas lango
             self.master.title('Image Combo Maker')
 
