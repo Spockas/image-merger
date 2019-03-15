@@ -14,6 +14,7 @@ class Merger:
         self.merged_image = None
         self.offset = [0, 0]
         self.set_size = None
+        self.output_path = None
 
     def load_settings(self):
         try:
@@ -62,7 +63,14 @@ class Merger:
         self.read_designs(folder)
 
     def merge_all(self):
-        # TODO
+        counter = 0
+        for filename in self.filenames:
+            if not self.design_image_name == filename:
+                self.set_design_image(filename)
+            self.resize_to_set_size()
+            self.write_to_file(self.output_path)
+            counter += 1
+            print(counter)
         return
 
     def merge_current(self, centre=None):
@@ -85,7 +93,7 @@ class Merger:
         self.design_image = self.design_image.resize((size, int(self.design_image.size[1] / self.design_image.size[0] * size)), filter_to_use)
         self.set_size = (size, int(self.design_image.size[1] / self.design_image.size[0] * size))
 
-    def resize_to_set_size(self, size=None, , quality=True):
+    def resize_to_set_size(self, size=None, quality=True):
         if size is None:
             size = self.set_size
         if quality:
@@ -93,7 +101,7 @@ class Merger:
         else:
             filter_to_use = Image.NEAREST
         self.design_image_resized = self.design_image.resize(
-            (size, int(self.design_image.size[1] / self.design_image.size[0] * size)), filter_to_use)
+            size, filter_to_use)
 
     def set_design_image(self, location):
         try:
@@ -119,6 +127,8 @@ class Merger:
     def change_settings(self, **kwargs):
         return
 
+    def set_output_path(self, path):
+        self.output_path = path
 
     def write_to_file(self, path=None):
         if path is None:
@@ -128,6 +138,10 @@ class Merger:
         if os.path.exists(path) and not self.overwrite:
             return
         self.merged_image.save(path)
+
+    def add_blur(self):
+        # TODO
+        return
 
     def move_up(self, step=None):
         if step is None:
