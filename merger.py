@@ -15,6 +15,7 @@ class Merger:
         self.offset = [0, 0]
         self.set_size = None
         self.output_path = None
+        self.display_image = None
 
     def load_settings(self):
         try:
@@ -74,15 +75,17 @@ class Merger:
         return
 
     def merge_current(self, centre=None):
-        if centre is None:
-            centre = self.find_centre()
-        if self.offset != [0, 0]:
-            centre = list(centre)
-            centre[0] += self.offset[0]
-            centre[1] += self.offset[1]
-            centre = tuple(centre)
-        self.merged_image = self.main_image.copy()
-        self.merged_image.alpha_composite(self.design_image, centre)
+        if not self.design_image is None and not self.main_image is None:
+            if centre is None:
+                centre = self.find_centre()
+            if self.offset != [0, 0]:
+                centre = list(centre)
+                centre[0] += self.offset[0]
+                centre[1] += self.offset[1]
+                centre = tuple(centre)
+            self.merged_image = self.main_image.copy()
+            self.merged_image.alpha_composite(self.design_image, centre)
+            self.display_image = None
         return
 
     def resize_for_hoodie(self, size=600, quality=True):
@@ -110,6 +113,7 @@ class Merger:
         except IOError:
             print("Something very bad with design images")
             return False
+        self.display_image = None
         return True
 
 
@@ -120,9 +124,9 @@ class Merger:
     def get_display(self, size=256):
         if self.merged_image is None:
             self.merge_current()
-        image_to_display = self.merged_image.resize((int(self.merged_image.size[0] / self.merged_image.size[0] * size), size))
-        return image_to_display
-        # return ImageTk.PhotoImage(image_to_display)
+        if self.display_image == None:
+            self.display_image = self.merged_image.resize((int(self.merged_image.size[0] / self.merged_image.size[0] * size), size))
+        return self.display_image
 
 
     def change_settings(self, **kwargs):
@@ -148,6 +152,7 @@ class Merger:
         if step is None:
             step = self.step
         self.offset[1] -= step
+        self.merge_current()
         return
 
 
@@ -155,6 +160,7 @@ class Merger:
         if step is None:
             step = self.step
         self.offset[1] += step
+        self.merge_current()
         return
 
 
@@ -162,6 +168,7 @@ class Merger:
         if step is None:
             step = self.step
         self.offset[0] += step
+        self.merge_current()
         return
 
 
@@ -169,6 +176,7 @@ class Merger:
         if step is None:
             step = self.step
         self.offset[0] -= step
+        self.merge_current()
         return
 
     def increase_size(self):
