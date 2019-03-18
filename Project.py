@@ -34,8 +34,8 @@ class program_interface(Frame):
             frame.pack(fill="both", expand=True)
 
             # Vieta ieskoti drabozio paveiksliukui
-            self.pict_cloth_Entry = Entry(frame, width=45, bg="white")
-            self.pict_cloth_Entry.place(x=260, y=23)
+            self.pict_cloth_Entry = Entry(frame, width=44, bg="white")
+            self.pict_cloth_Entry.place(x=265, y=23)
 
             def picture_in_GUI():
                 try:
@@ -151,13 +151,13 @@ class program_interface(Frame):
 
             def Start(event):
                 try:
-                    print(merger.filenames)
+                    # print(merger.filenames)
                     start = time.time()
-                    merger.merge_current()
                     print((time.time() - start))
                     print("Merging all starts")
                     start = time.time()
-                    merger.merge_all()
+                    merger.size = K.size
+                    merger.merge_all(K.size)
                     print("{:.1f}".format(time.time() - start), "Seconds")
                 except:
                     messagebox.showerror("Error", "Couldn't start script")
