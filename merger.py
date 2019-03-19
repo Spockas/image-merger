@@ -57,20 +57,15 @@ class Merger:
         if not self.design_image is None and not self.main_image is None:
             if self.design_image_resized is None:
                 self.resize_to_set_size()
-            print("have resized")
             if centre is None:
                 centre = self.find_centre()
-            print("got centre")
             if self.offset != [0, 0]:
                 centre = list(centre)
                 centre[0] += self.offset[0]
                 centre[1] += self.offset[1]
                 centre = tuple(centre)
-            print("applied offset")
             self.merged_image = self.main_image.copy()
-            print("copied main")
             self.merged_image.alpha_composite(self.design_image_resized, centre)
-            print("merged")
             self.display_image = None
         else:
             print("Error: images not set")
@@ -89,19 +84,16 @@ class Merger:
         self.read_designs(folder)
 
     def merge_all(self):
-        print("starting")
         counter = 0
         for filename in self.filenames:
             if not self.design_image_name == filename:
                 self.set_design_image(filename)
             self.resize_to_set_size()
             # self.resize_for_hoodie(size)
-            print("resized")
             self.merge_current()
-            print("merged")
             self.write_to_file(self.output_path)
             counter += 1
-            print(counter)
+            print(counter, "/", str(len(self.filenames)), os.path.basename(self.design_image_name))
         return
 
     def resize_for_hoodie(self, size=600, quality=True):
@@ -120,6 +112,8 @@ class Merger:
         else:
             filter_to_use = Image.NEAREST
         self.design_image_resized = self.design_image.resize(size, filter_to_use)
+        self.merged_image = None
+        self.display_image = None
 
     def set_design_image(self, location):
         try:
@@ -139,13 +133,10 @@ class Merger:
         return centre
 
     def get_display(self, size=300):
-        print("got request")
         if self.merged_image is None:
             self.merge_current()
-        print("have merged")
         if self.display_image == None:
             self.display_image = self.merged_image.resize((int(size / self.ratio), size))
-        print("returning")
         return self.display_image
 
 
@@ -201,10 +192,16 @@ class Merger:
         self.merge_current()
         return
 
-    def increase_size(self):
-        # TODO
+    def increase_size(self, size):
+        old_size = self.set_size[0]
+        old_size += size
+        self.set_size = (old_size, int(old_size * self.ratio))
+        self.resize_to_set_size()
         return
 
-    def increase_size(self):
-        # TODO
+    def decrease_size(self, size):
+        old_size = self.set_size[0]
+        old_size -= size
+        self.set_size = (old_size, int(old_size * self.ratio))
+        self.resize_to_set_size()
         return

@@ -125,9 +125,7 @@ class program_interface(Frame):
             #Priartinimo/ tolinimo migtukai
             def click_plus(event):
                 try:
-                    K.size += int(self.Design_size_Entry.get())
-                    merger.resize_for_hoodie(size=K.size, quality=True)
-                    merger.move_up(0)
+                    merger.increase_size(int(self.Design_size_Entry.get()))
                     picture_in_GUI()
                 except:
                     messagebox.showerror("Error", "Couldn't increase design")
@@ -138,9 +136,7 @@ class program_interface(Frame):
 
             def click_minus(event):
                 try:
-                    K.size -= int(self.Design_size_Entry.get())
-                    merger.resize_for_hoodie(size=K.size, quality=True)
-                    merger.move_up(0)
+                    merger.decrease_size(int(self.Design_size_Entry.get()))
                     picture_in_GUI()
                 except:
                     messagebox.showerror("Error", "Couldn't reduce design")
