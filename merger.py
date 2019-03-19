@@ -13,10 +13,11 @@ class Merger:
         self.design_image_name = None
         self.merged_image = None
         self.offset = [0, 0]
-        self.set_size = None
         self.output_path = None
         self.display_image = None
         self.centre = [0, 0]
+        self.ratio = 1.414196123147092
+        self.set_size = (600, int(600 * self.ratio))
 
     def load_settings(self):
         try:
@@ -48,21 +49,31 @@ class Merger:
         try:
             self.main_image = Image.open(location)
         except IOError:
+            "error: can't set main image"
             return False
         return True
 
     def merge_current(self, centre=None):
         if not self.design_image is None and not self.main_image is None:
+            if self.design_image_resized is None:
+                self.resize_to_set_size()
+            print("have resized")
             if centre is None:
                 centre = self.find_centre()
+            print("got centre")
             if self.offset != [0, 0]:
                 centre = list(centre)
                 centre[0] += self.offset[0]
                 centre[1] += self.offset[1]
                 centre = tuple(centre)
+            print("applied offset")
             self.merged_image = self.main_image.copy()
-            self.merged_image.alpha_composite(self.design_image, centre)
+            print("copied main")
+            self.merged_image.alpha_composite(self.design_image_resized, centre)
+            print("merged")
             self.display_image = None
+        else:
+            print("Error: images not set")
         return
 
     def read_designs(self, folder):
@@ -77,14 +88,17 @@ class Merger:
         self.folder = folder
         self.read_designs(folder)
 
-    def merge_all(self, size):
+    def merge_all(self):
+        print("starting")
         counter = 0
         for filename in self.filenames:
             if not self.design_image_name == filename:
                 self.set_design_image(filename)
             self.resize_to_set_size()
-            self.resize_for_hoodie(size)
+            # self.resize_for_hoodie(size)
+            print("resized")
             self.merge_current()
+            print("merged")
             self.write_to_file(self.output_path)
             counter += 1
             print(counter)
@@ -95,8 +109,8 @@ class Merger:
             filter_to_use = Image.LANCZOS
         else:
             filter_to_use = Image.NEAREST
-        self.design_image = self.design_image.resize((size, int(self.design_image.size[1] / self.design_image.size[0] * size)), filter_to_use)
-        self.set_size = (size, int(self.design_image.size[1] / self.design_image.size[0] * size))
+        self.design_image_resized = self.design_image.resize((size, int(self.ratio * size)), filter_to_use)
+        self.set_size = (size, int(self.ratio * size))
 
     def resize_to_set_size(self, size=None, quality=True):
         if size is None:
@@ -105,13 +119,14 @@ class Merger:
             filter_to_use = Image.LANCZOS
         else:
             filter_to_use = Image.NEAREST
-        self.design_image_resized = self.design_image.resize(
-            size, filter_to_use)
+        self.design_image_resized = self.design_image.resize(size, filter_to_use)
 
     def set_design_image(self, location):
         try:
             self.design_image = Image.open(location)
             self.design_image_name = os.path.basename(location)
+            self.merged_image = None
+            self.design_image_resized = None
         except IOError:
             print("Something very bad with design images")
             return False
@@ -120,14 +135,17 @@ class Merger:
 
 
     def find_centre(self) -> (int, int):
-        centre = (int((self.main_image.size[0] - self.design_image.size[0]) / 2), int((self.main_image.size[1] - self.design_image.size[1]) / 2))
+        centre = (int((self.main_image.size[0] - self.design_image_resized.size[0]) / 2), int((self.main_image.size[1] - self.design_image_resized.size[1]) / 2))
         return centre
 
     def get_display(self, size=300):
+        print("got request")
         if self.merged_image is None:
             self.merge_current()
+        print("have merged")
         if self.display_image == None:
-            self.display_image = self.merged_image.resize((int(self.merged_image.size[0] / self.merged_image.size[0] * size), size))
+            self.display_image = self.merged_image.resize((int(size / self.ratio), size))
+        print("returning")
         return self.display_image
 
 
@@ -144,7 +162,8 @@ class Merger:
             path = os.path.join(path, os.path.splitext(self.design_image_name)[0] + self.output_append + os.path.splitext(self.design_image_name)[1])
         if os.path.exists(path) and not self.overwrite:
             return
-        self.merge_current()
+        if self.merged_image is None:
+            self.merge_current()
         self.merged_image.save(path)
 
     def add_blur(self):

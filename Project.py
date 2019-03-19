@@ -2,7 +2,7 @@ import PIL
 from tkinter import *
 from tkinter import messagebox, font
 from PIL import ImageTk, Image
-import merger
+import merger as mg
 import time
 class Kintamieji():
     sides = 0
@@ -12,7 +12,7 @@ class Kintamieji():
     size = 600
 
 K = Kintamieji()
-merger = merger.Merger()
+merger = mg.Merger()
 
 class program_interface(Frame):
     def __init__(self):
@@ -156,8 +156,8 @@ class program_interface(Frame):
                     print((time.time() - start))
                     print("Merging all starts")
                     start = time.time()
-                    merger.size = K.size
-                    merger.merge_all(K.size)
+                    # merger.size = K.size
+                    merger.merge_all()
                     print("{:.1f}".format(time.time() - start), "Seconds")
                 except:
                     messagebox.showerror("Error", "Couldn't start script")
