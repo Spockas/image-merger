@@ -2,7 +2,7 @@ import PIL
 from tkinter import *
 from tkinter import messagebox, font
 from PIL import ImageTk, Image
-import merger as mg
+import merger
 import time
 class Kintamieji():
     sides = 0
@@ -12,7 +12,7 @@ class Kintamieji():
     size = 600
 
 K = Kintamieji()
-merger = mg.Merger()
+merger = merger.Merger()
 
 class program_interface(Frame):
     def __init__(self):
@@ -41,7 +41,7 @@ class program_interface(Frame):
                 try:
                     self.img = ImageTk.PhotoImage(image=merger.get_display())
                     self.panel = Label(frame, image=self.img)
-                    self.panel.place(x=25, y=110)
+                    self.panel.place(x=15, y=130)
                 except:
                     messagebox.showerror("Error", "Mistake in directory to picture")
 
@@ -151,11 +151,13 @@ class program_interface(Frame):
 
             def Start(event):
                 try:
+                    # print(merger.filenames)
                     start = time.time()
                     print((time.time() - start))
                     print("Merging all starts")
                     start = time.time()
-                    merger.merge_all()
+                    merger.size = K.size
+                    merger.merge_all(K.size)
                     print("{:.1f}".format(time.time() - start), "Seconds")
                 except:
                     messagebox.showerror("Error", "Couldn't start script")
@@ -173,6 +175,7 @@ class program_interface(Frame):
             self.Design_size_Entry = Entry(frame, width=4, bg="white")
             self.Design_size_Entry.insert(END, '100')
             self.Design_size_Entry.place(x=425, y=187)
+
 
             # Drabuzio tekstas ir jo vieta
             self.pict_cloth = Label(frame, text="Location of picture with clothing:", bg="#98AFC7", font=font11)
