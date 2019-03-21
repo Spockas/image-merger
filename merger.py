@@ -4,7 +4,6 @@ import os
 import json
 
 class Merger:
-
     def __init__(self):
         self.load_settings()
         self.design_image = None
@@ -78,7 +77,6 @@ class Merger:
             return False
         self.set_design_image(self.filenames[0])
 
-
     def set_design_folder(self, folder) -> None:
         self.folder = folder
         self.read_designs(folder)
@@ -89,11 +87,10 @@ class Merger:
             if not self.design_image_name == filename:
                 self.set_design_image(filename)
             self.resize_to_set_size()
-            # self.resize_for_hoodie(size)
             self.merge_current()
             self.write_to_file(self.output_path)
             counter += 1
-            print(counter, "/", str(len(self.filenames)), os.path.basename(self.design_image_name))
+            print(counter, self.design_image_name)
         return
 
     def resize_for_hoodie(self, size=600, quality=True):
@@ -112,8 +109,6 @@ class Merger:
         else:
             filter_to_use = Image.NEAREST
         self.design_image_resized = self.design_image.resize(size, filter_to_use)
-        self.merged_image = None
-        self.display_image = None
 
     def set_design_image(self, location):
         try:
@@ -127,18 +122,16 @@ class Merger:
         self.display_image = None
         return True
 
-
     def find_centre(self) -> (int, int):
         centre = (int((self.main_image.size[0] - self.design_image_resized.size[0]) / 2), int((self.main_image.size[1] - self.design_image_resized.size[1]) / 2))
         return centre
 
-    def get_display(self, size=300):
+    def get_display(self, size=340):
         if self.merged_image is None:
             self.merge_current()
         if self.display_image == None:
             self.display_image = self.merged_image.resize((int(size / self.ratio), size))
         return self.display_image
-
 
     def change_settings(self, **kwargs):
         return
@@ -176,7 +169,6 @@ class Merger:
         self.merge_current()
         return
 
-
     def move_right(self, step=None):
         if step is None:
             step = self.step
@@ -184,24 +176,9 @@ class Merger:
         self.merge_current()
         return
 
-
     def move_left(self, step=None):
         if step is None:
             step = self.step
         self.offset[0] -= step
         self.merge_current()
-        return
-
-    def increase_size(self, size):
-        old_size = self.set_size[0]
-        old_size += size
-        self.set_size = (old_size, int(old_size * self.ratio))
-        self.resize_to_set_size()
-        return
-
-    def decrease_size(self, size):
-        old_size = self.set_size[0]
-        old_size -= size
-        self.set_size = (old_size, int(old_size * self.ratio))
-        self.resize_to_set_size()
         return

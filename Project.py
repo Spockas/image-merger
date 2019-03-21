@@ -41,7 +41,7 @@ class program_interface(Frame):
                 try:
                     self.img = ImageTk.PhotoImage(image=merger.get_display())
                     self.panel = Label(frame, image=self.img)
-                    self.panel.place(x=15, y=130)
+                    self.panel.place(x=25, y=110)
                 except:
                     messagebox.showerror("Error", "Mistake in directory to picture")
 
@@ -125,7 +125,9 @@ class program_interface(Frame):
             #Priartinimo/ tolinimo migtukai
             def click_plus(event):
                 try:
-                    merger.increase_size(int(self.Design_size_Entry.get()))
+                    K.size += int(self.Design_size_Entry.get())
+                    merger.resize_for_hoodie(size=K.size, quality=True)
+                    merger.move_up(0)
                     picture_in_GUI()
                 except:
                     messagebox.showerror("Error", "Couldn't increase design")
@@ -136,7 +138,9 @@ class program_interface(Frame):
 
             def click_minus(event):
                 try:
-                    merger.decrease_size(int(self.Design_size_Entry.get()))
+                    K.size -= int(self.Design_size_Entry.get())
+                    merger.resize_for_hoodie(size=K.size, quality=True)
+                    merger.move_up(0)
                     picture_in_GUI()
                 except:
                     messagebox.showerror("Error", "Couldn't reduce design")
@@ -147,12 +151,10 @@ class program_interface(Frame):
 
             def Start(event):
                 try:
-                    # print(merger.filenames)
                     start = time.time()
                     print((time.time() - start))
                     print("Merging all starts")
                     start = time.time()
-                    # merger.size = K.size
                     merger.merge_all()
                     print("{:.1f}".format(time.time() - start), "Seconds")
                 except:
@@ -171,7 +173,6 @@ class program_interface(Frame):
             self.Design_size_Entry = Entry(frame, width=4, bg="white")
             self.Design_size_Entry.insert(END, '100')
             self.Design_size_Entry.place(x=425, y=187)
-
 
             # Drabuzio tekstas ir jo vieta
             self.pict_cloth = Label(frame, text="Location of picture with clothing:", bg="#98AFC7", font=font11)
