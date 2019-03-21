@@ -1,4 +1,4 @@
-from PIL import Image, ImageTk
+from PIL import Image, ImageFilter
 import glob
 import os
 import json
@@ -78,7 +78,6 @@ class Merger:
             return False
         self.set_design_image(self.filenames[0])
 
-
     def set_design_folder(self, folder) -> None:
         self.folder = folder
         self.read_designs(folder)
@@ -104,7 +103,7 @@ class Merger:
         self.design_image_resized = self.design_image.resize((size, int(self.ratio * size)), filter_to_use)
         self.set_size = (size, int(self.ratio * size))
 
-    def resize_to_set_size(self, size=None, quality=True):
+    def resize_to_set_size(self, size=None, quality=True, blur=True):
         if size is None:
             size = self.set_size
         if quality:
@@ -112,6 +111,8 @@ class Merger:
         else:
             filter_to_use = Image.NEAREST
         self.design_image_resized = self.design_image.resize(size, filter_to_use)
+        if blur:
+            self.add_blur()
         self.merged_image = None
         self.display_image = None
 
@@ -127,7 +128,6 @@ class Merger:
         self.display_image = None
         return True
 
-
     def find_centre(self) -> (int, int):
         centre = (int((self.main_image.size[0] - self.design_image_resized.size[0]) / 2), int((self.main_image.size[1] - self.design_image_resized.size[1]) / 2))
         return centre
@@ -138,7 +138,6 @@ class Merger:
         if self.display_image == None:
             self.display_image = self.merged_image.resize((int(size / self.ratio), size))
         return self.display_image
-
 
     def change_settings(self, **kwargs):
         return
@@ -159,6 +158,9 @@ class Merger:
 
     def add_blur(self):
         # TODO
+        self.merged_image = None
+        self.display_image = None
+        self.design_image_resized = self.design_image_resized.filter(ImageFilter.GaussianBlur())
         return
 
     def move_up(self, step=None):
@@ -168,14 +170,12 @@ class Merger:
         self.merge_current()
         return
 
-
     def move_down(self, step=None):
         if step is None:
             step = self.step
         self.offset[1] += step
         self.merge_current()
         return
-
 
     def move_right(self, step=None):
         if step is None:
