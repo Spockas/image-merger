@@ -155,7 +155,7 @@ class program_interface(Frame):
                     print((time.time() - start))
                     print("Merging all starts")
                     start = time.time()
-                    merger.merge_all()
+                    merger.merge_all() 
                     print("{:.1f}".format(time.time() - start), "Seconds")
                 except:
                     messagebox.showerror("Error", "Couldn't start script")
