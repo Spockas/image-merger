@@ -1,9 +1,10 @@
-from PIL import Image, ImageTk
+from PIL import Image, ImageFilter
 import glob
 import os
 import json
 
 class Merger:
+
     def __init__(self):
         self.load_settings()
         self.design_image = None
@@ -87,10 +88,11 @@ class Merger:
             if not self.design_image_name == filename:
                 self.set_design_image(filename)
             self.resize_to_set_size()
+            # self.resize_for_hoodie(size)
             self.merge_current()
             self.write_to_file(self.output_path)
             counter += 1
-            print(counter, self.design_image_name)
+            print(counter, "/", str(len(self.filenames)), os.path.basename(self.design_image_name))
         return
 
     def resize_for_hoodie(self, size=600, quality=True):
@@ -101,7 +103,7 @@ class Merger:
         self.design_image_resized = self.design_image.resize((size, int(self.ratio * size)), filter_to_use)
         self.set_size = (size, int(self.ratio * size))
 
-    def resize_to_set_size(self, size=None, quality=True):
+    def resize_to_set_size(self, size=None, quality=True, blur=True):
         if size is None:
             size = self.set_size
         if quality:
@@ -109,6 +111,10 @@ class Merger:
         else:
             filter_to_use = Image.NEAREST
         self.design_image_resized = self.design_image.resize(size, filter_to_use)
+        if blur:
+            self.add_blur()
+        self.merged_image = None
+        self.display_image = None
 
     def set_design_image(self, location):
         try:
@@ -126,7 +132,7 @@ class Merger:
         centre = (int((self.main_image.size[0] - self.design_image_resized.size[0]) / 2), int((self.main_image.size[1] - self.design_image_resized.size[1]) / 2))
         return centre
 
-    def get_display(self, size=340):
+    def get_display(self, size=300):
         if self.merged_image is None:
             self.merge_current()
         if self.display_image == None:
@@ -152,6 +158,9 @@ class Merger:
 
     def add_blur(self):
         # TODO
+        self.merged_image = None
+        self.display_image = None
+        self.design_image_resized = self.design_image_resized.filter(ImageFilter.GaussianBlur())
         return
 
     def move_up(self, step=None):
@@ -160,7 +169,6 @@ class Merger:
         self.offset[1] -= step
         self.merge_current()
         return
-
 
     def move_down(self, step=None):
         if step is None:
@@ -176,9 +184,24 @@ class Merger:
         self.merge_current()
         return
 
+
     def move_left(self, step=None):
         if step is None:
             step = self.step
         self.offset[0] -= step
         self.merge_current()
+        return
+
+    def increase_size(self, size):
+        old_size = self.set_size[0]
+        old_size += size
+        self.set_size = (old_size, int(old_size * self.ratio))
+        self.resize_to_set_size()
+        return
+
+    def decrease_size(self, size):
+        old_size = self.set_size[0]
+        old_size -= size
+        self.set_size = (old_size, int(old_size * self.ratio))
+        self.resize_to_set_size()
         return
