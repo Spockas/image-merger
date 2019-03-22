@@ -82,17 +82,19 @@ class Merger:
         self.folder = folder
         self.read_designs(folder)
 
-    def merge_all(self):
+    def merge_all(self, maxi=None, opacity=245):
         counter = 0
         for filename in self.filenames:
             if not self.design_image_name == filename:
                 self.set_design_image(filename)
-            self.resize_to_set_size()
+            self.resize_to_set_size(opacity=opacity)
             # self.resize_for_hoodie(size)
             self.merge_current()
             self.write_to_file(self.output_path)
             counter += 1
             print(counter, "/", str(len(self.filenames)), os.path.basename(self.design_image_name))
+            if (maxi is not None or maxi == 0) and counter >= maxi:
+                return
         return
 
     def resize_for_hoodie(self, size=600, quality=True):
@@ -103,7 +105,7 @@ class Merger:
         self.design_image_resized = self.design_image.resize((size, int(self.ratio * size)), filter_to_use)
         self.set_size = (size, int(self.ratio * size))
 
-    def resize_to_set_size(self, size=None, quality=True, blur=True):
+    def resize_to_set_size(self, size=None, quality=True, blur=True, opacity=245):
         if size is None:
             size = self.set_size
         if quality:
@@ -111,8 +113,9 @@ class Merger:
         else:
             filter_to_use = Image.NEAREST
         self.design_image_resized = self.design_image.resize(size, filter_to_use)
-        if blur:
-            self.add_blur()
+        # if blur:
+        #     self.add_blur()
+        self.change_opacity(opacity=opacity)
         self.merged_image = None
         self.display_image = None
 
@@ -160,7 +163,19 @@ class Merger:
         # TODO
         self.merged_image = None
         self.display_image = None
-        self.design_image_resized = self.design_image_resized.filter(ImageFilter.GaussianBlur())
+        self.design_image_resized = self.design_image_resized.filter(ImageFilter.GaussianBlur(radius=1))
+        return
+
+    def change_opacity(self, opacity=245):
+        # TODO
+        data = self.design_image_resized.getdata()  # you'll get a list of tuples
+        newData = []
+        for a in data:
+            b = a[:3]  # you'll get your tuple shorten to RGB
+
+            b = b + (min(opacity, a[3]),)  # change the 100 to any transparency number you like between (0,255)
+            newData.append(b)
+        self.design_image_resized.putdata(newData)  # you'll get your new img ready
         return
 
     def move_up(self, step=None):
