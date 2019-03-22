@@ -77,6 +77,12 @@ class program_interface(Frame):
             self.fold_desi_Button.bind("<Button-1>", click_fold_desi)
             self.fold_desi_Button.place(x=540, y=53)
 
+
+            self.opacity_Entry = Entry(frame, width=3, bg="white")
+            self.opacity_Entry.insert(END, '245')
+            self.opacity_Entry.place(x=400, y=124)
+
+
             #Rodykles
             def click_left_arrow(event):
                 try:
@@ -99,6 +105,9 @@ class program_interface(Frame):
             self.right_arrow_key = Button(frame, text="→", font=font11)
             self.right_arrow_key.bind("<Button-1>", click_right_arrow)
             self.right_arrow_key.place(x=455, y=300)
+
+
+
 
             def click_up_arrow(event):
                 try:
@@ -155,7 +164,7 @@ class program_interface(Frame):
                     print((time.time() - start))
                     print("Merging all starts")
                     start = time.time()
-                    merger.merge_all() 
+                    merger.merge_all(opacity=int(self.opacity_Entry.get()))
                     print("{:.1f}".format(time.time() - start), "Seconds")
                 except:
                     messagebox.showerror("Error", "Couldn't start script")
