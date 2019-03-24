@@ -125,7 +125,8 @@ class Merger:
         self.design_image_resized = self.design_image.resize(size, filter_to_use)
         # if blur:
         #     self.add_blur()
-        self.change_opacity(opacity=opacity)
+        if opacity < 255:
+            self.change_opacity(opacity=opacity)
         self.merged_image = None
         self.display_image = None
 
@@ -145,7 +146,7 @@ class Merger:
         centre = (int((self.main_image.size[0] - self.design_image_resized.size[0]) / 2), int((self.main_image.size[1] - self.design_image_resized.size[1]) / 2))
         return centre
 
-    def get_display(self, size=300) -> Image:
+    def get_display(self, size=350) -> Image:
         if self.merged_image is None:
             self.merge_current()
         if self.display_image == None:
