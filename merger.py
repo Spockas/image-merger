@@ -84,6 +84,10 @@ class Merger:
 
     def merge_all(self, maxi=None, opacity=245) -> None:
         counter = 0
+        if maxi is not None or maxi != 0:
+            total_amount = str(maxi)
+        else:
+            total_amount = str(len(self.filenames))
         for filename in self.filenames:
             # pravalyt atminti del galimu siuksliu
             del self.design_image_resized
@@ -97,7 +101,8 @@ class Merger:
             self.merge_current()
             self.write_to_file(self.output_path)
             counter += 1
-            print(counter, "/", str(len(self.filenames)), os.path.basename(self.design_image_name))
+
+            print(counter, "/", total_amount, os.path.basename(self.design_image_name))
             if (maxi is not None or maxi == 0) and counter >= maxi:
                 return
         return

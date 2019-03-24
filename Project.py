@@ -66,7 +66,7 @@ class program_interface(Frame):
                     merger.resize_for_hoodie(quality=True)
                     picture_in_GUI()
                 except:
-                    messagebox.showerror("Error", "Mistake in directory to folder with disigns")
+                    messagebox.showerror("Error", "Mistake in directory to folder with designs")
 
             # Vieta pasirinkti dizainu folderi
             self.fold_desi_Entry = Entry(frame, width=44, bg="white")
@@ -168,6 +168,25 @@ class program_interface(Frame):
             self.up_arrow_key = Button(frame, text="Start", font=font11)
             self.up_arrow_key.bind("<Button-1>", Start)
             self.up_arrow_key.place(x=480, y=430)
+
+            def Amount(event):
+                try:
+                    start = time.time()
+                    print((time.time() - start))
+                    print("Testing some starts")
+                    start = time.time()
+                    merger.merge_all(opacity=int(self.opacity_Entry.get()), maxi=int(self.Set_amount.get()))
+                    print("{:.1f}".format(time.time() - start), "Seconds")
+                except:
+                    messagebox.showerror("Error", "Couldn't start script (Set amount)")
+
+            self.Set_amount = Entry(frame, width=3, bg="white")
+            self.Set_amount.insert(END, '2')
+            self.Set_amount.place(x=320, y=435)
+
+            self.Button_amount = Button(frame, text="Set amount", font=font11)
+            self.Button_amount.bind("<Button-1>", Amount)
+            self.Button_amount.place(x=350, y=430)
 
             # Kiek pixelių pajudinti
             self.Pix_move_Entry = Entry(frame, width=4, bg="white")
