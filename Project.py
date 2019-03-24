@@ -79,8 +79,8 @@ class program_interface(Frame):
 
 
             self.opacity_Entry = Entry(frame, width=3, bg="white")
-            self.opacity_Entry.insert(END, '245')
-            self.opacity_Entry.place(x=400, y=124)
+            self.opacity_Entry.insert(END, '255')
+            self.opacity_Entry.place(x=425, y=124)
 
 
             #Rodykles
@@ -163,9 +163,9 @@ class program_interface(Frame):
                     merger.merge_all(opacity=int(self.opacity_Entry.get()))
                     print("{:.1f}".format(time.time() - start), "Seconds")
                 except:
-                    messagebox.showerror("Error", "Couldn't start script")
+                    messagebox.showerror("Error", "Couldn't start script (All)")
 
-            self.up_arrow_key = Button(frame, text="Start", font=font11)
+            self.up_arrow_key = Button(frame, text="All", font=font11)
             self.up_arrow_key.bind("<Button-1>", Start)
             self.up_arrow_key.place(x=480, y=430)
 
@@ -213,6 +213,10 @@ class program_interface(Frame):
             # Tekstas
             self.Info = Label(frame, text="Move design with arrow keys", bg="#98AFC7", font=font11)
             self.Info.place(x=330, y=375)
+
+            self.Info1 = Label(frame, text="Set opacity", bg="#98AFC7", font=font11)
+            self.Info1.place(x=395, y=145)
+
 
 def Gui():
     program_interface().mainloop()
