@@ -49,7 +49,8 @@ class program_interface(Frame):
             def click_pict_cloth(event):
                 try:
                     hoodie_path = str(self.pict_cloth_Entry.get())
-                    merger.set_main_image(hoodie_path)
+                    if not merger.set_main_image(hoodie_path):
+                        messagebox.showerror("Error", "Can't read this file. Is directory right?")
                 except:
                     messagebox.showerror("Error", "Mistake in directory to clothing png")
 
@@ -63,9 +64,10 @@ class program_interface(Frame):
                 try:
                     design_path = str(self.fold_desi_Entry.get())
                     merger.set_design_folder(design_path)
-                    merger.resize_for_hoodie(quality=True)
+                    merger.resize_to_set_size(quality=True)
                     picture_in_GUI()
-                except:
+                except Exception as ex:
+                    print(ex)
                     messagebox.showerror("Error", "Mistake in directory to folder with designs")
 
             # Vieta pasirinkti dizainu folderi

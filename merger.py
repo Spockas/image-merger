@@ -3,6 +3,7 @@ import glob
 import os
 import json
 
+
 class Merger:
 
     def __init__(self):
@@ -18,14 +19,17 @@ class Merger:
         self.centre = [0, 0]
         self.ratio = 1.414196123147092
         self.set_size = (600, int(600 * self.ratio))
+        self.step = 5
+        self.output_append = "_applied"
+        self.overwrite = True
+        self.folder = None
+        self.filenames = []
 
     def load_settings(self):
         try:
             settings = open("settings.json", 'r')
         except IOError:
             print("Settings file not found")
-        except OSError:
-            print("OSError")
         except:
             print("Something else wrong with file")
         else:
@@ -40,21 +44,18 @@ class Merger:
                 self.output_append = settings_dict['output_append']
                 self.overwrite = settings_dict['overwrite']
                 return
-        self.step = 5
-        self.output_append = "_applied"
-        self.overwrite = True
         return
 
     def set_main_image(self, location) -> bool:
         try:
             self.main_image = Image.open(location)
         except IOError:
-            "error: can't set main image"
+            print("error: can't set main image")
             return False
         return True
 
     def merge_current(self, centre=None) -> None:
-        if not self.design_image is None and not self.main_image is None:
+        if self.design_image is not None and self.main_image is not None:
             if self.design_image_resized is None:
                 self.resize_to_set_size()
             if centre is None:
@@ -72,10 +73,13 @@ class Merger:
         return
 
     def read_designs(self, folder) -> None:
-        self.filenames = glob.glob(os.path.join(folder, '*.png'))
-        self.which_design = 0
+        try:
+            self.filenames = glob.glob(os.path.join(folder, '*.png'))
+        except Exception as err:
+            print(err)
         if len(self.filenames) == 0:
-            return False
+            print("No designs found in this directory:", folder)
+            return
         self.set_design_image(self.filenames[0])
 
     def set_design_folder(self, folder) -> None:
@@ -122,6 +126,10 @@ class Merger:
             filter_to_use = Image.LANCZOS
         else:
             filter_to_use = Image.NEAREST
+        if self.design_image is None:
+            print("Design image is not set")
+        if self.main_image is None:
+            print("Main image is not set")
         self.design_image_resized = self.design_image.resize(size, filter_to_use)
         # if blur:
         #     self.add_blur()
@@ -143,27 +151,35 @@ class Merger:
         return True
 
     def find_centre(self) -> (int, int):
-        centre = (int((self.main_image.size[0] - self.design_image_resized.size[0]) / 2), int((self.main_image.size[1] - self.design_image_resized.size[1]) / 2))
+        centre = (int((self.main_image.size[0] - self.design_image_resized.size[0]) / 2),
+                  int((self.main_image.size[1] - self.design_image_resized.size[1]) / 2))
         return centre
 
     def get_display(self, size=350) -> Image:
         if self.merged_image is None:
             self.merge_current()
-        if self.display_image == None:
+        if self.display_image is None:
             self.display_image = self.merged_image.resize((int(size / self.ratio), size))
         return self.display_image
-
-    def change_settings(self, **kwargs):
-        return
 
     def set_output_path(self, path):
         self.output_path = path
 
     def write_to_file(self, path=None) -> None:
+        if not os.path.exists(os.path.join(self.folder, "applied")):
+            print("Creating folder for applied designs")
+            try:
+                os.mkdir(os.path.join(self.folder, "applied"))
+            except OSError:
+                print("Can't create a folder in your design folder: ", os.path.join(self.folder, "applied"))
+                print("Please create a folder in your designs directory named: 'applied'")
+                return
         if path is None:
-            path = os.path.join(self.folder, "applied", os.path.splitext(self.design_image_name)[0] + self.output_append + os.path.splitext(self.design_image_name)[1])
+            path = os.path.join(self.folder, "applied", os.path.splitext(self.design_image_name)[0] + self.output_append
+                                + os.path.splitext(self.design_image_name)[1])
         else:
-            path = os.path.join(path, os.path.splitext(self.design_image_name)[0] + self.output_append + os.path.splitext(self.design_image_name)[1])
+            path = os.path.join(path, os.path.splitext(self.design_image_name)[0] + self.output_append +
+                                os.path.splitext(self.design_image_name)[1])
         if os.path.exists(path) and not self.overwrite:
             return
         if self.merged_image is None:
@@ -178,12 +194,12 @@ class Merger:
 
     def change_opacity(self, opacity=245):
         data = self.design_image_resized.getdata()  # you'll get a list of tuples
-        newData = []
+        new_data = []
         for a in data:
             b = a[:3]
             b = b + (min(opacity, a[3]),)
-            newData.append(b)
-        self.design_image_resized.putdata(newData)
+            new_data.append(b)
+        self.design_image_resized.putdata(new_data)
         return
 
     def move_up(self, step=None):
@@ -209,7 +225,6 @@ class Merger:
         self.merge_current()
         return
 
-
     def move_left(self, step=None):
         if step is None:
             step = self.step
@@ -224,7 +239,8 @@ class Merger:
             print((old_size, int(old_size * self.ratio)), "<- new_size, main_image_size ->", self.main_image.size)
             print("Design can't be bigger than main image (in any dimensions)")
             return
-        if (int(abs(self.offset[0]) * 2 + old_size) > self.main_image.size[0]) or (int(abs(self.offset[1]) * 2 + old_size * self.ratio) > self.main_image.size[1]):
+        if (int(abs(self.offset[0]) * 2 + old_size) > self.main_image.size[0]) or \
+                (int(abs(self.offset[1]) * 2 + old_size * self.ratio) > self.main_image.size[1]):
             print("Increased size of design does not fit in this place, try moving it closer to centre")
             return
         self.set_size = (old_size, int(old_size * self.ratio))
