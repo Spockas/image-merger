@@ -65,7 +65,8 @@ class program_interface(Frame):
                     merger.set_design_folder(design_path)
                     merger.resize_for_hoodie(quality=True)
                     picture_in_GUI()
-                except:
+                except Exception as ex:
+                    print(ex)
                     messagebox.showerror("Error", "Mistake in directory to folder with designs")
 
             # Vieta pasirinkti dizainu folderi
