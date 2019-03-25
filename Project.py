@@ -18,6 +18,7 @@ class program_interface(Frame):
     def __init__(self):
             Frame.__init__(self)
             frame = Frame()
+            self.master.iconbitmap(default='favicon(1).ico')
             sides = 80
             vertically = 80
             merger.move_down(vertically)
@@ -81,7 +82,7 @@ class program_interface(Frame):
 
 
             self.opacity_Entry = Entry(frame, width=3, bg="white")
-            self.opacity_Entry.insert(END, '255')
+            self.opacity_Entry.insert(END, '220')
             self.opacity_Entry.place(x=425, y=124)
 
 
@@ -167,7 +168,7 @@ class program_interface(Frame):
                 except:
                     messagebox.showerror("Error", "Couldn't start script (All)")
 
-            self.up_arrow_key = Button(frame, text="All", font=font11)
+            self.up_arrow_key = Button(frame, text="Merge all", font=font11)
             self.up_arrow_key.bind("<Button-1>", Start)
             self.up_arrow_key.place(x=480, y=430)
 
