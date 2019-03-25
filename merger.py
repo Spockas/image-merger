@@ -50,7 +50,7 @@ class Merger:
         try:
             self.main_image = Image.open(location)
         except IOError:
-            "error: can't set main image"
+            print("error: can't set main image")
             return False
         return True
 
@@ -75,16 +75,15 @@ class Merger:
     def read_designs(self, folder) -> None:
         try:
             self.filenames = glob.glob(os.path.join(folder, '*.png'))
-            print(os.path.join(folder, '*.png'))
         except Exception as err:
             print(err)
         if len(self.filenames) == 0:
+            print("No designs found in this directory:", folder)
             return
         self.set_design_image(self.filenames[0])
 
     def set_design_folder(self, folder) -> None:
         self.folder = folder
-        print(folder)
         self.read_designs(folder)
 
     def merge_all(self, maxi=None, opacity=245) -> None:
@@ -127,6 +126,10 @@ class Merger:
             filter_to_use = Image.LANCZOS
         else:
             filter_to_use = Image.NEAREST
+        if self.design_image is None:
+            print("Design image is not set")
+        if self.main_image is None:
+            print("Main image is not set")
         self.design_image_resized = self.design_image.resize(size, filter_to_use)
         # if blur:
         #     self.add_blur()
