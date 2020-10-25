@@ -28,7 +28,7 @@ class ProgramInterface(Frame):
         merger.move_down(vertically)
         merger.move_right(sides)
         # Pavadinimas lango
-        self.master.title('Design applier for Anamita ')
+        self.master.title('Design applier')
         # Dydis lango
         self.master.geometry("600x480+500+200")
         # Background spalva
@@ -40,7 +40,7 @@ class ProgramInterface(Frame):
 
         # Vieta ieskoti drabozio paveiksliukui
         self.pict_cloth_Entry = Entry(frame, width=34, bg="white")
-        self.pict_cloth_Entry.place(x=265, y=23)
+        self.pict_cloth_Entry.place(x=266, y=23)
 
         def picture_in_GUI():
             try:
@@ -61,7 +61,7 @@ class ProgramInterface(Frame):
 
         # Migtukas patvirtinti drabuzio paveiksliukui
         self.pict_cloth_Button = Button(frame, text="Save", font=font11)
-        self.pict_cloth_Button.bind("<Button-1>", click_pict_cloth)
+        self.pict_cloth_Button.bind("<ButtonRelease-1>", click_pict_cloth)
         self.pict_cloth_Button.place(x=540, y=17)
 
         # Function for button allowing to use OS selection for file
@@ -73,7 +73,7 @@ class ProgramInterface(Frame):
 
         # Button to select file location
         self.pict_cloth_file = Button(frame, text="Select", font=font11)
-        self.pict_cloth_file.bind("<Button-1>", select_file_location)
+        self.pict_cloth_file.bind("<ButtonRelease-1>", select_file_location)
         self.pict_cloth_file.place(x=476, y=17)
 
         # Kas atsitinka kai paspaudi Save prie Location of folder with designs:
@@ -98,7 +98,7 @@ class ProgramInterface(Frame):
 
         # Mygtukas issaugoti dizainu folderi
         self.fold_desi_Button = Button(frame, text="Save", font=font11)
-        self.fold_desi_Button.bind("<Button-1>", click_fold_desi)
+        self.fold_desi_Button.bind("<ButtonRelease-1>", click_fold_desi)
         self.fold_desi_Button.place(x=540, y=53)
 
         self.opacity_Entry = Entry(frame, width=3, bg="white")
@@ -107,7 +107,7 @@ class ProgramInterface(Frame):
 
         # Button to select designs folder location
         self.pict_cloth_file = Button(frame, text="Select", font=font11)
-        self.pict_cloth_file.bind("<Button-1>", select_folder_location)
+        self.pict_cloth_file.bind("<ButtonRelease-1>", select_folder_location)
         self.pict_cloth_file.place(x=476, y=53)
 
         # Rodykles
@@ -119,7 +119,7 @@ class ProgramInterface(Frame):
                 messagebox.showerror("Error", "Couldn't move design to the left")
 
         self.left_arrow_key = Button(frame, text="←", font=font11)
-        self.left_arrow_key.bind("<Button-1>", click_left_arrow)
+        self.left_arrow_key.bind("<ButtonRelease-1>", click_left_arrow)
         self.left_arrow_key.place(x=395, y=300)
 
         def click_right_arrow(event):
@@ -130,7 +130,7 @@ class ProgramInterface(Frame):
                 messagebox.showerror("Error", "Couldn't move design to the right")
 
         self.right_arrow_key = Button(frame, text="→", font=font11)
-        self.right_arrow_key.bind("<Button-1>", click_right_arrow)
+        self.right_arrow_key.bind("<ButtonRelease-1>", click_right_arrow)
         self.right_arrow_key.place(x=455, y=300)
 
         def click_up_arrow(event):
@@ -141,7 +141,7 @@ class ProgramInterface(Frame):
                 messagebox.showerror("Error", "Couldn't move design to the up")
 
         self.up_arrow_key = Button(frame, text="↑", font=font11)
-        self.up_arrow_key.bind("<Button-1>", click_up_arrow)
+        self.up_arrow_key.bind("<ButtonRelease-1>", click_up_arrow)
         self.up_arrow_key.place(x=425, y=265)
 
         def click_down_arrow(event):
@@ -152,7 +152,7 @@ class ProgramInterface(Frame):
                 messagebox.showerror("Error", "Couldn't move design to the down")
 
         self.down_arrow_key = Button(frame, text="↓", font=font11)
-        self.down_arrow_key.bind("<Button-1>", click_down_arrow)
+        self.down_arrow_key.bind("<ButtonRelease-1>", click_down_arrow)
         self.down_arrow_key.place(x=425, y=335)
 
         # Priartinimo/ tolinimo migtukai
@@ -164,7 +164,7 @@ class ProgramInterface(Frame):
                 messagebox.showerror("Error", "Couldn't increase design")
 
         self.plus_key = Button(frame, text="+", font=font11, width=2)
-        self.plus_key.bind("<Button-1>", click_plus)
+        self.plus_key.bind("<ButtonRelease-1>", click_plus)
         self.plus_key.place(x=390, y=180)
 
         def click_minus(event):
@@ -175,7 +175,7 @@ class ProgramInterface(Frame):
                 messagebox.showerror("Error", "Couldn't reduce design")
 
         self.minus_key = Button(frame, text="-", font=font11, width=2)
-        self.minus_key.bind("<Button-1>", click_minus)
+        self.minus_key.bind("<ButtonRelease-1>", click_minus)
         self.minus_key.place(x=460, y=180)
 
         def Start(event):
@@ -190,7 +190,7 @@ class ProgramInterface(Frame):
                 messagebox.showerror("Error", "Couldn't start script (All)")
 
         self.up_arrow_key = Button(frame, text="Merge all", font=font11)
-        self.up_arrow_key.bind("<Button-1>", Start)
+        self.up_arrow_key.bind("<ButtonRelease-1>", Start)
         self.up_arrow_key.place(x=480, y=430)
 
         def Amount(event):
@@ -209,7 +209,7 @@ class ProgramInterface(Frame):
         self.Set_amount.place(x=320, y=435)
 
         self.Button_amount = Button(frame, text="Set amount", font=font11)
-        self.Button_amount.bind("<Button-1>", Amount)
+        self.Button_amount.bind("<ButtonRelease-1>", Amount)
         self.Button_amount.place(x=350, y=430)
 
         # Kiek pixelių pajudinti
@@ -223,22 +223,22 @@ class ProgramInterface(Frame):
         self.Design_size_Entry.place(x=425, y=187)
 
         # Drabuzio tekstas ir jo vieta
-        self.pict_cloth = Label(frame, text="Location of picture with clothing:", font=font11)
+        self.pict_cloth = Label(frame, text="Location of picture with clothing:", bg="#D0D0D0", font=font11)
         self.pict_cloth.place(x=20, y=20)
 
         # Dizaino tekstas ir jo vieta
-        self.fold_desi = Label(frame, text="Location of folder with designs:", bg="#98AFC7", font=font11)
+        self.fold_desi = Label(frame, text="Location of folder with designs:", bg="#D0D0D0", font=font11)
         self.fold_desi.place(x=20, y=60)
 
         # Tekstas
-        self.Info1 = Label(frame, text="Increase/decrease design with +/-", bg="#98AFC7", font=font11)
+        self.Info1 = Label(frame, text="Increase/decrease design with +/-", bg="#D0D0D0", font=font11)
         self.Info1.place(x=330, y=215)
 
         # Tekstas
-        self.Info = Label(frame, text="Move design with arrow keys", bg="#98AFC7", font=font11)
+        self.Info = Label(frame, text="Move design with arrow keys", bg="#D0D0D0", font=font11)
         self.Info.place(x=330, y=375)
 
-        self.Info1 = Label(frame, text="Set opacity", bg="#98AFC7", font=font11)
+        self.Info1 = Label(frame, text="Set opacity", bg="#D0D0D0", font=font11)
         self.Info1.place(x=395, y=145)
 
 
