@@ -26,18 +26,18 @@ class ProgramInterface(Frame):
         vertically = 80
         merger.move_down(vertically)
         merger.move_right(sides)
-        # Pavadinimas lango
+        # GUi title
         self.master.title('Design applier')
-        # Dydis lango
+        # Gui size
         self.master.geometry("600x480+500+200")
-        # Background spalva
+        # Background color
         frame.configure(bg="#D0D0D0")
-        #  Fonto aprasimas
+        #  Font description
         font11 = font.Font(family="Yu Gothic", size=11, weight='bold')
-        #  Talpinimo budas
+        #  Packing decision
         frame.pack(fill="both", expand=True)
 
-        # Vieta ieskoti drabozio paveiksliukui
+        # Entry for cloth.png
         self.pict_cloth_Entry = Entry(frame, width=34, bg="white")
         self.pict_cloth_Entry.place(x=266, y=23)
 
@@ -49,7 +49,7 @@ class ProgramInterface(Frame):
             except:
                 messagebox.showerror("Error", "Mistake in directory to picture")
 
-        # Kas atsitinka kai paspaudi Save prie Location of picture with clothing
+        # Function for clicking Save cloth
         def click_pict_cloth(event):
             try:
                 hoodie_path = str(self.pict_cloth_Entry.get())
@@ -58,7 +58,7 @@ class ProgramInterface(Frame):
             except:
                 messagebox.showerror("Error", "Mistake in directory to clothing png")
 
-        # Migtukas patvirtinti drabuzio paveiksliukui
+        # Button to confirm cloth.png
         self.pict_cloth_Button = Button(frame, text="Save", font=font11)
         self.pict_cloth_Button.bind("<ButtonRelease-1>", click_pict_cloth)
         self.pict_cloth_Button.place(x=540, y=17)
@@ -75,7 +75,7 @@ class ProgramInterface(Frame):
         self.pict_cloth_file.bind("<ButtonRelease-1>", select_file_location)
         self.pict_cloth_file.place(x=476, y=17)
 
-        # Kas atsitinka kai paspaudi Save prie Location of folder with designs:
+        # Function which happens after clicking save design folder
         def click_fold_desi(event):
             try:
                 design_path = str(self.fold_desi_Entry.get())
@@ -91,11 +91,11 @@ class ProgramInterface(Frame):
             self.fold_desi_Entry.delete(0, len(str(self.fold_desi_Entry.get())))
             self.fold_desi_Entry.insert(0, pic_file_name)
 
-        # Vieta pasirinkti dizainu folderi
+        # Entry for design folder
         self.fold_desi_Entry = Entry(frame, width=34, bg="white")
         self.fold_desi_Entry.place(x=265, y=64)
 
-        # Mygtukas issaugoti dizainu folderi
+        # Button to save design folder
         self.fold_desi_Button = Button(frame, text="Save", font=font11)
         self.fold_desi_Button.bind("<ButtonRelease-1>", click_fold_desi)
         self.fold_desi_Button.place(x=540, y=53)
@@ -109,7 +109,7 @@ class ProgramInterface(Frame):
         self.pict_cloth_file.bind("<ButtonRelease-1>", select_folder_location)
         self.pict_cloth_file.place(x=476, y=53)
 
-        # Rodykles
+        # Arrows to move design on cloth
         def click_left_arrow(event):
             try:
                 merger.move_left(int(self.Pix_move_Entry.get()))
@@ -154,7 +154,7 @@ class ProgramInterface(Frame):
         self.down_arrow_key.bind("<ButtonRelease-1>", click_down_arrow)
         self.down_arrow_key.place(x=425, y=335)
 
-        # Priartinimo/ tolinimo migtukai
+        # Buttons to increase/decrease design size
         def click_plus(event):
             try:
                 merger.increase_size(size=int(self.Design_size_Entry.get()))
@@ -211,32 +211,33 @@ class ProgramInterface(Frame):
         self.Button_amount.bind("<ButtonRelease-1>", Amount)
         self.Button_amount.place(x=350, y=430)
 
-        # Kiek pixelių pajudinti
+        # Default amount of pixels to move design
         self.Pix_move_Entry = Entry(frame, width=4, bg="white")
         self.Pix_move_Entry.insert(END, '100')
         self.Pix_move_Entry.place(x=425, y=305)
 
-        # Kiek pixelių padidės/sumažės
+        # Default amount of pixels to increase/decrease design size
         self.Design_size_Entry = Entry(frame, width=4, bg="white")
         self.Design_size_Entry.insert(END, '100')
         self.Design_size_Entry.place(x=425, y=187)
 
-        # Drabuzio tekstas ir jo vieta
+        # Text label for cloth
         self.pict_cloth = Label(frame, text="Location of picture with clothing:", bg="#D0D0D0", font=font11)
         self.pict_cloth.place(x=20, y=20)
 
-        # Dizaino tekstas ir jo vieta
+        # Text label for design
         self.fold_desi = Label(frame, text="Location of folder with designs:", bg="#D0D0D0", font=font11)
         self.fold_desi.place(x=20, y=60)
 
-        # Tekstas
+        # Text label for increase/decrease design
         self.Info1 = Label(frame, text="Increase/decrease design with +/-", bg="#D0D0D0", font=font11)
         self.Info1.place(x=330, y=215)
 
-        # Tekstas
+        # Text label for moving design
         self.Info = Label(frame, text="Move design with arrow keys", bg="#D0D0D0", font=font11)
         self.Info.place(x=330, y=375)
 
+        # Text label for setting opacity
         self.Info1 = Label(frame, text="Set opacity", bg="#D0D0D0", font=font11)
         self.Info1.place(x=395, y=145)
 
