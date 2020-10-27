@@ -155,7 +155,7 @@ class Merger:
                   int((self.main_image.size[1] - self.design_image_resized.size[1]) / 2))
         return centre
 
-    def get_display(self, size=350) -> Image:
+    def get_display(self, size=400) -> Image:
         if self.merged_image is None:
             self.merge_current()
         if self.display_image is None:

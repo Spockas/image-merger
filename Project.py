@@ -29,7 +29,10 @@ class ProgramInterface(Frame):
         # GUi title
         self.master.title('Design applier')
         # Gui size
-        self.master.geometry("600x480+500+200")
+        self.master.geometry("610x540+500+200")
+        #Gui always-on-top
+        self.master.wm_attributes("-topmost", 1)
+        self.master.resizable(0, 0)
         # Background color
         frame.configure(bg="#D0D0D0")
         #  Font description
@@ -100,6 +103,7 @@ class ProgramInterface(Frame):
         self.fold_desi_Button.bind("<ButtonRelease-1>", click_fold_desi)
         self.fold_desi_Button.place(x=540, y=53)
 
+        # Function on button "Set"
         def opacity_set(event):
             try:
                 merger.change_opacity(opacity=int(self.opacity_Entry.get()))
@@ -108,13 +112,15 @@ class ProgramInterface(Frame):
                 print(ex)
                 messagebox.showerror("Error", "Mistake in setting opacity")
 
+        # Button for setting opacity
         self.opacity_Button = Button(frame, text="Set", font=font11)
         self.opacity_Button.bind("<ButtonRelease-1>", opacity_set)
-        self.opacity_Button.place(x=435, y=112)
+        self.opacity_Button.place(x=445, y=122)
 
+        # Opacity entry
         self.opacity_Entry = Entry(frame, width=3, bg="white")
         self.opacity_Entry.insert(END, '220')
-        self.opacity_Entry.place(x=405, y=120)
+        self.opacity_Entry.place(x=415, y=130)
 
         # Button to select designs folder location
         self.pict_cloth_file = Button(frame, text="Select", font=font11)
@@ -131,7 +137,7 @@ class ProgramInterface(Frame):
 
         self.left_arrow_key = Button(frame, text="←", font=font11)
         self.left_arrow_key.bind("<ButtonRelease-1>", click_left_arrow)
-        self.left_arrow_key.place(x=395, y=300)
+        self.left_arrow_key.place(x=405, y=310)
 
         def click_right_arrow(event):
             try:
@@ -142,7 +148,7 @@ class ProgramInterface(Frame):
 
         self.right_arrow_key = Button(frame, text="→", font=font11)
         self.right_arrow_key.bind("<ButtonRelease-1>", click_right_arrow)
-        self.right_arrow_key.place(x=455, y=300)
+        self.right_arrow_key.place(x=465, y=310)
 
         def click_up_arrow(event):
             try:
@@ -153,7 +159,7 @@ class ProgramInterface(Frame):
 
         self.up_arrow_key = Button(frame, text="↑", font=font11)
         self.up_arrow_key.bind("<ButtonRelease-1>", click_up_arrow)
-        self.up_arrow_key.place(x=425, y=265)
+        self.up_arrow_key.place(x=435, y=275)
 
         def click_down_arrow(event):
             try:
@@ -164,7 +170,7 @@ class ProgramInterface(Frame):
 
         self.down_arrow_key = Button(frame, text="↓", font=font11)
         self.down_arrow_key.bind("<ButtonRelease-1>", click_down_arrow)
-        self.down_arrow_key.place(x=425, y=335)
+        self.down_arrow_key.place(x=435, y=345)
 
         # Buttons to increase/decrease design size
         def click_plus(event):
@@ -176,7 +182,7 @@ class ProgramInterface(Frame):
 
         self.plus_key = Button(frame, text="+", font=font11, width=2)
         self.plus_key.bind("<ButtonRelease-1>", click_plus)
-        self.plus_key.place(x=390, y=180)
+        self.plus_key.place(x=400, y=190)
 
         def click_minus(event):
             try:
@@ -187,7 +193,7 @@ class ProgramInterface(Frame):
 
         self.minus_key = Button(frame, text="-", font=font11, width=2)
         self.minus_key.bind("<ButtonRelease-1>", click_minus)
-        self.minus_key.place(x=460, y=180)
+        self.minus_key.place(x=470, y=190)
 
         def Start(event):
             try:
@@ -202,7 +208,7 @@ class ProgramInterface(Frame):
 
         self.up_arrow_key = Button(frame, text="Merge all", font=font11)
         self.up_arrow_key.bind("<ButtonRelease-1>", Start)
-        self.up_arrow_key.place(x=480, y=430)
+        self.up_arrow_key.place(x=490, y=440)
 
         def Amount(event):
             try:
@@ -217,21 +223,21 @@ class ProgramInterface(Frame):
 
         self.Set_amount = Entry(frame, width=3, bg="white")
         self.Set_amount.insert(END, '2')
-        self.Set_amount.place(x=320, y=435)
+        self.Set_amount.place(x=330, y=445)
 
         self.Button_amount = Button(frame, text="Set amount", font=font11)
         self.Button_amount.bind("<ButtonRelease-1>", Amount)
-        self.Button_amount.place(x=350, y=430)
+        self.Button_amount.place(x=360, y=440)
 
         # Default amount of pixels to move design
         self.Pix_move_Entry = Entry(frame, width=4, bg="white")
         self.Pix_move_Entry.insert(END, '100')
-        self.Pix_move_Entry.place(x=425, y=305)
+        self.Pix_move_Entry.place(x=435, y=315)
 
         # Default amount of pixels to increase/decrease design size
         self.Design_size_Entry = Entry(frame, width=4, bg="white")
         self.Design_size_Entry.insert(END, '100')
-        self.Design_size_Entry.place(x=425, y=187)
+        self.Design_size_Entry.place(x=435, y=197)
 
         # Text label for cloth
         self.pict_cloth = Label(frame, text="Location of picture with clothing:", bg="#D0D0D0", font=font11)
@@ -243,15 +249,15 @@ class ProgramInterface(Frame):
 
         # Text label for increase/decrease design
         self.Info1 = Label(frame, text="Increase/decrease design with +/-", bg="#D0D0D0", font=font11)
-        self.Info1.place(x=330, y=215)
+        self.Info1.place(x=330, y=225)
 
         # Text label for moving design
         self.Info = Label(frame, text="Move design with arrow keys", bg="#D0D0D0", font=font11)
-        self.Info.place(x=330, y=375)
+        self.Info.place(x=340, y=385)
 
         # Text label for setting opacity
         self.Info1 = Label(frame, text="Set opacity", bg="#D0D0D0", font=font11)
-        self.Info1.place(x=395, y=145)
+        self.Info1.place(x=405, y=155)
 
 
 def Gui():
