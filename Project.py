@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter import messagebox, font, filedialog
-from PIL import ImageTk, Image
+from PIL import ImageTk
 import merger as mg
 import time
 
@@ -22,7 +22,6 @@ class ProgramInterface(Frame):
     def __init__(self):
         Frame.__init__(self)
         frame = Frame()
-        # self.master.iconbitmap(default='favicon(1).ico')
         sides = 80
         vertically = 80
         merger.move_down(vertically)
