@@ -200,6 +200,7 @@ class Merger:
             b = b + (min(opacity, a[3]),)
             new_data.append(b)
         self.design_image_resized.putdata(new_data)
+        self.merge_current()
         return
 
     def move_up(self, step=None):

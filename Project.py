@@ -100,9 +100,21 @@ class ProgramInterface(Frame):
         self.fold_desi_Button.bind("<ButtonRelease-1>", click_fold_desi)
         self.fold_desi_Button.place(x=540, y=53)
 
+        def opacity_set(event):
+            try:
+                merger.change_opacity(opacity=int(self.opacity_Entry.get()))
+                picture_in_GUI()
+            except Exception as ex:
+                print(ex)
+                messagebox.showerror("Error", "Mistake in setting opacity")
+
+        self.opacity_Button = Button(frame, text="Set", font=font11)
+        self.opacity_Button.bind("<ButtonRelease-1>", opacity_set)
+        self.opacity_Button.place(x=435, y=112)
+
         self.opacity_Entry = Entry(frame, width=3, bg="white")
         self.opacity_Entry.insert(END, '220')
-        self.opacity_Entry.place(x=425, y=124)
+        self.opacity_Entry.place(x=405, y=120)
 
         # Button to select designs folder location
         self.pict_cloth_file = Button(frame, text="Select", font=font11)
