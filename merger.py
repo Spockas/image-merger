@@ -10,6 +10,7 @@ class Merger:
         self.load_settings()
         self.design_image = None
         self.design_image_resized = None
+        self.main_images = None
         self.main_image = None
         self.design_image_name = None
         self.merged_image = None
@@ -24,6 +25,10 @@ class Merger:
         self.overwrite = True
         self.folder = None
         self.filenames = []
+        self.sort_by_alphabet = True
+
+    def error_log(self, text):
+        print('!E!', text)
 
     def load_settings(self):
         try:
@@ -51,6 +56,19 @@ class Merger:
             self.main_image = Image.open(location)
         except IOError:
             print("error: can't set main image")
+            return False
+        return True
+
+    def open_main_image_folder(self, folder_location):
+        files_in_folder = os.listdir(folder_location)
+        # remove files not needed
+        try:
+            self.main_images = glob.glob(os.path.join(folder_location, '*.png'))
+            if self.sort_by_alphabet:
+                self.main_images.sort()
+            self.main_image = self.main_images[0]
+        except :
+            self.error_log("Couldn't read clothes photos from given folder. Check if folder contains 'png' files")
             return False
         return True
 
@@ -93,11 +111,11 @@ class Merger:
         else:
             total_amount = str(len(self.filenames))
         for filename in self.filenames:
-            # pravalyt atminti del galimu siuksliu
-            del self.design_image_resized
-            del self.design_image
-            del self.merged_image
-            del self.display_image
+            # # pravalyt atminti del galimu siuksliu
+            # del self.design_image_resized
+            # del self.design_image
+            # del self.merged_image
+            # del self.display_image
             if not self.design_image_name == filename:
                 self.set_design_image(filename)
             self.resize_to_set_size(opacity=opacity)

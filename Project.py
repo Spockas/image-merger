@@ -56,7 +56,7 @@ class ProgramInterface(Frame):
         def click_pict_cloth(event):
             try:
                 hoodie_path = str(self.pict_cloth_Entry.get())
-                if not merger.set_main_image(hoodie_path):
+                if not merger.open_main_image_folder(hoodie_path):
                     messagebox.showerror("Error", "Can't read this file. Is directory right?")
             except:
                 messagebox.showerror("Error", "Mistake in directory to clothing png")
@@ -68,7 +68,7 @@ class ProgramInterface(Frame):
 
         # Function for button allowing to use OS selection for file
         def select_file_location(event):
-            pic_file_name = filedialog.askopenfilename(title="Select picture of clothing")
+            pic_file_name = filedialog.askdirectory(title="Select folder with pictures of clothing")
             # self.pict_cloth_Entry.config(text=pic_file_name)
             self.pict_cloth_Entry.delete(0, len(str(self.pict_cloth_Entry.get())))
             self.pict_cloth_Entry.insert(0, pic_file_name)
@@ -240,7 +240,7 @@ class ProgramInterface(Frame):
         self.Design_size_Entry.place(x=435, y=197)
 
         # Text label for cloth
-        self.pict_cloth = Label(frame, text="Location of picture with clothing:", bg="#D0D0D0", font=font11)
+        self.pict_cloth = Label(frame, text="Location of folder with clothing:", bg="#D0D0D0", font=font11)
         self.pict_cloth.place(x=20, y=20)
 
         # Text label for design
