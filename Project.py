@@ -202,6 +202,7 @@ class ProgramInterface(Frame):
                 start = time.time()
                 merger.merge_all(opacity=int(self.opacity_Entry.get()), maxi=0)
                 print("{:.1f}".format(time.time() - start), "Seconds")
+                picture_in_GUI()
             except:
                 messagebox.showerror("Error", "Couldn't start script (All)")
 
@@ -221,7 +222,7 @@ class ProgramInterface(Frame):
                 messagebox.showerror("Error", "Couldn't start script (Set amount)")
 
         self.Set_amount = Entry(frame, width=3, bg="white")
-        self.Set_amount.insert(END, '2')
+        self.Set_amount.insert(END, '0')
         self.Set_amount.place(x=330, y=445)
 
         self.Button_amount = Button(frame, text="Set amount", font=font11)

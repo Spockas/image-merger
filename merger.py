@@ -4,7 +4,6 @@ import os
 import json
 
 
-
 class Merger:
 
     def __init__(self):
@@ -12,12 +11,11 @@ class Merger:
         self.design_image = None
         self.design_image_resized = None
         self.main_images_names = None
+        self.main_image_counter = 0
         self.main_image = None
-        self.main_image_name = None
-        self.main_image_id = None
         self.design_image_name = None
         # GUI options
-        self.product_type = "" # name taken from GUI
+        self.product_type = ""  # name taken from GUI
         self.merged_image = None
         self.offset = [0, 0]
         self.output_path = None
@@ -66,28 +64,26 @@ class Merger:
     def set_main_image(self, location):
         try:
             self.main_image = Image.open(location)
-            main_file_name = os.path.basename(location)
-            # remove file ending
-            image_name = main_file_name[:-4]
-            image_id, *name = image_name.split()
-            return image_id, " ".join(name)
         except IOError:
             print("error: can't set main image")
             return False
 
-    def open_main_image_folder(self, folder_location): # returns image_id and image name
-        files_in_folder = os.listdir(folder_location)
-        # remove files not needed
+    def set_next_main_image(self):
+        try:
+            self.main_image_counter += 1
+            self.set_main_image(self.main_images_names[self.main_image_counter])
+        except IndexError:
+            self.error_log("No more designs left")
+
+    def open_main_image_folder(self, folder_location):  # returns image_id and image name
         try:
             self.main_images_names = glob.glob(os.path.join(folder_location, '*.png'))
             if self.sort_by_alphabet:
                 self.main_images_names.sort()
-
-            image_id, name = self.set_main_image(self.main_images_names[0])
-            return image_id, name
-        except :
+            self.main_image_counter = 0
+            self.set_main_image(self.main_images_names[0])
+        except:
             self.error_log("Couldn't read clothes photos from given folder. Check if folder contains 'png' files")
-            return None, None
 
     def merge_current(self, centre=None) -> None:
         if self.design_image is not None and self.main_image is not None:
@@ -121,6 +117,13 @@ class Merger:
         self.folder = folder
         self.read_designs(folder)
 
+    def read_design_name(self, location: str) -> (str, str):
+        filename = os.path.basename(location)
+        name = filename[:-4]
+        design_id, *design_name = name.split()
+        design_name = " ".join(design_name)
+        return design_id, design_name
+
     def merge_all(self, maxi=None, opacity=245) -> None:
         counter = 0
         if maxi is not None and maxi != 0:
@@ -140,10 +143,13 @@ class Merger:
             self.merge_current()
             self.write_to_file(self.output_path)
             counter += 1
-
-            print(counter, "/", total_amount, os.path.basename(self.design_image_name))
+            design_id, design_name = self.read_design_name(self.design_image_name)
+            print(counter, "/", total_amount, design_id, design_name)
             if counter > total_amount:
                 return
+        self.set_next_main_image()
+        self.merged_image = None
+        self.set_design_image(self.filenames[0])
         return
 
     def resize_for_hoodie(self, size=600, quality=True):
@@ -154,7 +160,7 @@ class Merger:
         self.design_image_resized = self.design_image.resize((size, int(self.ratio * size)), filter_to_use)
         self.set_size = (size, int(self.ratio * size))
 
-    def resize_to_set_size(self, size=None, quality=True, blur=True, opacity=245):
+    def resize_to_set_size(self, size=None, quality=True, opacity=245):
         if size is None:
             size = self.set_size
         if quality:
@@ -166,8 +172,6 @@ class Merger:
         if self.main_image is None:
             print("Main image is not set")
         self.design_image_resized = self.design_image.resize(size, filter_to_use)
-        # if blur:
-        #     self.add_blur()
         if opacity < 255:
             self.change_opacity(opacity=opacity)
         self.merged_image = None
