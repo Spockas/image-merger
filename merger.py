@@ -4,15 +4,20 @@ import os
 import json
 
 
+
 class Merger:
 
     def __init__(self):
         self.load_settings()
         self.design_image = None
         self.design_image_resized = None
-        self.main_images = None
+        self.main_images_names = None
         self.main_image = None
+        self.main_image_name = None
+        self.main_image_id = None
         self.design_image_name = None
+        # GUI options
+        self.product_type = "" # name taken from GUI
         self.merged_image = None
         self.offset = [0, 0]
         self.output_path = None
@@ -27,8 +32,15 @@ class Merger:
         self.filenames = []
         self.sort_by_alphabet = True
 
+    # class MainImage:
+    #     def __init__(self):
+    #
+
     def error_log(self, text):
         print('!E!', text)
+
+    def set_options(self, **options):
+        return
 
     def load_settings(self):
         try:
@@ -51,26 +63,31 @@ class Merger:
                 return
         return
 
-    def set_main_image(self, location) -> bool:
+    def set_main_image(self, location):
         try:
             self.main_image = Image.open(location)
+            main_file_name = os.path.basename(location)
+            # remove file ending
+            image_name = main_file_name[:-4]
+            image_id, *name = image_name.split()
+            return image_id, " ".join(name)
         except IOError:
             print("error: can't set main image")
             return False
-        return True
 
-    def open_main_image_folder(self, folder_location):
+    def open_main_image_folder(self, folder_location): # returns image_id and image name
         files_in_folder = os.listdir(folder_location)
         # remove files not needed
         try:
-            self.main_images = glob.glob(os.path.join(folder_location, '*.png'))
+            self.main_images_names = glob.glob(os.path.join(folder_location, '*.png'))
             if self.sort_by_alphabet:
-                self.main_images.sort()
-            self.main_image = self.main_images[0]
+                self.main_images_names.sort()
+
+            image_id, name = self.set_main_image(self.main_images_names[0])
+            return image_id, name
         except :
             self.error_log("Couldn't read clothes photos from given folder. Check if folder contains 'png' files")
-            return False
-        return True
+            return None, None
 
     def merge_current(self, centre=None) -> None:
         if self.design_image is not None and self.main_image is not None:
@@ -106,10 +123,10 @@ class Merger:
 
     def merge_all(self, maxi=None, opacity=245) -> None:
         counter = 0
-        if maxi is not None or maxi != 0:
-            total_amount = str(maxi)
+        if maxi is not None and maxi != 0:
+            total_amount = maxi
         else:
-            total_amount = str(len(self.filenames))
+            total_amount = len(self.filenames)
         for filename in self.filenames:
             # # pravalyt atminti del galimu siuksliu
             # del self.design_image_resized
@@ -125,7 +142,7 @@ class Merger:
             counter += 1
 
             print(counter, "/", total_amount, os.path.basename(self.design_image_name))
-            if (maxi is not None or maxi == 0) and counter >= maxi:
+            if counter > total_amount:
                 return
         return
 

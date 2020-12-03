@@ -56,8 +56,7 @@ class ProgramInterface(Frame):
         def click_pict_cloth(event):
             try:
                 hoodie_path = str(self.pict_cloth_Entry.get())
-                if not merger.open_main_image_folder(hoodie_path):
-                    messagebox.showerror("Error", "Can't read this file. Is directory right?")
+                merger.open_main_image_folder(hoodie_path) # return
             except:
                 messagebox.showerror("Error", "Mistake in directory to clothing png")
 
@@ -201,7 +200,7 @@ class ProgramInterface(Frame):
                 print((time.time() - start))
                 print("Merging all starts")
                 start = time.time()
-                merger.merge_all(opacity=int(self.opacity_Entry.get()))
+                merger.merge_all(opacity=int(self.opacity_Entry.get()), maxi=0)
                 print("{:.1f}".format(time.time() - start), "Seconds")
             except:
                 messagebox.showerror("Error", "Couldn't start script (All)")
