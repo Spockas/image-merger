@@ -16,18 +16,16 @@ def create():
         csv_file.close()
 
 
-#  ----- DE File ------
-
 def test_data():
     product_names = ["UK", "DE", "FR", "IT", "ES"]
     browser_nodes = ["UK", "DE", "FR", "IT", "ES"]
-    bullent_points = ["UK;UK;UK;UK;UK;", "DE;DE;DE;DE;DE;", "FR;FR;FR;FR;FR;", "IT;IT;IT;IT;IT;", "ES;ES;ES;ES;ES;"]
+    bullet_points = ["UK;UK;UK;UK;UK;", "DE;DE;DE;DE;DE;", "FR;FR;FR;FR;FR;", "IT;IT;IT;IT;IT;", "ES;ES;ES;ES;ES;"]
     add_to_excel("Produck_type", "1091 Seller_SKU", "Brand_name", product_names, browser_nodes, "meterial_comp",
-                 "color_map", "department", "price", "dropbox_url", "other_image_url", bullent_points)
+                 "color_map", "department", "price", "dropbox_url", "other_image_url", bullet_points)
 
 
 def add_to_excel(produck_type, seller_SKU, brand_name, product_names, browser_nodes, meterial_comp, color_map,
-                 department, price, dropbox_url, other_image_url, bullent_points):
+                 department, price, dropbox_url, other_image_url, bullet_points):
     sizes = [" parent", " S", " M", " L", " XL", " XXL"]
     size_name = ["", "S", "M", "L", "XL", "XXL"]
     size_map = ["", " Small", " Medium", " Large", " X-Large", " XX-Large"]
@@ -48,7 +46,7 @@ def add_to_excel(produck_type, seller_SKU, brand_name, product_names, browser_no
                            size_name[s] + ";" + department + ";" + size_map[s] + ";FALSE;" + price + ";5000;" +
                            dropbox_url + ";" + other_image_url + ";;;;;;;;" + parent_child[s] + ";" + parent_sku[s]
                            + ";" + relationship[s] + ";Size;;;;;;;;;" + product_names[f] + ";" +
-                           collection_name[s] + ";;Casual;Regular Fit;" + bullent_points[f] +
+                           collection_name[s] + ";;Casual;Regular Fit;" + bullet_points[f] +
                            ";;;;;;Spring-Summer;Cotton;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;" +
                            currency[f] + "\n")
         csv_file.write("\n")
@@ -56,9 +54,10 @@ def add_to_excel(produck_type, seller_SKU, brand_name, product_names, browser_no
 
 
 def test():
+    # noinspection PyBroadException
     try:
         create()
     except:
         messagebox.showwarning("Warning", "Files already exists, please remove them to create a new ones.")
     test_data()
-    CsvToXlsx.covert_all()
+    CsvToXlsx.convert_all()

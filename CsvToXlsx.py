@@ -4,13 +4,13 @@ import csv
 from xlsxwriter.workbook import Workbook
 
 
-def covert_all():
+def convert_all():
     file_names = ["UK", "DE", "ES", "FR", "IT"]
     for filename in file_names:
-        covert_one(filename)
+        convert_one(filename)
 
 
-def covert_one(filename):
+def convert_one(filename):
     # noinspection PyBroadException
     try:
         for csvfile in glob.glob(os.path.join('.', filename + '.csv')):
