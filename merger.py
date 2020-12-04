@@ -1,7 +1,10 @@
+import io
+
 from PIL import Image, ImageFilter
 import glob
 import os
 import json
+import file_uploader as fu
 
 
 class Merger:
@@ -25,10 +28,12 @@ class Merger:
         self.set_size = (600, int(600 * self.ratio))
         self.step = 5
         self.output_append = "_applied"
+        self.upload_location = "/designs/"
         self.overwrite = True
         self.folder = None
         self.filenames = []
         self.sort_by_alphabet = True
+        self.IMAGE_TYPE = "png"
 
     # class MainImage:
     #     def __init__(self):
@@ -126,6 +131,7 @@ class Merger:
 
     def merge_all(self, maxi=None, opacity=245) -> None:
         counter = 0
+        uploader = fu.main()
         if maxi is not None and maxi != 0:
             total_amount = maxi
         else:
@@ -141,18 +147,34 @@ class Merger:
             self.resize_to_set_size(opacity=opacity)
             # self.resize_for_hoodie(size)
             self.merge_current()
-            self.write_to_file(self.output_path)
+            # self.write_to_file(self.output_path)
             counter += 1
             design_id, design_name = self.read_design_name(self.design_image_name)
+            self.upload_image(uploader=uploader,design_id=design_id, design_name=design_name)
             print(counter, "/", total_amount, design_id, design_name)
-            if counter > total_amount:
+            if counter >= total_amount:
+                del uploader
                 return
         self.set_next_main_image()
         self.merged_image = None
         self.set_design_image(self.filenames[0])
+        del uploader
         return
 
-    def resize_for_hoodie(self, size=600, quality=True):
+    def upload_image(self, uploader: fu.FileUploader, design_id:str,  design_name: str) -> str:
+        binary_image = io.BytesIO()
+        if self.merged_image is None:
+            self.merge_current()
+        self.merged_image.save(binary_image, self.IMAGE_TYPE)
+        binary_image.seek(0)
+        upload_filename = self.upload_location + design_id.strip() + " " + design_name.strip()\
+                          + " " + self.product_type.strip() + "." + self.IMAGE_TYPE
+        url = uploader.upload_image(binary_image, upload_filename)
+        url = url[:-1] + '1'
+        print(url)
+        return url
+
+    def resize_for_hoodie(self, size: int = 600, quality: bool = True):
         if quality:
             filter_to_use = Image.LANCZOS
         else:

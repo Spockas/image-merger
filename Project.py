@@ -1,3 +1,4 @@
+import traceback
 from tkinter import *
 from tkinter import messagebox, font, filedialog
 from PIL import ImageTk
@@ -218,7 +219,7 @@ class ProgramInterface(Frame):
                 start = time.time()
                 merger.merge_all(opacity=int(self.opacity_Entry.get()), maxi=int(self.Set_amount.get()))
                 print("{:.1f}".format(time.time() - start), "Seconds")
-            except:
+            except Exception as e:
                 messagebox.showerror("Error", "Couldn't start script (Set amount)")
 
         self.Set_amount = Entry(frame, width=3, bg="white")
