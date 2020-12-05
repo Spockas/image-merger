@@ -119,7 +119,7 @@ class ProgramInterface(Frame):
 
         # Opacity entry
         self.opacity_Entry = Entry(frame, width=3, bg="white")
-        self.opacity_Entry.insert(END, '220')
+        self.opacity_Entry.insert(END, str(merger.opacity))
         self.opacity_Entry.place(x=415, y=130)
 
         # Button to select designs folder location
