@@ -7,9 +7,22 @@ import json
 import file_uploader as fu
 
 
+def read_design_name(location: str) -> (str, str):
+    filename = os.path.basename(location)
+    name = filename[:-4]
+    design_id, *design_name = name.split()
+    design_name = " ".join(design_name)
+    return design_id, design_name
+
+
 class Merger:
 
     def __init__(self):
+
+        self.access_token: str = ""
+        self.step = 5
+        self.output_append = "_applied"
+        self.overwrite = True
         self.load_settings()
         self.design_image = None
         self.design_image_resized = None
@@ -26,10 +39,8 @@ class Merger:
         self.centre = [0, 0]
         self.ratio = 1.414196123147092
         self.set_size = (600, int(600 * self.ratio))
-        self.step = 5
-        self.output_append = "_applied"
+        self.opacity = 245
         self.upload_location = "/designs/"
-        self.overwrite = True
         self.folder = None
         self.filenames = []
         self.sort_by_alphabet = True
@@ -50,6 +61,15 @@ class Merger:
             settings = open("settings.json", 'r')
         except IOError:
             print("Settings file not found")
+            # Create the settings file
+            with open("settings.json", 'w') as settings_json:
+                settings = {
+                    "step": self.step,
+                    "output_append": self.output_append,
+                    "overwrite": self.overwrite,
+                    "access_token": "YOUR_ACCESS_TOKEN"
+                }
+                json.dump(settings, settings_json, indent=3)
         except:
             print("Something else wrong with file")
         else:
@@ -61,6 +81,7 @@ class Merger:
                 print("Something else wrong with json")
             else:
                 self.step = settings_dict['step']
+                self.access_token = settings_dict['access_token']
                 self.output_append = settings_dict['output_append']
                 self.overwrite = settings_dict['overwrite']
                 return
@@ -122,34 +143,31 @@ class Merger:
         self.folder = folder
         self.read_designs(folder)
 
-    def read_design_name(self, location: str) -> (str, str):
-        filename = os.path.basename(location)
-        name = filename[:-4]
-        design_id, *design_name = name.split()
-        design_name = " ".join(design_name)
-        return design_id, design_name
-
-    def merge_all(self, maxi=None, opacity=245) -> None:
+    def merge_all(self, maxi=None) -> None:
         counter = 0
-        uploader = fu.main()
+        uploader = fu.get_file_uploader(self.access_token)
+        # check if token is set right
+        if not uploader.check_connection():
+            self.error_log("Bad connection to dropbox. Maybe your token is wrong.")
+            return
         if maxi is not None and maxi != 0:
             total_amount = maxi
         else:
             total_amount = len(self.filenames)
         for filename in self.filenames:
-            # # pravalyt atminti del galimu siuksliu
+            # # clean memory for potential thrash
             # del self.design_image_resized
             # del self.design_image
             # del self.merged_image
             # del self.display_image
             if not self.design_image_name == filename:
                 self.set_design_image(filename)
-            self.resize_to_set_size(opacity=opacity)
-            # self.resize_for_hoodie(size)
+            self.resize_to_set_size()
+            self.change_opacity()
             self.merge_current()
             # self.write_to_file(self.output_path)
             counter += 1
-            design_id, design_name = self.read_design_name(self.design_image_name)
+            design_id, design_name = read_design_name(self.design_image_name)
             self.upload_image(uploader=uploader,design_id=design_id, design_name=design_name)
             print(counter, "/", total_amount, design_id, design_name)
             if counter >= total_amount:
@@ -174,15 +192,7 @@ class Merger:
         print(url)
         return url
 
-    def resize_for_hoodie(self, size: int = 600, quality: bool = True):
-        if quality:
-            filter_to_use = Image.LANCZOS
-        else:
-            filter_to_use = Image.NEAREST
-        self.design_image_resized = self.design_image.resize((size, int(self.ratio * size)), filter_to_use)
-        self.set_size = (size, int(self.ratio * size))
-
-    def resize_to_set_size(self, size=None, quality=True, opacity=245):
+    def resize_to_set_size(self, size=None, quality=True):
         if size is None:
             size = self.set_size
         if quality:
@@ -194,8 +204,6 @@ class Merger:
         if self.main_image is None:
             print("Main image is not set")
         self.design_image_resized = self.design_image.resize(size, filter_to_use)
-        if opacity < 255:
-            self.change_opacity(opacity=opacity)
         self.merged_image = None
         self.display_image = None
 
@@ -253,15 +261,20 @@ class Merger:
         self.design_image_resized = self.design_image_resized.filter(ImageFilter.GaussianBlur(radius=1))
         return
 
-    def change_opacity(self, opacity=245):
+    def change_opacity(self, opacity=None, redo=False):
+        if opacity is not None:
+            self.opacity = opacity
+        if redo:
+            self.resize_to_set_size()
         data = self.design_image_resized.getdata()  # you'll get a list of tuples
         new_data = []
         for a in data:
             b = a[:3]
-            b = b + (min(opacity, a[3]),)
+            b = b + (self.opacity if a[3] != 0 else 0,)
             new_data.append(b)
         self.design_image_resized.putdata(new_data)
         self.merge_current()
+        self.display_image = None
         return
 
     def move_up(self, step=None):
