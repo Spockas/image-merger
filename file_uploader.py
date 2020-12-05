@@ -1,5 +1,4 @@
-import dropbox
-import io
+import dropbox, io
 
 
 class FileUploader:
@@ -10,7 +9,7 @@ class FileUploader:
     def __del__(self):
         self.dbx.close()
 
-    def upload_image(self, image_binary, filename):
+    def upload_image(self, image_binary: io.BytesIO, filename: str, overwrite: bool):
         try:
             meta = self.dbx.files_upload(image_binary.read(), filename, mode=dropbox.files.WriteMode("overwrite"))
             link = self.dbx.sharing_create_shared_link(filename)
@@ -18,16 +17,14 @@ class FileUploader:
         except dropbox.exceptions.ApiError:
             print("!E!", "Failed to dropbox")
 
-
-def main():
-    access_token = '****'
-    fu = FileUploader(access_token)
-    # filename = "/text.txt"
-    # binary_data = io.BytesIO(b"tekstukas")
-    # binary_data.seek(0)
-    # fu.upload_image(binary_data, filename)
-    return fu
+    def check_connection(self) -> bool:
+        try:
+            self.dbx.check_user(query=u"check_101")
+        except dropbox.exceptions.AuthError as a:
+            print("wrong access token!?!")
+            return False
+        return True
 
 
-if __name__ == '__main__':
-    main()
+def get_file_uploader(token: str):
+    return FileUploader(token)
