@@ -6,16 +6,6 @@ import merger as mg
 import time
 
 
-class Kintamieji:
-    def __init__(self):
-        sides = 0
-        vertically = 0
-        bigger = 0
-        smaller = 0
-        size = 600
-
-
-K = Kintamieji()
 merger = mg.Merger()
 
 
@@ -143,7 +133,7 @@ class ProgramInterface(Frame):
 
         # Opacity entry
         self.opacity_Entry = Entry(frame, width=3, bg="white")
-        self.opacity_Entry.insert(END, '220')
+        self.opacity_Entry.insert(END, str(merger.opacity))
         self.opacity_Entry.place(x=130, y=531)
 
         # Text label for setting opacity

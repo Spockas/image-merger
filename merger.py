@@ -20,7 +20,6 @@ class Merger:
     def __init__(self):
 
         self.access_token: str = ""
-        self.step = 5
         self.output_append = "_applied"
         self.overwrite = True
         self.load_settings()
@@ -64,7 +63,6 @@ class Merger:
             # Create the settings file
             with open("settings.json", 'w') as settings_json:
                 settings = {
-                    "step": self.step,
                     "output_append": self.output_append,
                     "overwrite": self.overwrite,
                     "access_token": "YOUR_ACCESS_TOKEN"
@@ -80,7 +78,6 @@ class Merger:
             except:
                 print("Something else wrong with json")
             else:
-                self.step = settings_dict['step']
                 self.access_token = settings_dict['access_token']
                 self.output_append = settings_dict['output_append']
                 self.overwrite = settings_dict['overwrite']
@@ -277,32 +274,22 @@ class Merger:
         self.display_image = None
         return
 
-    def move_up(self, step=None):
-        if step is None:
-            step = self.step
-        # if self.set_size[1] - (self.offset[1] - step) * 2 < self.main_image.size[1]:
-        #     print("Can't move this much up")
+    def move_up(self, step: int):
         self.offset[1] -= step
         self.merge_current()
         return
 
-    def move_down(self, step=None):
-        if step is None:
-            step = self.step
+    def move_down(self, step: int):
         self.offset[1] += step
         self.merge_current()
         return
 
-    def move_right(self, step=None):
-        if step is None:
-            step = self.step
+    def move_right(self, step: int):
         self.offset[0] += step
         self.merge_current()
         return
 
-    def move_left(self, step=None):
-        if step is None:
-            step = self.step
+    def move_left(self, step: int):
         self.offset[0] -= step
         self.merge_current()
         return
