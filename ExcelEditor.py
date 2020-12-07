@@ -20,19 +20,19 @@ def test_data():
     product_names = ["UK", "DE", "FR", "IT", "ES"]
     browser_nodes = ["UK", "DE", "FR", "IT", "ES"]
     bullet_points = ["UK;UK;UK;UK;UK;", "DE;DE;DE;DE;DE;", "FR;FR;FR;FR;FR;", "IT;IT;IT;IT;IT;", "ES;ES;ES;ES;ES;"]
-    add_to_excel("Produck_type", "1091 Seller_SKU", "Brand_name", product_names, browser_nodes, "meterial_comp",
+    add_to_excel("Product_type", "1091 Seller_SKU", "Brand_name", product_names, browser_nodes, "material_comp",
                  "color_map", "department", "price", "dropbox_url", "other_image_url", bullet_points)
 
 
-def add_to_excel(produck_type, seller_SKU, brand_name, product_names, browser_nodes, meterial_comp, color_map,
+def add_to_excel(product_type, seller_sku, brand_name, product_names, browser_nodes, material_comp, color_map,
                  department, price, dropbox_url, other_image_url, bullet_points):
     sizes = [" parent", " S", " M", " L", " XL", " XXL"]
     size_name = ["", "S", "M", "L", "XL", "XXL"]
     size_map = ["", " Small", " Medium", " Large", " X-Large", " XX-Large"]
     file_names = ["UK", "DE", "FR", "IT", "ES"]
     parent_child = ["Parent", "Child", "Child", "Child", "Child", "Child"]
-    parent_sku = ["", seller_SKU + " parent", seller_SKU + " parent", seller_SKU + " parent",
-                  seller_SKU + " parent", seller_SKU + " parent"]
+    parent_sku = ["", seller_sku + " parent", seller_sku + " parent", seller_sku + " parent",
+                  seller_sku + " parent", seller_sku + " parent"]
     relationship = ["", "Variation", "Variation", "Variation", "Variation", "Variation", ]
     collection_name = ["Spring-Summer 12", "Spring-Summer 13", "Spring-Summer 14", "Spring-Summer 15",
                        "Spring-Summer 16", "Spring-Summer 17"]
@@ -40,9 +40,9 @@ def add_to_excel(produck_type, seller_SKU, brand_name, product_names, browser_no
     for f, file_name in enumerate(file_names):
         csv_file = open(file_name + ".csv", "a")
         for s, size in enumerate(sizes):
-            csv_file.write(produck_type + ";" + seller_SKU + size + ";" + brand_name + ";;GTIN;" + product_names[f] +
+            csv_file.write(product_type + ";" + seller_sku + size + ";" + brand_name + ";;GTIN;" + product_names[f] +
                            ";" + browser_nodes[
-                               f] + ";Cotton;" + meterial_comp + ";" + color_map + ";" + color_map + ";" +
+                               f] + ";Cotton;" + material_comp + ";" + color_map + ";" + color_map + ";" +
                            size_name[s] + ";" + department + ";" + size_map[s] + ";FALSE;" + price + ";5000;" +
                            dropbox_url + ";" + other_image_url + ";;;;;;;;" + parent_child[s] + ";" + parent_sku[s]
                            + ";" + relationship[s] + ";Size;;;;;;;;;" + product_names[f] + ";" +
