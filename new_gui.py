@@ -4,9 +4,25 @@ from tkinter import messagebox, font, filedialog
 from PIL import ImageTk
 import merger as mg
 import time
-
+import ExcelEditor
+import CsvToXlsx
 
 merger = mg.Merger()
+
+
+# Excel Maker Info
+class EMI:
+    product_type = ""
+    seller_SKU = ""
+    brand_name = ""
+    product_names = []
+    browser_nodes = []
+    material_comp = ""
+    color_map = ""
+    department = ""
+    price = ""
+    other_image_url = ""
+    bullet_points = []
 
 
 class ProgramInterface(Frame):
@@ -28,7 +44,7 @@ class ProgramInterface(Frame):
         frame.configure(bg="#D0D0D0")
         #  Font description
         font11 = font.Font(family="Yu Gothic", size=11, weight='bold')
-        #  Packing decision
+        #  Packing decisiondaug
         frame.pack(fill="both", expand=True)
 
         # Select cloths folder section:
@@ -273,7 +289,7 @@ class ProgramInterface(Frame):
         self.Button_amount.place(x=660, y=595)
 
         # Excel doc entries:
-        #Excel Maker label
+        # Excel Maker label
         # Text label for product type
         self.excel_maker = Label(frame, text="Excel Maker", bg="#D0D0D0", font=font11)
         self.excel_maker.place(x=410, y=260)
@@ -343,44 +359,44 @@ class ProgramInterface(Frame):
         self.product_name_ES_Entry.place(x=475, y=474)
 
         # Text label for recommended browse node UK
-        self.recommended_browse_node_UK = Label(frame, text="(G)Rec. BN UK:", bg="#D0D0D0", font=font11)
-        self.recommended_browse_node_UK.place(x=329, y=503)
+        self.browse_node_UK = Label(frame, text="(G)Rec. BN UK:", bg="#D0D0D0", font=font11)
+        self.browse_node_UK.place(x=329, y=503)
 
         # Entry for recommended browse node UK
-        self.recommended_browse_node_UK_Entry = Entry(frame, width=20, bg="white")
-        self.recommended_browse_node_UK_Entry.place(x=450, y=507)
+        self.browse_node_UK_Entry = Entry(frame, width=20, bg="white")
+        self.browse_node_UK_Entry.place(x=450, y=507)
 
         # Text label for recommended browse node DE
-        self.recommended_browse_node_DE = Label(frame, text="(G)Rec. BN DE:", bg="#D0D0D0", font=font11)
-        self.recommended_browse_node_DE.place(x=329, y=528)
+        self.browse_node_DE = Label(frame, text="(G)Rec. BN DE:", bg="#D0D0D0", font=font11)
+        self.browse_node_DE.place(x=329, y=528)
 
         # Entry for recommended browse node DE
-        self.recommended_browse_node_DE_Entry = Entry(frame, width=20, bg="white")
-        self.recommended_browse_node_DE_Entry.place(x=450, y=532)
+        self.browse_node_DE_Entry = Entry(frame, width=20, bg="white")
+        self.browse_node_DE_Entry.place(x=450, y=532)
 
         # Text label for recommended browse node FR
-        self.recommended_browse_node_FR = Label(frame, text="(G)Rec. BN FR:", bg="#D0D0D0", font=font11)
-        self.recommended_browse_node_FR.place(x=329, y=553)
+        self.browse_node_FR = Label(frame, text="(G)Rec. BN FR:", bg="#D0D0D0", font=font11)
+        self.browse_node_FR.place(x=329, y=553)
 
         # Entry for recommended browse node FR
-        self.recommended_browse_node_FR_Entry = Entry(frame, width=20, bg="white")
-        self.recommended_browse_node_FR_Entry.place(x=450, y=557)
+        self.browse_node_FR_Entry = Entry(frame, width=20, bg="white")
+        self.browse_node_FR_Entry.place(x=450, y=557)
 
         # Text label for recommended browse node IT
-        self.recommended_browse_node_IT = Label(frame, text="(G)Rec. BN IT:", bg="#D0D0D0", font=font11)
-        self.recommended_browse_node_IT.place(x=329, y=578)
+        self.browse_node_IT = Label(frame, text="(G)Rec. BN IT:", bg="#D0D0D0", font=font11)
+        self.browse_node_IT.place(x=329, y=578)
 
         # Entry for recommended browse node FR
-        self.recommended_browse_node_IT_Entry = Entry(frame, width=20, bg="white")
-        self.recommended_browse_node_IT_Entry.place(x=450, y=582)
+        self.browse_node_IT_Entry = Entry(frame, width=20, bg="white")
+        self.browse_node_IT_Entry.place(x=450, y=582)
 
         # Text label for recommended browse node ES
-        self.recommended_browse_node_ES = Label(frame, text="(G)Rec. BN ES:", bg="#D0D0D0", font=font11)
-        self.recommended_browse_node_ES.place(x=329, y=602)
+        self.browse_node_ES = Label(frame, text="(G)Rec. BN ES:", bg="#D0D0D0", font=font11)
+        self.browse_node_ES.place(x=329, y=602)
 
         # Entry for recommended browse node ES
-        self.recommended_browse_node_ES_Entry = Entry(frame, width=20, bg="white")
-        self.recommended_browse_node_ES_Entry.place(x=450, y=606)
+        self.browse_node_ES_Entry = Entry(frame, width=20, bg="white")
+        self.browse_node_ES_Entry.place(x=450, y=606)
 
         # Text label for material composition
         self.material_composition = Label(frame, text="(I)Mat comp.:", bg="#D0D0D0", font=font11)
@@ -399,12 +415,12 @@ class ProgramInterface(Frame):
         self.color_map_Entry.place(x=750, y=49)
 
         # Text label for department
-        self.color_map = Label(frame, text="(M)Department:", bg="#D0D0D0", font=font11)
-        self.color_map.place(x=620, y=70)
+        self.department = Label(frame, text="(M)Department:", bg="#D0D0D0", font=font11)
+        self.department.place(x=620, y=70)
 
         # Entry for department
-        self.color_map_Entry = Entry(frame, width=20, bg="white")
-        self.color_map_Entry.place(x=750, y=74)
+        self.department_Entry = Entry(frame, width=20, bg="white")
+        self.department_Entry.place(x=750, y=74)
 
         # Text label for standard price
         self.standard_price = Label(frame, text="(P)Stan. price:", bg="#D0D0D0", font=font11)
@@ -621,6 +637,64 @@ class ProgramInterface(Frame):
         # Entry for bullet points ES 5
         self.bullet_points_ES_Entry_5 = Entry(frame, width=19, bg="white")
         self.bullet_points_ES_Entry_5.place(x=778, y=522)
+
+        # Clean up the gui input to be acceptable for excel maker
+        def clean(gui_input):
+            return gui_input.replace('\n', '').replace('\r', '').replace(';', ',')
+
+        # Cleaner for bullet point entries
+        def bp_cleaner(gui_input_1, gui_input_2, gui_input_3, gui_input_4, gui_input_5):
+            return (clean(gui_input_1) + ";" + clean(gui_input_2) + ";" + clean(gui_input_3) + ";" +
+                    clean(gui_input_4) + ";" + clean(gui_input_5) + ";")
+
+        # Function to add all the info from gui to class which then can be used to make excel
+        def add_info_from_gui():
+            emi = EMI()
+            emi.product_type = clean(self.product_type_Entry.get())
+            emi.seller_SKU = clean(self.seller_SKU_Entry.get())
+            emi.brand_name = clean(self.brand_name_Entry.get())
+            emi.product_names = [clean(self.product_name_UK_Entry.get()), clean(self.product_name_DE_Entry.get()),
+                                 clean(self.product_name_FR_Entry.get()), clean(self.product_name_IT_Entry.get()),
+                                 clean(self.product_name_ES_Entry.get())]
+            emi.browser_nodes = [clean(self.browse_node_UK_Entry.get()), clean(self.browse_node_DE_Entry.get()),
+                                 clean(self.browse_node_FR_Entry.get()), clean(self.browse_node_IT_Entry.get()),
+                                 clean(self.browse_node_ES_Entry.get())]
+            emi.material_comp = clean(self.material_composition_Entry.get())
+            emi.color_map = clean(self.color_map_Entry.get())
+            emi.department = clean(self.department_Entry.get())
+            emi.price = clean(self.standard_price_Entry.get())
+            emi.other_image_url = clean(self.other_image_url_Entry.get())
+            emi.bullet_points = [bp_cleaner(self.bullet_points_UK_Entry_1.get(), self.bullet_points_UK_Entry_2.get(),
+                                            self.bullet_points_UK_Entry_3.get(), self.bullet_points_UK_Entry_4.get(),
+                                            self.bullet_points_UK_Entry_5.get()),
+                                 bp_cleaner(self.bullet_points_DE_Entry_1.get(), self.bullet_points_DE_Entry_2.get(),
+                                            self.bullet_points_DE_Entry_3.get(), self.bullet_points_DE_Entry_4.get(),
+                                            self.bullet_points_DE_Entry_5.get()),
+                                 bp_cleaner(self.bullet_points_FR_Entry_1.get(), self.bullet_points_FR_Entry_2.get(),
+                                            self.bullet_points_FR_Entry_3.get(), self.bullet_points_FR_Entry_4.get(),
+                                            self.bullet_points_FR_Entry_5.get()),
+                                 bp_cleaner(self.bullet_points_IT_Entry_1.get(), self.bullet_points_IT_Entry_2.get(),
+                                            self.bullet_points_IT_Entry_3.get(), self.bullet_points_IT_Entry_4.get(),
+                                            self.bullet_points_IT_Entry_5.get()),
+                                 bp_cleaner(self.bullet_points_ES_Entry_1.get(), self.bullet_points_ES_Entry_2.get(),
+                                            self.bullet_points_ES_Entry_3.get(), self.bullet_points_ES_Entry_4.get(),
+                                            self.bullet_points_ES_Entry_5.get())]
+            ExcelEditor.add_to_excel(emi.product_type, emi.seller_SKU, emi.brand_name, emi.product_names,
+                                     emi.browser_nodes, emi.material_comp, emi.color_map, emi.department, emi.price,
+                                     "dropbox_url", emi.other_image_url, emi.bullet_points)
+            CsvToXlsx.convert_all()
+
+        # Button to test excel maker
+        def test_excel_maker(event):
+            try:
+                add_info_from_gui()
+            except:
+                messagebox.showerror("Error", "Failed to creat excel")
+
+        self.test = Button(frame, text="test", font=font11)
+        self.test.bind("<ButtonRelease-1>", test_excel_maker)
+        self.test.place(x=800, y=635)
+
 
 def Gui():
     ProgramInterface().mainloop()

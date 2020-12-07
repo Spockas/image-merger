@@ -58,6 +58,6 @@ def test():
     try:
         create()
     except:
-        messagebox.showwarning("Warning", "Files already exists, please remove them to create a new ones.")
+        messagebox.showwarning("Warning", "Files already exist.")
     test_data()
     CsvToXlsx.convert_all()
