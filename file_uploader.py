@@ -9,7 +9,7 @@ class FileUploader:
     def __del__(self):
         self.dbx.close()
 
-    def upload_image(self, image_binary: io.BytesIO, filename: str, overwrite: bool):
+    def upload_image(self, image_binary: io.BytesIO, filename: str):
         try:
             meta = self.dbx.files_upload(image_binary.read(), filename, mode=dropbox.files.WriteMode("overwrite"))
             link = self.dbx.sharing_create_shared_link(filename)

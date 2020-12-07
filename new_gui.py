@@ -107,7 +107,7 @@ class ProgramInterface(Frame):
             try:
                 design_path = str(self.fold_desi_Entry.get())
                 merger.set_design_folder(design_path)
-                merger.resize_to_set_size(quality=True)
+                merger.resize_to_set_size()
                 picture_in_GUI()
             except Exception as ex:
                 print(ex)
