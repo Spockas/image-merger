@@ -1,4 +1,5 @@
 import time
+import traceback
 from tkinter import *
 from tkinter import messagebox, font, filedialog
 
@@ -7,23 +8,9 @@ from PIL import ImageTk
 import CsvToXlsx
 import ExcelEditor
 import merger as mg
+from EMI import EMI
 
 merger = mg.Merger()
-
-
-# Excel Maker Info
-class EMI:
-    product_type = ""
-    seller_SKU = ""
-    brand_name = ""
-    product_names = []
-    browser_nodes = []
-    material_comp = ""
-    color_map = ""
-    department = ""
-    price = ""
-    other_image_url = ""
-    bullet_points = []
 
 
 class ProgramInterface(Frame):
@@ -260,10 +247,13 @@ class ProgramInterface(Frame):
                 print((time.time() - start))
                 print("Merging all starts")
                 start = time.time()
-                merger.merge_all(maxi=0)
+                merger.set_options(product_type=clean(self.product_name_UK_Entry.get()))
+                emi = add_info_from_gui()
+                merger.merge_all(maxi=0, emi=emi)
                 print("{:.1f}".format(time.time() - start), "Seconds")
                 picture_in_GUI()
-            except:
+            except Exception:
+                print(traceback.format_exc())
                 messagebox.showerror("Error", "Couldn't start script (All)")
 
         self.up_arrow_key = Button(frame, text="Merge all", font=font11)
@@ -276,7 +266,9 @@ class ProgramInterface(Frame):
                 print((time.time() - start))
                 print("Testing some starts")
                 start = time.time()
-                merger.merge_all(maxi=int(self.Set_amount.get()))
+                merger.set_options(product_type=clean(self.product_name_UK_Entry.get()))
+                emi = add_info_from_gui()
+                merger.merge_all(maxi=int(self.Set_amount.get()), emi=emi)
                 print("{:.1f}".format(time.time() - start), "Seconds")
             except Exception as e:
                 messagebox.showerror("Error", "Couldn't start script (Set amount)")
@@ -652,7 +644,7 @@ class ProgramInterface(Frame):
         def add_info_from_gui() -> EMI:
             emi = EMI()
             emi.product_type = clean(self.product_type_Entry.get())
-            emi.seller_SKU = clean(self.seller_SKU_Entry.get())
+            emi.seller_sku = clean(self.seller_SKU_Entry.get())
             emi.brand_name = clean(self.brand_name_Entry.get())
             emi.product_names = [clean(self.product_name_UK_Entry.get()), clean(self.product_name_DE_Entry.get()),
                                  clean(self.product_name_FR_Entry.get()), clean(self.product_name_IT_Entry.get()),
@@ -680,10 +672,10 @@ class ProgramInterface(Frame):
                                  bp_cleaner(self.bullet_points_ES_Entry_1.get(), self.bullet_points_ES_Entry_2.get(),
                                             self.bullet_points_ES_Entry_3.get(), self.bullet_points_ES_Entry_4.get(),
                                             self.bullet_points_ES_Entry_5.get())]
-            ExcelEditor.add_to_excel(emi.product_type, emi.seller_SKU, emi.brand_name, emi.product_names,
-                                     emi.browser_nodes, emi.material_comp, emi.color_map, emi.department, emi.price,
-                                     "dropbox_url", emi.other_image_url, emi.bullet_points)
-            CsvToXlsx.convert_all()
+            # ExcelEditor.add_to_excel(emi.product_type, emi.seller_SKU, emi.brand_name, emi.product_names,
+            #                          emi.browser_nodes, emi.material_comp, emi.color_map, emi.department, emi.price,
+            #                          "dropbox_url", emi.other_image_url, emi.bullet_points)
+            # CsvToXlsx.convert_all()
             return emi
 
         # Button to test excel maker
@@ -691,7 +683,7 @@ class ProgramInterface(Frame):
             try:
                 add_info_from_gui()
             except:
-                messagebox.showerror("Error", "Failed to creat excel")
+                messagebox.showerror("Error", "Failed to create excel")
 
         self.test = Button(frame, text="test", font=font11)
         self.test.bind("<ButtonRelease-1>", test_excel_maker)

@@ -6,6 +6,7 @@ import os
 import json
 import file_uploader as fu
 import CsvToXlsx
+from EMI import EMI
 import ExcelEditor
 
 
@@ -32,7 +33,7 @@ class Merger:
         self.main_image = None
         self.design_image_name = None
         # GUI options
-        self.product_type = ""  # name taken from GUI
+        self.product_name = ""  # name taken from GUI
         self.merged_image = None
         self.offset = [0, 0]
         self.output_path = None
@@ -133,9 +134,9 @@ class Merger:
         try:
             self.filenames = glob.glob(os.path.join(folder, '*.png'))
         except Exception as err:
-            print(err)
+            self.error_log(err)
         if len(self.filenames) == 0:
-            print("No designs found in this directory:", folder)
+            self.error_log("No designs found in this directory:", folder)
             return
         self.set_design_image(self.filenames[0])
 
@@ -143,7 +144,9 @@ class Merger:
         self.folder = folder
         self.read_designs(folder)
 
-    def merge_all(self, maxi=None) -> None:
+    def merge_all(self, emi: EMI, maxi=None) -> None:
+        ExcelEditor.init_excel()
+        # self.update_emi(emi=emi)
         counter = 0
         uploader = fu.get_file_uploader(self.access_token)
         # check if token is set right
@@ -171,8 +174,10 @@ class Merger:
             # self.write_to_file(self.output_path)
             counter += 1
             design_id, design_name = read_design_name(self.design_image_name)
-            self.upload_image(uploader=uploader, design_id=design_id, design_name=design_name)
+            url = self.upload_image(uploader=uploader, design_id=design_id, design_name=design_name)
+            self.write_excel(emi=emi, url=url, design_name=design_name, design_id=design_id)
             print(counter, "/", total_amount, design_id, design_name)
+        CsvToXlsx.convert_all()
         self.set_next_main_image()
         self.merged_image = None
         self.set_design_image(self.filenames[0])
@@ -186,7 +191,7 @@ class Merger:
         self.merged_image.save(binary_image, self.IMAGE_TYPE)
         binary_image.seek(0)
         upload_filename = "{0}{1} {2} {3}.{4}".format(self.upload_location, design_id.strip(), design_name.strip(),
-                                                      self.product_type.strip(), self.IMAGE_TYPE)
+                                                      self.product_name.strip(), self.IMAGE_TYPE)
         url = uploader.upload_image(binary_image, upload_filename)
         url = url[:-1] + '1'  # change last digit (0 -> 1) to make id downloadable instantly
         print(url)
@@ -261,16 +266,17 @@ class Merger:
         self.design_image_resized = self.design_image_resized.filter(ImageFilter.GaussianBlur(radius=1))
         return
 
-    def change_opacity(self, opacity=None, redo=False):
+    def change_opacity(self, opacity=None, redo=True):
         if opacity is not None:
             self.opacity = opacity
         if redo:
             self.resize_to_set_size()
+        ratio = self.opacity / 255
         data = self.design_image_resized.getdata()  # you'll get a list of tuples
         new_data = []
         for a in data:
             b = a[:3]
-            b = b + (self.opacity if a[3] != 0 else 0,)
+            b = b + (int(a[3]*ratio) if a[3] != 0 else 0,)
             new_data.append(b)
         self.design_image_resized.putdata(new_data)
         self.merge_current()
@@ -321,3 +327,13 @@ class Merger:
         self.set_size = (old_size, int(old_size * self.ratio))
         self.resize_to_set_size()
         return
+
+    # def update_emi(self, emi: EMI, design_name: str):
+
+    def write_excel(self, emi: EMI, url: str, design_name: str, design_id: str):
+        emi_dict = emi.__dict__.copy()
+        product_names = [design_name + " " + pn for pn in emi_dict["product_names"]]
+        seller_sku = design_id + " " + emi_dict['seller_sku']
+        del emi_dict['seller_sku']
+        del emi_dict["product_names"]
+        ExcelEditor.add_to_excel(dropbox_url=url, product_names=product_names, seller_sku=seller_sku, **emi_dict)

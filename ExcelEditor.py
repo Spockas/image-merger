@@ -61,3 +61,10 @@ def test():
         messagebox.showwarning("Warning", "Files already exist.")
     test_data()
     CsvToXlsx.convert_all()
+
+def init_excel():
+    try:
+        create()
+        print("Created csv files")
+    except FileExistsError:
+        print("Files already exist")
