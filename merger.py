@@ -5,6 +5,8 @@ import glob
 import os
 import json
 import file_uploader as fu
+import CsvToXlsx
+import ExcelEditor
 
 
 def read_design_name(location: str) -> (str, str):
@@ -53,6 +55,7 @@ class Merger:
         print('!E!', text)
 
     def set_options(self, **options):
+        self.__dict__.update(options)
         return
 
     def load_settings(self):
@@ -152,6 +155,9 @@ class Merger:
         else:
             total_amount = len(self.filenames)
         for filename in self.filenames:
+            if total_amount and counter > total_amount:
+                del uploader
+                return
             # # clean memory for potential thrash
             # del self.design_image_resized
             # del self.design_image
@@ -165,27 +171,24 @@ class Merger:
             # self.write_to_file(self.output_path)
             counter += 1
             design_id, design_name = read_design_name(self.design_image_name)
-            self.upload_image(uploader=uploader,design_id=design_id, design_name=design_name)
+            self.upload_image(uploader=uploader, design_id=design_id, design_name=design_name)
             print(counter, "/", total_amount, design_id, design_name)
-            if counter >= total_amount:
-                del uploader
-                return
         self.set_next_main_image()
         self.merged_image = None
         self.set_design_image(self.filenames[0])
         del uploader
         return
 
-    def upload_image(self, uploader: fu.FileUploader, design_id:str,  design_name: str) -> str:
+    def upload_image(self, uploader: fu.FileUploader, design_id: str, design_name: str) -> str:
         binary_image = io.BytesIO()
         if self.merged_image is None:
             self.merge_current()
         self.merged_image.save(binary_image, self.IMAGE_TYPE)
         binary_image.seek(0)
-        upload_filename = self.upload_location + design_id.strip() + " " + design_name.strip()\
-                          + " " + self.product_type.strip() + "." + self.IMAGE_TYPE
+        upload_filename = "{0}{1} {2} {3}.{4}".format(self.upload_location, design_id.strip(), design_name.strip(),
+                                                      self.product_type.strip(), self.IMAGE_TYPE)
         url = uploader.upload_image(binary_image, upload_filename)
-        url = url[:-1] + '1'
+        url = url[:-1] + '1'  # change last digit (0 -> 1) to make id downloadable instantly
         print(url)
         return url
 

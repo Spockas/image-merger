@@ -1,11 +1,12 @@
-import traceback
+import time
 from tkinter import *
 from tkinter import messagebox, font, filedialog
+
 from PIL import ImageTk
-import merger as mg
-import time
-import ExcelEditor
+
 import CsvToXlsx
+import ExcelEditor
+import merger as mg
 
 merger = mg.Merger()
 
@@ -259,7 +260,7 @@ class ProgramInterface(Frame):
                 print((time.time() - start))
                 print("Merging all starts")
                 start = time.time()
-                merger.merge_all(opacity=int(self.opacity_Entry.get()), maxi=0)
+                merger.merge_all(maxi=0)
                 print("{:.1f}".format(time.time() - start), "Seconds")
                 picture_in_GUI()
             except:
@@ -275,7 +276,7 @@ class ProgramInterface(Frame):
                 print((time.time() - start))
                 print("Testing some starts")
                 start = time.time()
-                merger.merge_all(opacity=int(self.opacity_Entry.get()), maxi=int(self.Set_amount.get()))
+                merger.merge_all(maxi=int(self.Set_amount.get()))
                 print("{:.1f}".format(time.time() - start), "Seconds")
             except Exception as e:
                 messagebox.showerror("Error", "Couldn't start script (Set amount)")
@@ -512,7 +513,7 @@ class ProgramInterface(Frame):
 
         # Text label for bullet points DE 5
         self.bullet_points_DE_5 = Label(frame, text="5.", bg="#D0D0D0", font=font11)
-        self.bullet_points_DE_5.place(x=758, y=360)
+        self.bullet_points_DE_5.place(x=758, y=280)
 
         # Entry for bullet points DE 5
         self.bullet_points_DE_Entry_5 = Entry(frame, width=19, bg="white")
@@ -648,7 +649,7 @@ class ProgramInterface(Frame):
                     clean(gui_input_4) + ";" + clean(gui_input_5) + ";")
 
         # Function to add all the info from gui to class which then can be used to make excel
-        def add_info_from_gui():
+        def add_info_from_gui() -> EMI:
             emi = EMI()
             emi.product_type = clean(self.product_type_Entry.get())
             emi.seller_SKU = clean(self.seller_SKU_Entry.get())
@@ -683,6 +684,7 @@ class ProgramInterface(Frame):
                                      emi.browser_nodes, emi.material_comp, emi.color_map, emi.department, emi.price,
                                      "dropbox_url", emi.other_image_url, emi.bullet_points)
             CsvToXlsx.convert_all()
+            return emi
 
         # Button to test excel maker
         def test_excel_maker(event):
