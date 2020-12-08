@@ -2,6 +2,7 @@ import time
 import traceback
 from tkinter import *
 from tkinter import messagebox, font, filedialog
+import tkinter as tk
 
 from PIL import ImageTk
 
@@ -21,9 +22,11 @@ class ProgramInterface(Frame):
         vertically = 80
         merger.move_down(vertically)
         merger.move_right(sides)
-        # GUi title
+        # GUI ico
+        self.master.iconbitmap('D:/image-merger-master/shirt.ico')
+        # GUI title
         self.master.title('Design applier')
-        # Gui size
+        # GUI size
         self.master.geometry("910x685+500+200")
         # Gui always-on-top
         self.master.wm_attributes("-topmost", 1)
@@ -630,6 +633,9 @@ class ProgramInterface(Frame):
         # Entry for bullet points ES 5
         self.bullet_points_ES_Entry_5 = Entry(frame, width=19, bg="white")
         self.bullet_points_ES_Entry_5.place(x=778, y=522)
+
+        # --------------------=--------------------
+        # End of excel doc entries:
 
         # Clean up the gui input to be acceptable for excel maker
         def clean(gui_input):
