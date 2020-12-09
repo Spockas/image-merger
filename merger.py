@@ -1,4 +1,5 @@
 import io
+import math
 
 from PIL import Image, ImageFilter
 import glob
@@ -17,6 +18,17 @@ def read_design_name(location: str) -> (str, str):
     design_id, *design_name = name.split()
     design_name = " ".join(design_name)
     return design_id, design_name
+
+
+def fit_to_size(image_size: (int, int), target_size: (int, int)) -> (int, int):
+    width_ratio = image_size[0] / target_size[0]
+    height_ratio = image_size[1] / target_size[1]
+    if math.isclose(width_ratio, height_ratio):
+        return target_size
+    elif width_ratio > height_ratio:
+        return target_size[0], int(image_size[1] / width_ratio)
+    else:
+        return int(image_size[0] / height_ratio), target_size[1]
 
 
 class Merger:
@@ -204,7 +216,7 @@ class Merger:
         print(url)
         return url
 
-    def resize_to_set_size(self, size=None, quality=True):
+    def resize_to_set_size(self, size=None, quality=True, fit=False):
         if size is None:
             size = self.set_size
         if quality:
@@ -215,6 +227,8 @@ class Merger:
             print("Design image is not set")
         if self.main_image is None:
             print("Main image is not set")
+        if fit:
+            size = fit_to_size(self.design_image.size, size)
         self.design_image_resized = self.design_image.resize(size, filter_to_use)
         self.merged_image = None
         self.display_image = None
@@ -236,8 +250,9 @@ class Merger:
                   int((self.main_image.size[1] - self.design_image_resized.size[1]) / 2))
         return centre
 
-    def set_rectangle(self ):
+    def set_rectangle(self):
         self.design_image = self.rectangle
+        self.design_image_resized = None
 
     def get_rectangle(self, size=400):
         rectangle = Image.open("rectangle.png")
