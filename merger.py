@@ -8,6 +8,7 @@ import file_uploader as fu
 import CsvToXlsx
 from EMI import EMI
 import ExcelEditor
+import random
 
 
 def read_design_name(location: str) -> (str, str):
@@ -47,6 +48,8 @@ class Merger:
         self.filenames = []
         self.sort_by_alphabet = True
         self.IMAGE_TYPE = "png"
+
+        random.seed()
 
     # class MainImage:
     #     def __init__(self):
@@ -174,6 +177,8 @@ class Merger:
             # self.write_to_file(self.output_path)
             counter += 1
             design_id, design_name = read_design_name(self.design_image_name)
+            # TODO add random str to filenames DONE
+            # TODO create rectangle
             url = self.upload_image(uploader=uploader, design_id=design_id, design_name=design_name)
             self.write_excel(emi=emi, url=url, design_name=design_name, design_id=design_id)
             print(counter, "/", total_amount, design_id, design_name)
@@ -190,8 +195,8 @@ class Merger:
             self.merge_current()
         self.merged_image.save(binary_image, self.IMAGE_TYPE)
         binary_image.seek(0)
-        upload_filename = "{0}{1} {2} {3}.{4}".format(self.upload_location, design_id.strip(), design_name.strip(),
-                                                      self.product_name.strip(), self.IMAGE_TYPE)
+        upload_filename = "{0}{1} {2} {3}-{4:05x}.{5}".format(self.upload_location, design_id.strip(),
+                            design_name.strip(), self.product_name.strip(), random.randrange(0xfffff), self.IMAGE_TYPE)
         url = uploader.upload_image(binary_image, upload_filename)
         url = url[:-1] + '1'  # change last digit (0 -> 1) to make id downloadable instantly
         print(url)
