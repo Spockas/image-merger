@@ -11,6 +11,9 @@ import ExcelEditor
 import merger as mg
 from EMI import EMI
 
+ENTRY_BG_COLOR = "#f7e6ad"
+BG_COLOR = "#ffffff"
+
 merger = mg.Merger()
 
 
@@ -32,7 +35,7 @@ class ProgramInterface(Frame):
         self.master.wm_attributes("-topmost", 1)
         self.master.resizable(0, 0)
         # Background color
-        frame.configure(bg="#ffffff")
+        frame.configure(bg=BG_COLOR)
         #  Font description
         font11 = font.Font(family="Roboto", size=11, weight='bold')
         #  Packing decisiondaug
@@ -52,11 +55,11 @@ class ProgramInterface(Frame):
 
         # Select cloths folder section:
         # Text label for cloth
-        self.pict_cloth = Label(frame, text="Location of folder with clothing:", bg="#ffffff", font=font11, fg="#424c58")
+        self.pict_cloth = Label(frame, text="Location of folder with clothing:", bg=BG_COLOR, font=font11, fg="#424c58")
         self.pict_cloth.place(x=20, y=20)
 
         # Entry for cloths folder
-        self.pict_cloth_Entry = Entry(frame, width=34, bg="#eef2f5")
+        self.pict_cloth_Entry = Entry(frame, width=34, bg=ENTRY_BG_COLOR)
         self.pict_cloth_Entry.place(x=266, y=23)
 
         # Function for clicking Save cloth
@@ -68,7 +71,7 @@ class ProgramInterface(Frame):
                 messagebox.showerror("Error", "Mistake in directory to clothing png")
 
         # Button to confirm cloths folder
-        self.pict_cloth_Button = Button(frame, image=self.save_btn, borderwidth=0, bg="#ffffff")
+        self.pict_cloth_Button = Button(frame, image=self.save_btn, borderwidth=0, bg=BG_COLOR)
         self.pict_cloth_Button.bind("<ButtonRelease-1>", click_pict_cloth)
         self.pict_cloth_Button.place(x=540, y=17)
 
@@ -80,7 +83,7 @@ class ProgramInterface(Frame):
             self.pict_cloth_Entry.insert(0, pic_file_name)
 
         # Button to select file location
-        self.pict_cloth_file = Button(frame, image=self.select_btn, borderwidth=0, bg="#ffffff")
+        self.pict_cloth_file = Button(frame, image=self.select_btn, borderwidth=0, bg=BG_COLOR)
         self.pict_cloth_file.bind("<ButtonRelease-1>", select_file_location)
         self.pict_cloth_file.place(x=476, y=17)
 
@@ -89,11 +92,11 @@ class ProgramInterface(Frame):
 
         # Select designs folder section:
         # Text label for design
-        self.fold_desi = Label(frame, text="Location of folder with designs:", bg="#ffffff", font=font11, fg="#424c58")
+        self.fold_desi = Label(frame, text="Location of folder with designs:", bg=BG_COLOR, font=font11, fg="#424c58")
         self.fold_desi.place(x=20, y=58)
 
         # Entry for design folder
-        self.fold_desi_Entry = Entry(frame, width=34, bg="#eef2f5")
+        self.fold_desi_Entry = Entry(frame, width=34, bg=ENTRY_BG_COLOR)
         self.fold_desi_Entry.place(x=265, y=61)
 
         # Function which displays cloth and design on GUI
@@ -118,7 +121,7 @@ class ProgramInterface(Frame):
                 messagebox.showerror("Error", "Mistake in directory to folder with designs")
 
         # Button to save design folder
-        self.fold_desi_Button = Button(frame, image=self.save_btn, borderwidth=0, bg="#ffffff")
+        self.fold_desi_Button = Button(frame, image=self.save_btn, borderwidth=0, bg=BG_COLOR)
         self.fold_desi_Button.bind("<ButtonRelease-1>", click_fold_desi)
         self.fold_desi_Button.place(x=540, y=53)
 
@@ -129,7 +132,7 @@ class ProgramInterface(Frame):
             self.fold_desi_Entry.insert(0, pic_file_name)
 
         # Button to select designs folder location
-        self.pict_cloth_file = Button(frame, image=self.select_btn, borderwidth=0, bg="#ffffff")
+        self.pict_cloth_file = Button(frame, image=self.select_btn, borderwidth=0, bg=BG_COLOR)
         self.pict_cloth_file.bind("<ButtonRelease-1>", select_folder_location)
         self.pict_cloth_file.place(x=476, y=53)
 
@@ -147,17 +150,17 @@ class ProgramInterface(Frame):
                 messagebox.showerror("Error", "Mistake in setting opacity")
 
         # Button for setting opacity
-        self.opacity_Button = Button(frame, image=self.set_btn, borderwidth=0, bg="#ffffff")
+        self.opacity_Button = Button(frame, image=self.set_btn, borderwidth=0, bg=BG_COLOR)
         self.opacity_Button.bind("<ButtonRelease-1>", opacity_set)
         self.opacity_Button.place(x=160, y=525)
 
         # Opacity entry
-        self.opacity_Entry = Entry(frame, width=3, bg="#eef2f5")
+        self.opacity_Entry = Entry(frame, width=3, bg=ENTRY_BG_COLOR)
         self.opacity_Entry.insert(END, str(merger.opacity))
         self.opacity_Entry.place(x=130, y=531)
 
         # Text label for setting opacity
-        self.Info1 = Label(frame, text="Set opacity", bg="#ffffff", font=font11, fg="#424c58")
+        self.Info1 = Label(frame, text="Set opacity", bg=BG_COLOR, font=font11, fg="#424c58")
         self.Info1.place(x=120, y=560)
 
         # End of set opacity section
@@ -172,7 +175,7 @@ class ProgramInterface(Frame):
             except:
                 messagebox.showerror("Error", "Couldn't move design to the left")
 
-        self.left_arrow_key = Button(frame, image=self.left_arrow_btn, borderwidth=0, bg="#ffffff")
+        self.left_arrow_key = Button(frame, image=self.left_arrow_btn, borderwidth=0, bg=BG_COLOR)
         self.left_arrow_key.bind("<ButtonRelease-1>", click_left_arrow)
         self.left_arrow_key.place(x=405, y=150)
 
@@ -183,7 +186,7 @@ class ProgramInterface(Frame):
             except:
                 messagebox.showerror("Error", "Couldn't move design to the right")
 
-        self.right_arrow_key = Button(frame,image=self.right_arrow_btn, borderwidth=0, bg="#ffffff")
+        self.right_arrow_key = Button(frame,image=self.right_arrow_btn, borderwidth=0, bg=BG_COLOR)
         self.right_arrow_key.bind("<ButtonRelease-1>", click_right_arrow)
         self.right_arrow_key.place(x=465, y=150)
 
@@ -194,7 +197,7 @@ class ProgramInterface(Frame):
             except:
                 messagebox.showerror("Error", "Couldn't move design to the up")
 
-        self.up_arrow_key = Button(frame, image=self.up_arrow_btn, borderwidth=0, bg="#ffffff")
+        self.up_arrow_key = Button(frame, image=self.up_arrow_btn, borderwidth=0, bg=BG_COLOR)
         self.up_arrow_key.bind("<ButtonRelease-1>", click_up_arrow)
         self.up_arrow_key.place(x=431, y=130)
 
@@ -205,17 +208,17 @@ class ProgramInterface(Frame):
             except:
                 messagebox.showerror("Error", "Couldn't move design to the down")
 
-        self.down_arrow_key = Button(frame, image=self.down_arrow_btn, borderwidth=0, bg="#ffffff")
+        self.down_arrow_key = Button(frame, image=self.down_arrow_btn, borderwidth=0, bg=BG_COLOR)
         self.down_arrow_key.bind("<ButtonRelease-1>", click_down_arrow)
         self.down_arrow_key.place(x=431, y=180)
 
         # Default amount of pixels to move design
-        self.Pix_move_Entry = Entry(frame, width=4, bg="#eef2f5")
+        self.Pix_move_Entry = Entry(frame, width=4, bg=ENTRY_BG_COLOR)
         self.Pix_move_Entry.insert(END, '100')
         self.Pix_move_Entry.place(x=435, y=157)
 
         # Text label for moving design
-        self.Info = Label(frame, text="Move design with arrow keys", bg="#ffffff", font=font11, fg="#424c58")
+        self.Info = Label(frame, text="Move design with arrow keys", bg=BG_COLOR, font=font11, fg="#424c58")
         self.Info.place(x=340, y=215)
 
         # End of move design section
@@ -230,7 +233,7 @@ class ProgramInterface(Frame):
             except:
                 messagebox.showerror("Error", "Couldn't increase design")
 
-        self.plus_key = Button(frame, image=self.plus_btn, borderwidth=0, bg="#ffffff")
+        self.plus_key = Button(frame, image=self.plus_btn, borderwidth=0, bg=BG_COLOR)
         self.plus_key.bind("<ButtonRelease-1>", click_plus)
         self.plus_key.place(x=120, y=595)
 
@@ -241,17 +244,17 @@ class ProgramInterface(Frame):
             except:
                 messagebox.showerror("Error", "Couldn't reduce design")
 
-        self.minus_key = Button(frame, image=self.minus_btn, borderwidth=0, bg="#ffffff")
+        self.minus_key = Button(frame, image=self.minus_btn, borderwidth=0, bg=BG_COLOR)
         self.minus_key.bind("<ButtonRelease-1>", click_minus)
         self.minus_key.place(x=181, y=595)
 
         # Default amount of pixels to increase/decrease design size
-        self.Design_size_Entry = Entry(frame, width=4, bg="#eef2f5")
+        self.Design_size_Entry = Entry(frame, width=4, bg=ENTRY_BG_COLOR)
         self.Design_size_Entry.insert(END, '100')
         self.Design_size_Entry.place(x=150, y=602)
 
         # Text label for increase/decrease design
-        self.Info1 = Label(frame, text="Increase/decrease design with +/-", bg="#ffffff", font=font11, fg="#424c58")
+        self.Info1 = Label(frame, text="Increase/decrease design with +/-", bg=BG_COLOR, font=font11, fg="#424c58")
         self.Info1.place(x=50, y=630)
 
         # End of design size section
@@ -272,7 +275,7 @@ class ProgramInterface(Frame):
                 print(traceback.format_exc())
                 messagebox.showerror("Error", "Couldn't start script (All)")
 
-        self.up_arrow_key = Button(frame, image=self.merge_all_btn, borderwidth=0, bg="#ffffff")
+        self.up_arrow_key = Button(frame, image=self.merge_all_btn, borderwidth=0, bg=BG_COLOR)
         self.up_arrow_key.bind("<ButtonRelease-1>", Start)
         self.up_arrow_key.place(x=800, y=595)
 
@@ -289,362 +292,362 @@ class ProgramInterface(Frame):
             except Exception as e:
                 messagebox.showerror("Error", "Couldn't start script (Set amount)")
 
-        self.Set_amount = Entry(frame, width=3)
+        self.Set_amount = Entry(frame, width=3, bg=ENTRY_BG_COLOR)
         self.Set_amount.insert(END, '0')
         self.Set_amount.place(x=630, y=600)
 
-        self.Button_amount = Button(frame, image=self.set_amount_btn, borderwidth=0, bg="#ffffff")
+        self.Button_amount = Button(frame, image=self.set_amount_btn, borderwidth=0, bg=BG_COLOR)
         self.Button_amount.bind("<ButtonRelease-1>", Amount)
         self.Button_amount.place(x=660, y=595)
 
         # Excel doc entries:
         # Excel Maker label
         # Text label for product type
-        self.excel_maker = Label(frame, text="Excel Maker", bg="#ffffff", font=font11, fg="#424c58")
+        self.excel_maker = Label(frame, text="Excel Maker", bg=BG_COLOR, font=font11, fg="#424c58")
         self.excel_maker.place(x=410, y=260)
 
         # Text label for product type
-        self.product_type = Label(frame, text="(A)Product type:", bg="#ffffff", font=font11, fg="#424c58")
+        self.product_type = Label(frame, text="(A)Product type:", bg=BG_COLOR, font=font11, fg="#424c58")
         self.product_type.place(x=330, y=285)
 
         # Entry for product type
-        self.product_type_Entry = Entry(frame, width=20, bg="#eef2f5")
+        self.product_type_Entry = Entry(frame, width=20, bg=ENTRY_BG_COLOR)
         self.product_type_Entry.place(x=455, y=289)
 
         # Text label for seller SKU
-        self.seller_SKU = Label(frame, text="(B)Seller SKU:", bg="#ffffff", font=font11, fg="#424c58")
+        self.seller_SKU = Label(frame, text="(B)Seller SKU:", bg=BG_COLOR, font=font11, fg="#424c58")
         self.seller_SKU.place(x=330, y=310)
 
         # Entry for seller SKU
-        self.seller_SKU_Entry = Entry(frame, width=20, bg="#eef2f5")
+        self.seller_SKU_Entry = Entry(frame, width=20, bg=ENTRY_BG_COLOR)
         self.seller_SKU_Entry.place(x=455, y=314)
 
         # Text label for brand name
-        self.brand_name = Label(frame, text="(C)Brand name:", bg="#ffffff", font=font11, fg="#424c58")
+        self.brand_name = Label(frame, text="(C)Brand name:", bg=BG_COLOR, font=font11, fg="#424c58")
         self.brand_name.place(x=330, y=335)
 
         # Entry for brand name
-        self.brand_name_Entry = Entry(frame, width=20, bg="#eef2f5")
+        self.brand_name_Entry = Entry(frame, width=20, bg=ENTRY_BG_COLOR)
         self.brand_name_Entry.place(x=455, y=339)
 
         # Text label for product name UK
-        self.product_name_UK = Label(frame, text="(F)Prod. name UK:", bg="#ffffff", font=font11, fg="#424c58")
+        self.product_name_UK = Label(frame, text="(F)Prod. name UK:", bg=BG_COLOR, font=font11, fg="#424c58")
         self.product_name_UK.place(x=329, y=370)
 
         # Entry for product name UK
-        self.product_name_UK_Entry = Entry(frame, width=20, bg="#eef2f5")
+        self.product_name_UK_Entry = Entry(frame, width=20, bg=ENTRY_BG_COLOR)
         self.product_name_UK_Entry.place(x=475, y=374)
 
         # Text label for product name DE
-        self.product_name_DE = Label(frame, text="(F)Prod. name DE:", bg="#ffffff", font=font11, fg="#424c58")
+        self.product_name_DE = Label(frame, text="(F)Prod. name DE:", bg=BG_COLOR, font=font11, fg="#424c58")
         self.product_name_DE.place(x=329, y=395)
 
         # Entry for product name DE
-        self.product_name_DE_Entry = Entry(frame, width=20, bg="#eef2f5")
+        self.product_name_DE_Entry = Entry(frame, width=20, bg=ENTRY_BG_COLOR)
         self.product_name_DE_Entry.place(x=475, y=399)
 
         # Text label for product name FR
-        self.product_name_FR = Label(frame, text="(F)Prod. name FR:", bg="#ffffff", font=font11, fg="#424c58")
+        self.product_name_FR = Label(frame, text="(F)Prod. name FR:", bg=BG_COLOR, font=font11, fg="#424c58")
         self.product_name_FR.place(x=329, y=420)
 
         # Entry for product name FR
-        self.product_name_FR_Entry = Entry(frame, width=20, bg="#eef2f5")
+        self.product_name_FR_Entry = Entry(frame, width=20, bg=ENTRY_BG_COLOR)
         self.product_name_FR_Entry.place(x=475, y=424)
 
         # Text label for product name IT
-        self.product_name_IT = Label(frame, text="(F)Prod. name IT:", bg="#ffffff", font=font11, fg="#424c58")
+        self.product_name_IT = Label(frame, text="(F)Prod. name IT:", bg=BG_COLOR, font=font11, fg="#424c58")
         self.product_name_IT.place(x=329, y=445)
 
         # Entry for product name IT
-        self.product_name_IT_Entry = Entry(frame, width=20, bg="#eef2f5")
+        self.product_name_IT_Entry = Entry(frame, width=20, bg=ENTRY_BG_COLOR)
         self.product_name_IT_Entry.place(x=475, y=449)
 
         # Text label for product name ES
-        self.product_name_ES = Label(frame, text="(F)Prod. name ES:", bg="#ffffff", font=font11, fg="#424c58")
+        self.product_name_ES = Label(frame, text="(F)Prod. name ES:", bg=BG_COLOR, font=font11, fg="#424c58")
         self.product_name_ES.place(x=329, y=470)
 
         # Entry for product name ES
-        self.product_name_ES_Entry = Entry(frame, width=20, bg="#eef2f5")
+        self.product_name_ES_Entry = Entry(frame, width=20, bg=ENTRY_BG_COLOR)
         self.product_name_ES_Entry.place(x=475, y=474)
 
         # Text label for recommended browse node UK
-        self.browse_node_UK = Label(frame, text="(G)Rec. BN UK:", bg="#ffffff", font=font11, fg="#424c58")
+        self.browse_node_UK = Label(frame, text="(G)Rec. BN UK:", bg=BG_COLOR, font=font11, fg="#424c58")
         self.browse_node_UK.place(x=329, y=503)
 
         # Entry for recommended browse node UK
-        self.browse_node_UK_Entry = Entry(frame, width=20, bg="#eef2f5")
+        self.browse_node_UK_Entry = Entry(frame, width=20, bg=ENTRY_BG_COLOR)
         self.browse_node_UK_Entry.place(x=450, y=507)
 
         # Text label for recommended browse node DE
-        self.browse_node_DE = Label(frame, text="(G)Rec. BN DE:", bg="#ffffff", font=font11, fg="#424c58")
+        self.browse_node_DE = Label(frame, text="(G)Rec. BN DE:", bg=BG_COLOR, font=font11, fg="#424c58")
         self.browse_node_DE.place(x=329, y=528)
 
         # Entry for recommended browse node DE
-        self.browse_node_DE_Entry = Entry(frame, width=20, bg="#eef2f5")
+        self.browse_node_DE_Entry = Entry(frame, width=20, bg=ENTRY_BG_COLOR)
         self.browse_node_DE_Entry.place(x=450, y=532)
 
         # Text label for recommended browse node FR
-        self.browse_node_FR = Label(frame, text="(G)Rec. BN FR:", bg="#ffffff", font=font11, fg="#424c58")
+        self.browse_node_FR = Label(frame, text="(G)Rec. BN FR:", bg=BG_COLOR, font=font11, fg="#424c58")
         self.browse_node_FR.place(x=329, y=553)
 
         # Entry for recommended browse node FR
-        self.browse_node_FR_Entry = Entry(frame, width=20, bg="#eef2f5")
+        self.browse_node_FR_Entry = Entry(frame, width=20, bg=ENTRY_BG_COLOR)
         self.browse_node_FR_Entry.place(x=450, y=557)
 
         # Text label for recommended browse node IT
-        self.browse_node_IT = Label(frame, text="(G)Rec. BN IT:", bg="#ffffff", font=font11, fg="#424c58")
+        self.browse_node_IT = Label(frame, text="(G)Rec. BN IT:", bg=BG_COLOR, font=font11, fg="#424c58")
         self.browse_node_IT.place(x=329, y=578)
 
         # Entry for recommended browse node FR
-        self.browse_node_IT_Entry = Entry(frame, width=20, bg="#eef2f5")
+        self.browse_node_IT_Entry = Entry(frame, width=20, bg=ENTRY_BG_COLOR)
         self.browse_node_IT_Entry.place(x=450, y=582)
 
         # Text label for recommended browse node ES
-        self.browse_node_ES = Label(frame, text="(G)Rec. BN ES:", bg="#ffffff", font=font11, fg="#424c58")
+        self.browse_node_ES = Label(frame, text="(G)Rec. BN ES:", bg=BG_COLOR, font=font11, fg="#424c58")
         self.browse_node_ES.place(x=329, y=602)
 
         # Entry for recommended browse node ES
-        self.browse_node_ES_Entry = Entry(frame, width=20, bg="#eef2f5")
+        self.browse_node_ES_Entry = Entry(frame, width=20, bg=ENTRY_BG_COLOR)
         self.browse_node_ES_Entry.place(x=450, y=606)
 
         # Text label for material composition
-        self.material_composition = Label(frame, text="(I)Mat comp.:", bg="#ffffff", font=font11, fg="#424c58")
+        self.material_composition = Label(frame, text="(I)Mat comp.:", bg=BG_COLOR, font=font11, fg="#424c58")
         self.material_composition.place(x=620, y=20)
 
         # Entry for material composition
-        self.material_composition_Entry = Entry(frame, width=20, bg="#eef2f5")
+        self.material_composition_Entry = Entry(frame, width=20, bg=ENTRY_BG_COLOR)
         self.material_composition_Entry.place(x=750, y=23)
 
         # Text label for color map
-        self.color_map = Label(frame, text="(J)Color map:", bg="#ffffff", font=font11, fg="#424c58")
+        self.color_map = Label(frame, text="(J)Color map:", bg=BG_COLOR, font=font11, fg="#424c58")
         self.color_map.place(x=620, y=45)
 
         # Entry for color map
-        self.color_map_Entry = Entry(frame, width=20, bg="#eef2f5")
+        self.color_map_Entry = Entry(frame, width=20, bg=ENTRY_BG_COLOR)
         self.color_map_Entry.place(x=750, y=49)
 
         # Text label for department
-        self.department = Label(frame, text="(M)Department:", bg="#ffffff", font=font11, fg="#424c58")
+        self.department = Label(frame, text="(M)Department:", bg=BG_COLOR, font=font11, fg="#424c58")
         self.department.place(x=620, y=70)
 
         # Entry for department
-        self.department_Entry = Entry(frame, width=20, bg="#eef2f5")
+        self.department_Entry = Entry(frame, width=20, bg=ENTRY_BG_COLOR)
         self.department_Entry.place(x=750, y=74)
 
         # Text label for standard price
-        self.standard_price = Label(frame, text="(P)Stan. price:", bg="#ffffff", font=font11, fg="#424c58")
+        self.standard_price = Label(frame, text="(P)Stan. price:", bg=BG_COLOR, font=font11, fg="#424c58")
         self.standard_price.place(x=620, y=95)
 
         # Entry for standard price
-        self.standard_price_Entry = Entry(frame, width=20, bg="#eef2f5")
+        self.standard_price_Entry = Entry(frame, width=20, bg=ENTRY_BG_COLOR)
         self.standard_price_Entry.place(x=750, y=99)
 
         # Text label for other image url
-        self.other_image_url = Label(frame, text="(S)Other img. url:", bg="#ffffff", font=font11, fg="#424c58")
+        self.other_image_url = Label(frame, text="(S)Other img. url:", bg=BG_COLOR, font=font11, fg="#424c58")
         self.other_image_url.place(x=620, y=120)
 
         # Entry for other image url
-        self.other_image_url_Entry = Entry(frame, width=20, bg="#eef2f5")
+        self.other_image_url_Entry = Entry(frame, width=20, bg=ENTRY_BG_COLOR)
         self.other_image_url_Entry.place(x=750, y=124)
 
         # Text label for bullet points UK 1
-        self.bullet_points_UK_1 = Label(frame, text="1.", bg="#ffffff", font=font11, fg="#424c58")
+        self.bullet_points_UK_1 = Label(frame, text="1.", bg=BG_COLOR, font=font11, fg="#424c58")
         self.bullet_points_UK_1.place(x=620, y=177)
 
         # Entry for bullet points UK 1
-        self.bullet_points_UK_Entry_1 = Entry(frame, width=20, bg="#eef2f5")
+        self.bullet_points_UK_Entry_1 = Entry(frame, width=20, bg=ENTRY_BG_COLOR)
         self.bullet_points_UK_Entry_1.place(x=640, y=180)
 
         # Text label for bullet points UK 2
-        self.bullet_points_UK_2 = Label(frame, text="2.", bg="#ffffff", font=font11, fg="#424c58")
+        self.bullet_points_UK_2 = Label(frame, text="2.", bg=BG_COLOR, font=font11, fg="#424c58")
         self.bullet_points_UK_2.place(x=620, y=202)
 
         # Entry for bullet points UK 2
-        self.bullet_points_UK_Entry_2 = Entry(frame, width=20, bg="#eef2f5")
+        self.bullet_points_UK_Entry_2 = Entry(frame, width=20, bg=ENTRY_BG_COLOR)
         self.bullet_points_UK_Entry_2.place(x=640, y=205)
 
         # Text label for bullet points UK 3
-        self.bullet_points_UK_3 = Label(frame, text="(AR-AV)BPs UK:     3.", bg="#ffffff", font=font11, fg="#424c58")
+        self.bullet_points_UK_3 = Label(frame, text="(AR-AV)BPs UK:     3.", bg=BG_COLOR, font=font11, fg="#424c58")
         self.bullet_points_UK_3.place(x=620, y=152)
 
         # Entry for bullet points UK 3
-        self.bullet_points_UK_Entry_3 = Entry(frame, width=20, bg="#eef2f5")
+        self.bullet_points_UK_Entry_3 = Entry(frame, width=20, bg=ENTRY_BG_COLOR)
         self.bullet_points_UK_Entry_3.place(x=778, y=155)
 
         # Text label for bullet points UK 4
-        self.bullet_points_UK_4 = Label(frame, text="4.", bg="#ffffff", font=font11, fg="#424c58")
+        self.bullet_points_UK_4 = Label(frame, text="4.", bg=BG_COLOR, font=font11, fg="#424c58")
         self.bullet_points_UK_4.place(x=758, y=177)
 
         # Entry for bullet points UK 4
-        self.bullet_points_UK_Entry_4 = Entry(frame, width=20, bg="#eef2f5")
+        self.bullet_points_UK_Entry_4 = Entry(frame, width=20, bg=ENTRY_BG_COLOR)
         self.bullet_points_UK_Entry_4.place(x=778, y=180)
 
         # Text label for bullet points UK 5
-        self.bullet_points_UK_5 = Label(frame, text="5.", bg="#ffffff", font=font11, fg="#424c58")
+        self.bullet_points_UK_5 = Label(frame, text="5.", bg=BG_COLOR, font=font11, fg="#424c58")
         self.bullet_points_UK_5.place(x=758, y=202)
 
         # Entry for bullet points UK 5
-        self.bullet_points_UK_Entry_5 = Entry(frame, width=20, bg="#eef2f5")
+        self.bullet_points_UK_Entry_5 = Entry(frame, width=20, bg=ENTRY_BG_COLOR)
         self.bullet_points_UK_Entry_5.place(x=778, y=205)
 
         # Text label for bullet points DE 1
-        self.bullet_points_DE_1 = Label(frame, text="1.", bg="#ffffff", font=font11, fg="#424c58")
+        self.bullet_points_DE_1 = Label(frame, text="1.", bg=BG_COLOR, font=font11, fg="#424c58")
         self.bullet_points_DE_1.place(x=620, y=255)
 
         # Entry for bullet points DE 1
-        self.bullet_points_DE_Entry_1 = Entry(frame, width=20, bg="#eef2f5")
+        self.bullet_points_DE_Entry_1 = Entry(frame, width=20, bg=ENTRY_BG_COLOR)
         self.bullet_points_DE_Entry_1.place(x=640, y=258)
 
         # Text label for bullet points DE 2
-        self.bullet_points_DE_2 = Label(frame, text="2.", bg="#ffffff", font=font11, fg="#424c58")
+        self.bullet_points_DE_2 = Label(frame, text="2.", bg=BG_COLOR, font=font11, fg="#424c58")
         self.bullet_points_DE_2.place(x=620, y=280)
 
         # Entry for bullet points DE 2
-        self.bullet_points_DE_Entry_2 = Entry(frame, width=20, bg="#eef2f5")
+        self.bullet_points_DE_Entry_2 = Entry(frame, width=20, bg=ENTRY_BG_COLOR)
         self.bullet_points_DE_Entry_2.place(x=640, y=283)
 
         # Text label for bullet points DE 3
-        self.bullet_points_DE_3 = Label(frame, text="(AR-AV)BPs DE:     3.", bg="#ffffff", font=font11, fg="#424c58")
+        self.bullet_points_DE_3 = Label(frame, text="(AR-AV)BPs DE:     3.", bg=BG_COLOR, font=font11, fg="#424c58")
         self.bullet_points_DE_3.place(x=620, y=230)
 
         # Entry for bullet points DE 3
-        self.bullet_points_DE_Entry_3 = Entry(frame, width=20, bg="#eef2f5")
+        self.bullet_points_DE_Entry_3 = Entry(frame, width=20, bg=ENTRY_BG_COLOR)
         self.bullet_points_DE_Entry_3.place(x=778, y=233)
 
         # Text label for bullet points DE 4
-        self.bullet_points_DE_4 = Label(frame, text="4.", bg="#ffffff", font=font11, fg="#424c58")
+        self.bullet_points_DE_4 = Label(frame, text="4.", bg=BG_COLOR, font=font11, fg="#424c58")
         self.bullet_points_DE_4.place(x=758, y=255)
 
         # Entry for bullet points DE 4
-        self.bullet_points_DE_Entry_4 = Entry(frame, width=20, bg="#eef2f5")
+        self.bullet_points_DE_Entry_4 = Entry(frame, width=20, bg=ENTRY_BG_COLOR)
         self.bullet_points_DE_Entry_4.place(x=778, y=258)
 
         # Text label for bullet points DE 5
-        self.bullet_points_DE_5 = Label(frame, text="5.", bg="#ffffff", font=font11, fg="#424c58")
+        self.bullet_points_DE_5 = Label(frame, text="5.", bg=BG_COLOR, font=font11, fg="#424c58")
         self.bullet_points_DE_5.place(x=758, y=280)
 
         # Entry for bullet points DE 5
-        self.bullet_points_DE_Entry_5 = Entry(frame, width=20, bg="#eef2f5")
+        self.bullet_points_DE_Entry_5 = Entry(frame, width=20, bg=ENTRY_BG_COLOR)
         self.bullet_points_DE_Entry_5.place(x=778, y=283)
 
         # Text label for bullet points FR 1
-        self.bullet_points_FR_1 = Label(frame, text="1.", bg="#ffffff", font=font11, fg="#424c58")
+        self.bullet_points_FR_1 = Label(frame, text="1.", bg=BG_COLOR, font=font11, fg="#424c58")
         self.bullet_points_FR_1.place(x=620, y=330)
 
         # Entry for bullet points FR 1
-        self.bullet_points_FR_Entry_1 = Entry(frame, width=20, bg="#eef2f5")
+        self.bullet_points_FR_Entry_1 = Entry(frame, width=20, bg=ENTRY_BG_COLOR)
         self.bullet_points_FR_Entry_1.place(x=640, y=336)
 
         # Text label for bullet points FR 2
-        self.bullet_points_FR_2 = Label(frame, text="2.", bg="#ffffff", font=font11, fg="#424c58")
+        self.bullet_points_FR_2 = Label(frame, text="2.", bg=BG_COLOR, font=font11, fg="#424c58")
         self.bullet_points_FR_2.place(x=620, y=358)
 
         # Entry for bullet points FR 2
-        self.bullet_points_FR_Entry_2 = Entry(frame, width=20, bg="#eef2f5")
+        self.bullet_points_FR_Entry_2 = Entry(frame, width=20, bg=ENTRY_BG_COLOR)
         self.bullet_points_FR_Entry_2.place(x=640, y=361)
 
         # Text label for bullet points FR 3
-        self.bullet_points_FR_3 = Label(frame, text="(AR-AV)BPs FR:     3.", bg="#ffffff", font=font11, fg="#424c58")
+        self.bullet_points_FR_3 = Label(frame, text="(AR-AV)BPs FR:     3.", bg=BG_COLOR, font=font11, fg="#424c58")
         self.bullet_points_FR_3.place(x=620, y=308)
 
         # Entry for bullet points FR 3
-        self.bullet_points_FR_Entry_3 = Entry(frame, width=20, bg="#eef2f5")
+        self.bullet_points_FR_Entry_3 = Entry(frame, width=20, bg=ENTRY_BG_COLOR)
         self.bullet_points_FR_Entry_3.place(x=778, y=311)
 
         # Text label for bullet points FR 4
-        self.bullet_points_FR_4 = Label(frame, text="4.", bg="#ffffff", font=font11, fg="#424c58")
+        self.bullet_points_FR_4 = Label(frame, text="4.", bg=BG_COLOR, font=font11, fg="#424c58")
         self.bullet_points_FR_4.place(x=758, y=333)
 
         # Entry for bullet points FR 4
-        self.bullet_points_FR_Entry_4 = Entry(frame, width=20, bg="#eef2f5")
+        self.bullet_points_FR_Entry_4 = Entry(frame, width=20, bg=ENTRY_BG_COLOR)
         self.bullet_points_FR_Entry_4.place(x=778, y=336)
 
         # Text label for bullet points FR 5
-        self.bullet_points_FR_5 = Label(frame, text="5.", bg="#ffffff", font=font11, fg="#424c58")
+        self.bullet_points_FR_5 = Label(frame, text="5.", bg=BG_COLOR, font=font11, fg="#424c58")
         self.bullet_points_FR_5.place(x=758, y=358)
 
         # Entry for bullet points FR 5
-        self.bullet_points_FR_Entry_5 = Entry(frame, width=20, bg="#eef2f5")
+        self.bullet_points_FR_Entry_5 = Entry(frame, width=20, bg=ENTRY_BG_COLOR)
         self.bullet_points_FR_Entry_5.place(x=778, y=361)
 
         # Text label for bullet points IT 1
-        self.bullet_points_IT_1 = Label(frame, text="1.", bg="#ffffff", font=font11, fg="#424c58")
+        self.bullet_points_IT_1 = Label(frame, text="1.", bg=BG_COLOR, font=font11, fg="#424c58")
         self.bullet_points_IT_1.place(x=620, y=413)
 
         # Entry for bullet points IT 1
-        self.bullet_points_IT_Entry_1 = Entry(frame, width=20, bg="#eef2f5")
+        self.bullet_points_IT_Entry_1 = Entry(frame, width=20, bg=ENTRY_BG_COLOR)
         self.bullet_points_IT_Entry_1.place(x=640, y=416)
 
         # Text label for bullet points IT 2
-        self.bullet_points_IT_2 = Label(frame, text="2.", bg="#ffffff", font=font11, fg="#424c58")
+        self.bullet_points_IT_2 = Label(frame, text="2.", bg=BG_COLOR, font=font11, fg="#424c58")
         self.bullet_points_IT_2.place(x=620, y=438)
 
         # Entry for bullet points IT 2
-        self.bullet_points_IT_Entry_2 = Entry(frame, width=20, bg="#eef2f5")
+        self.bullet_points_IT_Entry_2 = Entry(frame, width=20, bg=ENTRY_BG_COLOR)
         self.bullet_points_IT_Entry_2.place(x=640, y=441)
 
         # Text label for bullet points IT 3
-        self.bullet_points_IT_3 = Label(frame, text="(AR-AV)BPs IT:      3.", bg="#ffffff", font=font11, fg="#424c58")
+        self.bullet_points_IT_3 = Label(frame, text="(AR-AV)BPs IT:      3.", bg=BG_COLOR, font=font11, fg="#424c58")
         self.bullet_points_IT_3.place(x=620, y=387)
 
         # Entry for bullet points IT 3
-        self.bullet_points_IT_Entry_3 = Entry(frame, width=20, bg="#eef2f5")
+        self.bullet_points_IT_Entry_3 = Entry(frame, width=20, bg=ENTRY_BG_COLOR)
         self.bullet_points_IT_Entry_3.place(x=778, y=390)
 
         # Text label for bullet points IT 4
-        self.bullet_points_IT_4 = Label(frame, text="4.", bg="#ffffff", font=font11, fg="#424c58")
+        self.bullet_points_IT_4 = Label(frame, text="4.", bg=BG_COLOR, font=font11, fg="#424c58")
         self.bullet_points_IT_4.place(x=758, y=413)
 
         # Entry for bullet points IT 4
-        self.bullet_points_IT_Entry_4 = Entry(frame, width=20, bg="#eef2f5")
+        self.bullet_points_IT_Entry_4 = Entry(frame, width=20, bg=ENTRY_BG_COLOR)
         self.bullet_points_IT_Entry_4.place(x=778, y=416)
 
         # Text label for bullet points IT 5
-        self.bullet_points_IT_5 = Label(frame, text="5.", bg="#ffffff", font=font11, fg="#424c58")
+        self.bullet_points_IT_5 = Label(frame, text="5.", bg=BG_COLOR, font=font11, fg="#424c58")
         self.bullet_points_IT_5.place(x=758, y=438)
 
         # Entry for bullet points IT 5
-        self.bullet_points_IT_Entry_5 = Entry(frame, width=20, bg="#eef2f5")
+        self.bullet_points_IT_Entry_5 = Entry(frame, width=20, bg=ENTRY_BG_COLOR)
         self.bullet_points_IT_Entry_5.place(x=778, y=441)
 
         # Text label for bullet points ES 1
-        self.bullet_points_ES_1 = Label(frame, text="1.", bg="#ffffff", font=font11, fg="#424c58")
+        self.bullet_points_ES_1 = Label(frame, text="1.", bg=BG_COLOR, font=font11, fg="#424c58")
         self.bullet_points_ES_1.place(x=620, y=494)
 
         # Entry for bullet points ES 1
-        self.bullet_points_ES_Entry_1 = Entry(frame, width=20, bg="#eef2f5")
+        self.bullet_points_ES_Entry_1 = Entry(frame, width=20, bg=ENTRY_BG_COLOR)
         self.bullet_points_ES_Entry_1.place(x=640, y=497)
 
         # Text label for bullet points ES 2
-        self.bullet_points_ES_2 = Label(frame, text="2.", bg="#ffffff", font=font11, fg="#424c58")
+        self.bullet_points_ES_2 = Label(frame, text="2.", bg=BG_COLOR, font=font11, fg="#424c58")
         self.bullet_points_ES_2.place(x=620, y=519)
 
         # Entry for bullet points ES 2
-        self.bullet_points_ES_Entry_2 = Entry(frame, width=20, bg="#eef2f5")
+        self.bullet_points_ES_Entry_2 = Entry(frame, width=20, bg=ENTRY_BG_COLOR)
         self.bullet_points_ES_Entry_2.place(x=640, y=522)
 
         # Text label for bullet points ES 3
-        self.bullet_points_ES_3 = Label(frame, text="(AR-AV)BPs ES:     3.", bg="#ffffff", font=font11, fg="#424c58")
+        self.bullet_points_ES_3 = Label(frame, text="(AR-AV)BPs ES:     3.", bg=BG_COLOR, font=font11, fg="#424c58")
         self.bullet_points_ES_3.place(x=620, y=469)
 
         # Entry for bullet points ES 3
-        self.bullet_points_ES_Entry_3 = Entry(frame, width=20, bg="#eef2f5")
+        self.bullet_points_ES_Entry_3 = Entry(frame, width=20, bg=ENTRY_BG_COLOR)
         self.bullet_points_ES_Entry_3.place(x=778, y=472)
 
         # Text label for bullet points ES 4
-        self.bullet_points_ES_4 = Label(frame, text="4.", bg="#ffffff", font=font11, fg="#424c58")
+        self.bullet_points_ES_4 = Label(frame, text="4.", bg=BG_COLOR, font=font11, fg="#424c58")
         self.bullet_points_ES_4.place(x=758, y=494)
 
         # Entry for bullet points ES 4
-        self.bullet_points_ES_Entry_4 = Entry(frame, width=20, bg="#eef2f5")
+        self.bullet_points_ES_Entry_4 = Entry(frame, width=20, bg=ENTRY_BG_COLOR)
         self.bullet_points_ES_Entry_4.place(x=778, y=497)
 
         # Text label for bullet points ES 5
-        self.bullet_points_ES_5 = Label(frame, text="5.", bg="#ffffff", font=font11, fg="#424c58")
+        self.bullet_points_ES_5 = Label(frame, text="5.", bg=BG_COLOR, font=font11, fg="#424c58")
         self.bullet_points_ES_5.place(x=758, y=519)
 
         # Entry for bullet points ES 5
-        self.bullet_points_ES_Entry_5 = Entry(frame, width=20, bg="#eef2f5")
+        self.bullet_points_ES_Entry_5 = Entry(frame, width=20, bg=ENTRY_BG_COLOR)
         self.bullet_points_ES_Entry_5.place(x=778, y=522)
 
         # --------------------=--------------------
