@@ -23,7 +23,7 @@ class ProgramInterface(Frame):
         merger.move_down(vertically)
         merger.move_right(sides)
         # GUI ico
-        self.master.iconbitmap('D:/image-merger-master/shirt.ico')
+        self.master.iconbitmap('shirt.ico')
         # GUI title
         self.master.title('Design applier')
         # GUI size
@@ -38,17 +38,17 @@ class ProgramInterface(Frame):
         #  Packing decisiondaug
         frame.pack(fill="both", expand=True)
 
-        self.save_btn = PhotoImage(file='D:/image-merger-master/button_save.png')
-        self.select_btn = PhotoImage(file='D:/image-merger-master/button_select.png')
-        self.left_arrow_btn = PhotoImage(file='D:/image-merger-master/left_arrow_button.png')
-        self.right_arrow_btn = PhotoImage(file='D:/image-merger-master/right_arrow_button.png')
-        self.up_arrow_btn = PhotoImage(file='D:/image-merger-master/button_up.png')
-        self.down_arrow_btn = PhotoImage(file='D:/image-merger-master/button_down.png')
-        self.set_btn = PhotoImage(file='D:/image-merger-master/button_set.png')
-        self.plus_btn = PhotoImage(file='D:/image-merger-master/button_plus.png')
-        self.minus_btn = PhotoImage(file='D:/image-merger-master/button_minus.png')
-        self.merge_all_btn = PhotoImage(file='D:/image-merger-master/button_merge-all.png')
-        self.set_amount_btn = PhotoImage(file='D:/image-merger-master/button_set-amount.png')
+        self.save_btn = PhotoImage(file='button_save.png')
+        self.select_btn = PhotoImage(file='button_select.png')
+        self.left_arrow_btn = PhotoImage(file='left_arrow_button.png')
+        self.right_arrow_btn = PhotoImage(file='right_arrow_button.png')
+        self.up_arrow_btn = PhotoImage(file='button_up.png')
+        self.down_arrow_btn = PhotoImage(file='button_down.png')
+        self.set_btn = PhotoImage(file='button_set.png')
+        self.plus_btn = PhotoImage(file='button_plus.png')
+        self.minus_btn = PhotoImage(file='button_minus.png')
+        self.merge_all_btn = PhotoImage(file='button_merge-all.png')
+        self.set_amount_btn = PhotoImage(file='button_set-amount.png')
 
         # Select cloths folder section:
         # Text label for cloth
