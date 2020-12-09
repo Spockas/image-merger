@@ -33,6 +33,7 @@ class Merger:
         self.main_image_counter = 0
         self.main_image = None
         self.design_image_name = None
+        self.rectangle = None
         # GUI options
         self.product_name = ""  # name taken from GUI
         self.merged_image = None
@@ -49,6 +50,7 @@ class Merger:
         self.sort_by_alphabet = True
         self.IMAGE_TYPE = "png"
 
+        self.get_rectangle()
         random.seed()
 
     # class MainImage:
@@ -234,7 +236,16 @@ class Merger:
                   int((self.main_image.size[1] - self.design_image_resized.size[1]) / 2))
         return centre
 
-    def get_display(self, size=400) -> Image:
+    def set_rectangle(self ):
+        self.design_image = self.rectangle
+
+    def get_rectangle(self, size=400):
+        rectangle = Image.open("rectangle.png")
+        self.rectangle = rectangle
+
+    def get_display(self, size=400, rectangle=True) -> Image:
+        if rectangle:
+            self.set_rectangle()
         if self.merged_image is None:
             self.merge_current()
         if self.display_image is None:
