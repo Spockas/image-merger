@@ -129,10 +129,10 @@ class Merger:
         except:
             self.error_log("Couldn't read clothes photos from given folder. Check if folder contains 'png' files")
 
-    def merge_current(self, centre=None) -> None:
+    def merge_current(self, centre=None, fit: bool=True) -> None:
         if self.design_image is not None and self.main_image is not None:
-            if self.design_image_resized is None:
-                self.resize_to_set_size()
+            if self.design_image_resized is None or not fit:
+                self.resize_to_set_size(fit=fit)
             if centre is None:
                 centre = self.find_centre()
             if self.offset != [0, 0]:
@@ -216,7 +216,7 @@ class Merger:
         print(url)
         return url
 
-    def resize_to_set_size(self, size=None, quality=True, fit=False):
+    def resize_to_set_size(self, size=None, quality=True, fit=True):
         if size is None:
             size = self.set_size
         if quality:
@@ -235,7 +235,7 @@ class Merger:
 
     def set_design_image(self, location) -> bool:
         try:
-            self.design_image = Image.open(location)
+            self.design_image = Image.open(location).convert(mode="RGBA")
             self.design_image_name = os.path.basename(location)
             self.merged_image = None
             self.design_image_resized = None
@@ -261,10 +261,12 @@ class Merger:
     def get_display(self, size=400, rectangle=True) -> Image:
         if rectangle:
             self.set_rectangle()
+            self.merge_current(fit=False)
         if self.merged_image is None:
             self.merge_current()
         if self.display_image is None:
-            self.display_image = self.merged_image.resize((int(size / self.ratio), size))
+            self.display_image = self.merged_image.resize(fit_to_size(self.merged_image.size,
+                                                                      (int(size / self.ratio), size)))
         return self.display_image
 
     def set_output_path(self, path):
