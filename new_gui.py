@@ -259,7 +259,42 @@ class ProgramInterface(Frame):
 
         # End of design size section
         # --------------------=--------------------
+        # Begin of design height section
+        # Buttons to increase/decrease design height
+        def click_plus_height(event):
+            try:
+                merger.increase_height(amount=int(self.Design_height_entry.get()))
+                picture_in_GUI()
+            except:
+                messagebox.showerror("Error", "Couldn't increase height")
 
+        self.plus_key_height = Button(frame, image=self.plus_btn, borderwidth=0, bg=BG_COLOR)
+        self.plus_key_height.bind("<ButtonRelease-1>", click_plus_height)
+        self.plus_key_height.place(x=120, y=455)
+
+        def click_minus_height(event):
+            try:
+                merger.decrease_height(amount=int(self.Design_height_entry.get()))
+                picture_in_GUI()
+            except:
+                messagebox.showerror("Error", "Couldn't reduce height")
+
+        self.minus_key_height = Button(frame, image=self.minus_btn, borderwidth=0, bg=BG_COLOR)
+        self.minus_key_height.bind("<ButtonRelease-1>", click_minus_height)
+        self.minus_key_height.place(x=181, y=455)
+
+        # Default amount of pixels to increase/decrease design size
+        self.Design_height_entry = Entry(frame, width=4, bg=ENTRY_BG_COLOR)
+        self.Design_height_entry.insert(END, '1')
+        self.Design_height_entry.place(x=150, y=462)
+
+        # Text label for increase/decrease design
+        self.Info1 = Label(frame, text="Increase/decrease design height with +/-", bg=BG_COLOR, font=font11,
+                           fg="#424c58")
+        self.Info1.place(x=50, y=490)
+
+        # End of design height section
+        # --------------------=--------------------
         def Start(event):
             try:
                 start = time.time()

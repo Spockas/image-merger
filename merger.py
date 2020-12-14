@@ -266,7 +266,7 @@ class Merger:
             self.merge_current()
         if self.display_image is None:
             self.display_image = self.merged_image.resize(fit_to_size(self.merged_image.size,
-                                                                      (int(size / self.ratio), size)))
+                                                                      (int(size / 1.414196123147092), size)))
         return self.display_image
 
     def set_output_path(self, path):
@@ -361,7 +361,19 @@ class Merger:
         self.resize_to_set_size()
         return
 
-    # def update_emi(self, emi: EMI, design_name: str):
+    def increase_height(self, amount: int) -> None:
+        old_size = self.set_size[1]
+        old_size += amount
+        self.ratio = old_size / self.set_size[0]
+        self.set_size = (int(old_size / self.ratio), old_size)
+        self.resize_to_set_size()
+
+    def decrease_height(self, amount: int) -> None:
+        old_size = self.set_size[1]
+        old_size -= amount
+        self.ratio = old_size / self.set_size[0]
+        self.set_size = (int(old_size / self.ratio), old_size)
+        self.resize_to_set_size()
 
     def write_excel(self, emi: EMI, url: str, design_name: str, design_id: str):
         emi_dict = emi.__dict__.copy()
