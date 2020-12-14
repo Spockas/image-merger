@@ -108,7 +108,6 @@ class ProgramInterface(Frame):
             except:
                 messagebox.showerror("Error", "Mistake in directory to picture")
 
-
         # Function which happens after clicking save design folder
         def click_fold_desi(event):
             try:
@@ -322,7 +321,7 @@ class ProgramInterface(Frame):
                 start = time.time()
                 merger.set_options(product_type=clean(self.product_name_UK_Entry.get()))
                 emi = add_info_from_gui()
-                merger.merge_all(maxi=int(self.Set_amount.get()), emi=emi)
+                merger.merge_all(maxi=int(self.Set_amount.get()), emi=emi, csv=False)
                 print("{:.1f}".format(time.time() - start), "Seconds")
             except Exception as e:
                 messagebox.showerror("Error", "Couldn't start script (Set amount)")

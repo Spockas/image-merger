@@ -38,6 +38,7 @@ class Merger:
         self.access_token: str = ""
         self.output_append = "_applied"
         self.overwrite = True
+        self.upload_location = "/designs/"
         self.load_settings()
         self.design_image = None
         self.design_image_resized = None
@@ -56,7 +57,6 @@ class Merger:
         self.ratio = 1.414196123147092
         self.set_size = (600, int(600 * self.ratio))
         self.opacity = 245
-        self.upload_location = "/designs/"
         self.folder = None
         self.filenames = []
         self.sort_by_alphabet = True
@@ -86,7 +86,8 @@ class Merger:
                 settings = {
                     "output_append": self.output_append,
                     "overwrite": self.overwrite,
-                    "access_token": "YOUR_ACCESS_TOKEN"
+                    "access_token": "YOUR_ACCESS_TOKEN",
+                    "upload_location": "/designs/"
                 }
                 json.dump(settings, settings_json, indent=3)
         except:
@@ -102,6 +103,7 @@ class Merger:
                 self.access_token = settings_dict['access_token']
                 self.output_append = settings_dict['output_append']
                 self.overwrite = settings_dict['overwrite']
+                self.upload_location = settings_dict['upload_location']
                 return
         return
 
@@ -161,7 +163,7 @@ class Merger:
         self.folder = folder
         self.read_designs(folder)
 
-    def merge_all(self, emi: EMI, maxi=None) -> None:
+    def merge_all(self, emi: EMI, maxi=None, csv=True) -> None:
         ExcelEditor.init_excel()
         # self.update_emi(emi=emi)
         counter = 0
@@ -194,7 +196,8 @@ class Merger:
             # TODO add random str to filenames DONE
             # TODO create rectangle
             url = self.upload_image(uploader=uploader, design_id=design_id, design_name=design_name)
-            self.write_excel(emi=emi, url=url, design_name=design_name, design_id=design_id)
+            if csv:
+                self.write_excel(emi=emi, url=url, design_name=design_name, design_id=design_id)
             print(counter, "/", total_amount, design_id, design_name)
         CsvToXlsx.convert_all()
         self.set_next_main_image()
