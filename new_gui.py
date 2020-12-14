@@ -302,6 +302,7 @@ class ProgramInterface(Frame):
                 start = time.time()
                 merger.set_options(product_type=clean(self.product_name_UK_Entry.get()))
                 emi = add_info_from_gui()
+                clear_excel_entries_from_gui()
                 merger.merge_all(maxi=0, emi=emi)
                 print("{:.1f}".format(time.time() - start), "Seconds")
                 picture_in_GUI()
@@ -696,6 +697,8 @@ class ProgramInterface(Frame):
             return (clean(gui_input_1) + ";" + clean(gui_input_2) + ";" + clean(gui_input_3) + ";" +
                     clean(gui_input_4) + ";" + clean(gui_input_5) + ";")
 
+
+        
         # Function to add all the info from gui to class which then can be used to make excel
         def add_info_from_gui() -> EMI:
             emi = EMI()
@@ -737,7 +740,8 @@ class ProgramInterface(Frame):
         # Button to test excel maker
         def test_excel_maker(event):
             try:
-                add_info_from_gui()
+                clear_excel_entries_from_gui()
+                # add_info_from_gui()
             except:
                 messagebox.showerror("Error", "Failed to create excel")
 
@@ -745,6 +749,25 @@ class ProgramInterface(Frame):
         self.test.bind("<ButtonRelease-1>", test_excel_maker)
         self.test.place(x=800, y=635)
 
+        def clear_excel_entries_from_gui():
+            ids = ['product_type_Entry', 'seller_SKU_Entry', 'brand_name_Entry', 'product_name_UK_Entry',
+                   'product_name_DE_Entry', 'product_name_FR_Entry', 'product_name_IT_Entry', 'product_name_ES_Entry',
+                   'browse_node_UK_Entry', 'browse_node_DE_Entry', 'browse_node_FR_Entry', 'browse_node_IT_Entry',
+                   'browse_node_ES_Entry', 'material_composition_Entry', 'color_map_Entry', 'department_Entry',
+                   'standard_price_Entry', 'other_image_url_Entry', 'bullet_points_UK_Entry_1',
+                   'bullet_points_UK_Entry_2', 'bullet_points_UK_Entry_3', 'bullet_points_UK_Entry_4',
+                   'bullet_points_UK_Entry_5', 'bullet_points_DE_Entry_1', 'bullet_points_DE_Entry_2',
+                   'bullet_points_DE_Entry_3', 'bullet_points_DE_Entry_4', 'bullet_points_DE_Entry_5',
+                   'bullet_points_FR_Entry_1', 'bullet_points_FR_Entry_2', 'bullet_points_FR_Entry_3',
+                   'bullet_points_FR_Entry_4', 'bullet_points_FR_Entry_5', 'bullet_points_IT_Entry_1',
+                   'bullet_points_IT_Entry_2', 'bullet_points_IT_Entry_3', 'bullet_points_IT_Entry_4',
+                   'bullet_points_IT_Entry_5', 'bullet_points_ES_Entry_1', 'bullet_points_ES_Entry_2',
+                   'bullet_points_ES_Entry_3', 'bullet_points_ES_Entry_4', 'bullet_points_ES_Entry_5']
+            for entry_id in ids:
+                try:
+                    self.__dict__[entry_id].delete(0, END)
+                except:
+                    pass
 
 def Gui():
     ProgramInterface().mainloop()
