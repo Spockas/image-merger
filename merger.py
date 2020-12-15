@@ -215,7 +215,7 @@ class Merger:
         upload_filename = "{0}{1} {2} {3}-{4:05x}.{5}".format(self.upload_location, design_id.strip(),
                             design_name.strip(), self.product_name.strip(), random.randrange(0xfffff), self.IMAGE_TYPE)
         url = uploader.upload_image(binary_image, upload_filename)
-        url = url[:-1] + '1'  # change last digit (0 -> 1) to make id downloadable instantly
+        # url = url[:-1] + '1'  # change last digit (0 -> 1) to make id downloadable instantly
         print(url)
         return url
 
