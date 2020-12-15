@@ -62,6 +62,7 @@ def test():
     test_data()
     CsvToXlsx.convert_all()
 
+
 def init_excel():
     try:
         create()

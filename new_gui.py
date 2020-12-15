@@ -1,3 +1,4 @@
+import threading
 import time
 import traceback
 from tkinter import *
@@ -6,6 +7,7 @@ import tkinter as tk
 
 from PIL import ImageTk
 
+import CSVWorker
 import CsvToXlsx
 import ExcelEditor
 import merger as mg
@@ -14,17 +16,19 @@ from EMI import EMI
 ENTRY_BG_COLOR = "#f7e6ad"
 BG_COLOR = "#ffffff"
 
-merger = mg.Merger()
-
 
 class ProgramInterface(Frame):
     def __init__(self):
         Frame.__init__(self)
         frame = Frame()
+        merger = mg.Merger()
         sides = 80
         vertically = 80
         merger.move_down(vertically)
         merger.move_right(sides)
+        self.csv_worker = CSVWorker.CSVWorker()
+        self.csv_worker_thread = threading.Thread(target=self.csv_worker.main_loop, daemon=True)
+        self.csv_worker_thread.start()
         # GUI ico
         self.master.iconbitmap('shirt.ico')
         # GUI title
@@ -303,7 +307,7 @@ class ProgramInterface(Frame):
                 merger.set_options(product_type=clean(self.product_name_UK_Entry.get()))
                 emi = add_info_from_gui()
                 clear_excel_entries_from_gui()
-                merger.merge_all(maxi=0, emi=emi)
+                merger.merge_all(maxi=0, emi=emi, csv_worker=self.csv_worker)
                 print("{:.1f}".format(time.time() - start), "Seconds")
                 picture_in_GUI()
             except Exception:
@@ -322,7 +326,7 @@ class ProgramInterface(Frame):
                 start = time.time()
                 merger.set_options(product_type=clean(self.product_name_UK_Entry.get()))
                 emi = add_info_from_gui()
-                merger.merge_all(maxi=int(self.Set_amount.get()), emi=emi, csv=False)
+                merger.merge_all(maxi=int(self.Set_amount.get()), emi=emi, csv=False, csv_worker=self.csv_worker)
                 print("{:.1f}".format(time.time() - start), "Seconds")
             except Exception as e:
                 messagebox.showerror("Error", "Couldn't start script (Set amount)")

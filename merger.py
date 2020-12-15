@@ -5,6 +5,8 @@ from PIL import Image, ImageFilter
 import glob
 import os
 import json
+
+import CSVWorker
 import file_uploader as fu
 import CsvToXlsx
 from EMI import EMI
@@ -163,7 +165,7 @@ class Merger:
         self.folder = folder
         self.read_designs(folder)
 
-    def merge_all(self, emi: EMI, maxi=None, csv=True) -> None:
+    def merge_all(self, emi: EMI, csv_worker: CSVWorker, maxi=None, csv=True) -> None:
         ExcelEditor.init_excel()
         # self.update_emi(emi=emi)
         counter = 0
@@ -197,7 +199,7 @@ class Merger:
             # TODO create rectangle
             url = self.upload_image(uploader=uploader, design_id=design_id, design_name=design_name)
             if csv:
-                self.write_excel(emi=emi, url=url, design_name=design_name, design_id=design_id)
+                self.write_excel(emi=emi, url=url, design_name=design_name, design_id=design_id, csv_worker=csv_worker)
             print(counter, "/", total_amount, design_id, design_name)
         CsvToXlsx.convert_all()
         self.set_next_main_image()
@@ -378,10 +380,10 @@ class Merger:
         self.set_size = (int(old_size / self.ratio), old_size)
         self.resize_to_set_size()
 
-    def write_excel(self, emi: EMI, url: str, design_name: str, design_id: str):
+    def write_excel(self, emi: EMI, url: str, design_name: str, design_id: str, csv_worker: CSVWorker):
         emi_dict = emi.__dict__.copy()
         product_names = [design_name + " " + pn for pn in emi_dict["product_names"]]
         seller_sku = design_id + " " + emi_dict['seller_sku']
         del emi_dict['seller_sku']
         del emi_dict["product_names"]
-        ExcelEditor.add_to_excel(dropbox_url=url, product_names=product_names, seller_sku=seller_sku, **emi_dict)
+        csv_worker.add_job(dropbox_url=url, product_names=product_names, seller_sku=seller_sku, **emi_dict)
