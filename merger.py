@@ -5,6 +5,8 @@ from PIL import Image, ImageFilter
 import glob
 import os
 import json
+
+import CSVWorker
 import file_uploader as fu
 import CsvToXlsx
 from EMI import EMI
@@ -115,11 +117,16 @@ class Merger:
             return False
 
     def set_next_main_image(self):
-        try:
-            self.main_image_counter += 1
-            self.set_main_image(self.main_images_names[self.main_image_counter])
-        except IndexError:
-            self.error_log("No more designs left")
+        self.main_image_counter += 1
+        self.main_image_counter %= len(self.main_images_names)
+        print("Main image Nr:", self.main_image_counter)
+        self.set_main_image(self.main_images_names[self.main_image_counter])
+
+    def set_previous_main_image(self):
+        self.main_image_counter -= 1
+        self.main_image_counter %= len(self.main_images_names)
+        print("Main image Nr:", self.main_image_counter)
+        self.set_main_image(self.main_images_names[self.main_image_counter])
 
     def open_main_image_folder(self, folder_location):  # returns image_id and image name
         try:
@@ -163,7 +170,7 @@ class Merger:
         self.folder = folder
         self.read_designs(folder)
 
-    def merge_all(self, emi: EMI, maxi=None, csv=True) -> None:
+    def merge_all(self, emi: EMI, csv_worker: CSVWorker, maxi=None, csv=True) -> None:
         ExcelEditor.init_excel()
         # self.update_emi(emi=emi)
         counter = 0
@@ -197,7 +204,7 @@ class Merger:
             # TODO create rectangle
             url = self.upload_image(uploader=uploader, design_id=design_id, design_name=design_name)
             if csv:
-                self.write_excel(emi=emi, url=url, design_name=design_name, design_id=design_id)
+                self.write_excel(emi=emi, url=url, design_name=design_name, design_id=design_id, csv_worker=csv_worker)
             print(counter, "/", total_amount, design_id, design_name)
         CsvToXlsx.convert_all()
         self.set_next_main_image()
@@ -215,7 +222,7 @@ class Merger:
         upload_filename = "{0}{1} {2} {3}-{4:05x}.{5}".format(self.upload_location, design_id.strip(),
                             design_name.strip(), self.product_name.strip(), random.randrange(0xfffff), self.IMAGE_TYPE)
         url = uploader.upload_image(binary_image, upload_filename)
-        url = url[:-1] + '1'  # change last digit (0 -> 1) to make id downloadable instantly
+        # url = url[:-1] + '1'  # change last digit (0 -> 1) to make id downloadable instantly
         print(url)
         return url
 
@@ -378,10 +385,10 @@ class Merger:
         self.set_size = (int(old_size / self.ratio), old_size)
         self.resize_to_set_size()
 
-    def write_excel(self, emi: EMI, url: str, design_name: str, design_id: str):
+    def write_excel(self, emi: EMI, url: str, design_name: str, design_id: str, csv_worker: CSVWorker):
         emi_dict = emi.__dict__.copy()
         product_names = [design_name + " " + pn for pn in emi_dict["product_names"]]
         seller_sku = design_id + " " + emi_dict['seller_sku']
         del emi_dict['seller_sku']
         del emi_dict["product_names"]
-        ExcelEditor.add_to_excel(dropbox_url=url, product_names=product_names, seller_sku=seller_sku, **emi_dict)
+        csv_worker.add_job(dropbox_url=url, product_names=product_names, seller_sku=seller_sku, **emi_dict)

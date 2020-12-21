@@ -62,9 +62,10 @@ def test():
     test_data()
     CsvToXlsx.convert_all()
 
+
 def init_excel():
     try:
         create()
         print("Created csv files")
     except FileExistsError:
-        print("Files already exist")
+        print("Some (all) files already exist")

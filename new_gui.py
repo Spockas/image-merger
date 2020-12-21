@@ -1,3 +1,4 @@
+import threading
 import time
 import traceback
 from tkinter import *
@@ -6,6 +7,7 @@ import tkinter as tk
 
 from PIL import ImageTk
 
+import CSVWorker
 import CsvToXlsx
 import ExcelEditor
 import merger as mg
@@ -14,17 +16,19 @@ from EMI import EMI
 ENTRY_BG_COLOR = "#f7e6ad"
 BG_COLOR = "#ffffff"
 
-merger = mg.Merger()
-
 
 class ProgramInterface(Frame):
     def __init__(self):
         Frame.__init__(self)
         frame = Frame()
+        merger = mg.Merger()
         sides = 80
         vertically = 80
         merger.move_down(vertically)
         merger.move_right(sides)
+        self.csv_worker = CSVWorker.CSVWorker()
+        self.csv_worker_thread = threading.Thread(target=self.csv_worker.main_loop, daemon=True)
+        self.csv_worker_thread.start()
         # GUI ico
         self.master.iconbitmap('shirt.ico')
         # GUI title
@@ -165,6 +169,28 @@ class ProgramInterface(Frame):
         # End of set opacity section
         # --------------------=--------------------
 
+        def click_main_left_arrow(event):
+            try:
+                merger.set_previous_main_image()
+                picture_in_GUI()
+            except:
+                messagebox.showerror("Error", "Couldn't select previous main image")
+
+        self.main_left_arrow_key = Button(frame, image=self.left_arrow_btn, borderwidth=0, bg=BG_COLOR)
+        self.main_left_arrow_key.bind("<ButtonRelease-1>", click_main_left_arrow)
+        self.main_left_arrow_key.place(x=35, y=455)
+
+        def click_main_right_arrow(event):
+            try:
+                merger.set_next_main_image()
+                picture_in_GUI()
+            except:
+                messagebox.showerror("Error", "Couldn't select next main image")
+
+        self.main_right_arrow_key = Button(frame,image=self.right_arrow_btn, borderwidth=0, bg=BG_COLOR)
+        self.main_right_arrow_key.bind("<ButtonRelease-1>", click_main_right_arrow)
+        self.main_right_arrow_key.place(x=300, y=455)
+
         # Move design section:
         # Arrows to move design on cloth
         def click_left_arrow(event):
@@ -290,7 +316,7 @@ class ProgramInterface(Frame):
         # Text label for increase/decrease design
         self.Info1 = Label(frame, text="Increase/decrease design height with +/-", bg=BG_COLOR, font=font11,
                            fg="#424c58")
-        self.Info1.place(x=50, y=490)
+        self.Info1.place(x=35, y=490)
 
         # End of design height section
         # --------------------=--------------------
@@ -303,7 +329,7 @@ class ProgramInterface(Frame):
                 merger.set_options(product_type=clean(self.product_name_UK_Entry.get()))
                 emi = add_info_from_gui()
                 clear_excel_entries_from_gui()
-                merger.merge_all(maxi=0, emi=emi)
+                merger.merge_all(maxi=0, emi=emi, csv_worker=self.csv_worker)
                 print("{:.1f}".format(time.time() - start), "Seconds")
                 picture_in_GUI()
             except Exception:
@@ -322,7 +348,7 @@ class ProgramInterface(Frame):
                 start = time.time()
                 merger.set_options(product_type=clean(self.product_name_UK_Entry.get()))
                 emi = add_info_from_gui()
-                merger.merge_all(maxi=int(self.Set_amount.get()), emi=emi, csv=False)
+                merger.merge_all(maxi=int(self.Set_amount.get()), emi=emi, csv=False, csv_worker=self.csv_worker)
                 print("{:.1f}".format(time.time() - start), "Seconds")
             except Exception as e:
                 messagebox.showerror("Error", "Couldn't start script (Set amount)")

@@ -1,13 +1,13 @@
 # Excel Maker Info
 class EMI:
-    product_type = ""
-    seller_sku = ""
-    brand_name = ""
-    product_names = []
-    browser_nodes = []
-    material_comp = ""
-    color_map = ""
-    department = ""
-    price = ""
-    other_image_url = ""
-    bullet_points = []
+    product_type: str = ""
+    seller_sku: str = ""
+    brand_name: str = ""
+    product_names: list = []
+    browser_nodes: list = []
+    material_comp: str = ""
+    color_map: str = ""
+    department: str = ""
+    price: str = ""
+    other_image_url: str = ""
+    bullet_points: list = []
