@@ -3,13 +3,10 @@ import time
 import traceback
 from tkinter import *
 from tkinter import messagebox, font, filedialog
-import tkinter as tk
 
 from PIL import ImageTk
 
 import CSVWorker
-import CsvToXlsx
-import ExcelEditor
 import merger as mg
 from EMI import EMI
 
@@ -17,6 +14,7 @@ ENTRY_BG_COLOR = "#f7e6ad"
 BG_COLOR = "#ffffff"
 
 
+# noinspection PyBroadException
 class ProgramInterface(Frame):
     def __init__(self):
         Frame.__init__(self)
@@ -35,14 +33,14 @@ class ProgramInterface(Frame):
         self.master.title('Design applier')
         # GUI size
         self.master.geometry("910x685+500+200")
-        # Gui always-on-top
+        # gui always-on-top
         self.master.wm_attributes("-topmost", 1)
         self.master.resizable(0, 0)
         # Background color
         frame.configure(bg=BG_COLOR)
         #  Font description
         font11 = font.Font(family="Roboto", size=11, weight='bold')
-        #  Packing decisiondaug
+        #  Packing decision
         frame.pack(fill="both", expand=True)
 
         self.save_btn = PhotoImage(file='button_save.png')
@@ -73,6 +71,7 @@ class ProgramInterface(Frame):
                 merger.open_main_image_folder(hoodie_path)  # return
             except:
                 messagebox.showerror("Error", "Mistake in directory to clothing png")
+            return event
 
         # Button to confirm cloths folder
         self.pict_cloth_Button = Button(frame, image=self.save_btn, borderwidth=0, bg=BG_COLOR)
@@ -85,6 +84,7 @@ class ProgramInterface(Frame):
             # self.pict_cloth_Entry.config(text=pic_file_name)
             self.pict_cloth_Entry.delete(0, len(str(self.pict_cloth_Entry.get())))
             self.pict_cloth_Entry.insert(0, pic_file_name)
+            return event
 
         # Button to select file location
         self.pict_cloth_file = Button(frame, image=self.select_btn, borderwidth=0, bg=BG_COLOR)
@@ -104,11 +104,11 @@ class ProgramInterface(Frame):
         self.fold_desi_Entry.place(x=265, y=61)
 
         # Function which displays cloth and design on GUI
-        def picture_in_GUI():
+        def picture_in_gui():
             try:
                 self.img = ImageTk.PhotoImage(image=merger.get_display())
                 self.panel = Label(frame, image=self.img)
-                self.panel.place(x=25, y=110)
+                self.panel.place(x=22, y=110)
             except:
                 messagebox.showerror("Error", "Mistake in directory to picture")
 
@@ -118,10 +118,11 @@ class ProgramInterface(Frame):
                 design_path = str(self.fold_desi_Entry.get())
                 merger.set_design_folder(design_path)
                 merger.resize_to_set_size()
-                picture_in_GUI()
+                picture_in_gui()
             except Exception as ex:
                 print(ex)
                 messagebox.showerror("Error", "Mistake in directory to folder with designs")
+            return event
 
         # Button to save design folder
         self.fold_desi_Button = Button(frame, image=self.save_btn, borderwidth=0, bg=BG_COLOR)
@@ -133,6 +134,7 @@ class ProgramInterface(Frame):
             pic_file_name = filedialog.askdirectory(title="Select folder with designs")
             self.fold_desi_Entry.delete(0, len(str(self.fold_desi_Entry.get())))
             self.fold_desi_Entry.insert(0, pic_file_name)
+            return event
 
         # Button to select designs folder location
         self.pict_cloth_file = Button(frame, image=self.select_btn, borderwidth=0, bg=BG_COLOR)
@@ -147,10 +149,11 @@ class ProgramInterface(Frame):
         def opacity_set(event):
             try:
                 merger.change_opacity(opacity=int(self.opacity_Entry.get()))
-                picture_in_GUI()
+                picture_in_gui()
             except Exception as ex:
                 print(ex)
                 messagebox.showerror("Error", "Mistake in setting opacity")
+            return event
 
         # Button for setting opacity
         self.opacity_Button = Button(frame, image=self.set_btn, borderwidth=0, bg=BG_COLOR)
@@ -172,33 +175,36 @@ class ProgramInterface(Frame):
         def click_main_left_arrow(event):
             try:
                 merger.set_previous_main_image()
-                picture_in_GUI()
+                picture_in_gui()
             except:
                 messagebox.showerror("Error", "Couldn't select previous main image")
+            return event
 
         self.main_left_arrow_key = Button(frame, image=self.left_arrow_btn, borderwidth=0, bg=BG_COLOR)
         self.main_left_arrow_key.bind("<ButtonRelease-1>", click_main_left_arrow)
-        self.main_left_arrow_key.place(x=35, y=455)
+        self.main_left_arrow_key.place(x=20, y=455)
 
         def click_main_right_arrow(event):
             try:
                 merger.set_next_main_image()
-                picture_in_GUI()
+                picture_in_gui()
             except:
                 messagebox.showerror("Error", "Couldn't select next main image")
+            return event
 
-        self.main_right_arrow_key = Button(frame,image=self.right_arrow_btn, borderwidth=0, bg=BG_COLOR)
+        self.main_right_arrow_key = Button(frame, image=self.right_arrow_btn, borderwidth=0, bg=BG_COLOR)
         self.main_right_arrow_key.bind("<ButtonRelease-1>", click_main_right_arrow)
-        self.main_right_arrow_key.place(x=300, y=455)
+        self.main_right_arrow_key.place(x=286, y=455)
 
         # Move design section:
         # Arrows to move design on cloth
         def click_left_arrow(event):
             try:
                 merger.move_left(int(self.Pix_move_Entry.get()))
-                picture_in_GUI()
+                picture_in_gui()
             except:
                 messagebox.showerror("Error", "Couldn't move design to the left")
+            return event
 
         self.left_arrow_key = Button(frame, image=self.left_arrow_btn, borderwidth=0, bg=BG_COLOR)
         self.left_arrow_key.bind("<ButtonRelease-1>", click_left_arrow)
@@ -207,20 +213,22 @@ class ProgramInterface(Frame):
         def click_right_arrow(event):
             try:
                 merger.move_right(int(self.Pix_move_Entry.get()))
-                picture_in_GUI()
+                picture_in_gui()
             except:
                 messagebox.showerror("Error", "Couldn't move design to the right")
+            return event
 
-        self.right_arrow_key = Button(frame,image=self.right_arrow_btn, borderwidth=0, bg=BG_COLOR)
+        self.right_arrow_key = Button(frame, image=self.right_arrow_btn, borderwidth=0, bg=BG_COLOR)
         self.right_arrow_key.bind("<ButtonRelease-1>", click_right_arrow)
         self.right_arrow_key.place(x=465, y=150)
 
         def click_up_arrow(event):
             try:
                 merger.move_up(int(self.Pix_move_Entry.get()))
-                picture_in_GUI()
+                picture_in_gui()
             except:
                 messagebox.showerror("Error", "Couldn't move design to the up")
+            return event
 
         self.up_arrow_key = Button(frame, image=self.up_arrow_btn, borderwidth=0, bg=BG_COLOR)
         self.up_arrow_key.bind("<ButtonRelease-1>", click_up_arrow)
@@ -229,9 +237,10 @@ class ProgramInterface(Frame):
         def click_down_arrow(event):
             try:
                 merger.move_down(int(self.Pix_move_Entry.get()))
-                picture_in_GUI()
+                picture_in_gui()
             except:
                 messagebox.showerror("Error", "Couldn't move design to the down")
+            return event
 
         self.down_arrow_key = Button(frame, image=self.down_arrow_btn, borderwidth=0, bg=BG_COLOR)
         self.down_arrow_key.bind("<ButtonRelease-1>", click_down_arrow)
@@ -254,9 +263,10 @@ class ProgramInterface(Frame):
         def click_plus(event):
             try:
                 merger.increase_size(size=int(self.Design_size_Entry.get()))
-                picture_in_GUI()
+                picture_in_gui()
             except:
                 messagebox.showerror("Error", "Couldn't increase design")
+            return event
 
         self.plus_key = Button(frame, image=self.plus_btn, borderwidth=0, bg=BG_COLOR)
         self.plus_key.bind("<ButtonRelease-1>", click_plus)
@@ -265,9 +275,10 @@ class ProgramInterface(Frame):
         def click_minus(event):
             try:
                 merger.decrease_size(size=int(self.Design_size_Entry.get()))
-                picture_in_GUI()
+                picture_in_gui()
             except:
                 messagebox.showerror("Error", "Couldn't reduce design")
+            return event
 
         self.minus_key = Button(frame, image=self.minus_btn, borderwidth=0, bg=BG_COLOR)
         self.minus_key.bind("<ButtonRelease-1>", click_minus)
@@ -289,9 +300,10 @@ class ProgramInterface(Frame):
         def click_plus_height(event):
             try:
                 merger.increase_height(amount=int(self.Design_height_entry.get()))
-                picture_in_GUI()
+                picture_in_gui()
             except:
                 messagebox.showerror("Error", "Couldn't increase height")
+            return event
 
         self.plus_key_height = Button(frame, image=self.plus_btn, borderwidth=0, bg=BG_COLOR)
         self.plus_key_height.bind("<ButtonRelease-1>", click_plus_height)
@@ -300,9 +312,10 @@ class ProgramInterface(Frame):
         def click_minus_height(event):
             try:
                 merger.decrease_height(amount=int(self.Design_height_entry.get()))
-                picture_in_GUI()
+                picture_in_gui()
             except:
                 messagebox.showerror("Error", "Couldn't reduce height")
+            return event
 
         self.minus_key_height = Button(frame, image=self.minus_btn, borderwidth=0, bg=BG_COLOR)
         self.minus_key_height.bind("<ButtonRelease-1>", click_minus_height)
@@ -310,17 +323,17 @@ class ProgramInterface(Frame):
 
         # Default amount of pixels to increase/decrease design size
         self.Design_height_entry = Entry(frame, width=4, bg=ENTRY_BG_COLOR)
-        self.Design_height_entry.insert(END, '1')
+        self.Design_height_entry.insert(END, '20')
         self.Design_height_entry.place(x=150, y=462)
 
         # Text label for increase/decrease design
         self.Info1 = Label(frame, text="Increase/decrease design height with +/-", bg=BG_COLOR, font=font11,
                            fg="#424c58")
-        self.Info1.place(x=35, y=490)
+        self.Info1.place(x=20, y=490)
 
         # End of design height section
         # --------------------=--------------------
-        def Start(event):
+        def run_merger(event):
             try:
                 start = time.time()
                 print((time.time() - start))
@@ -331,16 +344,17 @@ class ProgramInterface(Frame):
                 clear_excel_entries_from_gui()
                 merger.merge_all(maxi=0, emi=emi, csv_worker=self.csv_worker)
                 print("{:.1f}".format(time.time() - start), "Seconds")
-                picture_in_GUI()
+                picture_in_gui()
             except Exception:
                 print(traceback.format_exc())
                 messagebox.showerror("Error", "Couldn't start script (All)")
+            return event
 
         self.up_arrow_key = Button(frame, image=self.merge_all_btn, borderwidth=0, bg=BG_COLOR)
-        self.up_arrow_key.bind("<ButtonRelease-1>", Start)
+        self.up_arrow_key.bind("<ButtonRelease-1>", run_merger)
         self.up_arrow_key.place(x=800, y=595)
 
-        def Amount(event):
+        def run_set_amount(event):
             try:
                 start = time.time()
                 print((time.time() - start))
@@ -350,15 +364,16 @@ class ProgramInterface(Frame):
                 emi = add_info_from_gui()
                 merger.merge_all(maxi=int(self.Set_amount.get()), emi=emi, csv=False, csv_worker=self.csv_worker)
                 print("{:.1f}".format(time.time() - start), "Seconds")
-            except Exception as e:
+            except:
                 messagebox.showerror("Error", "Couldn't start script (Set amount)")
+            return event
 
         self.Set_amount = Entry(frame, width=3, bg=ENTRY_BG_COLOR)
         self.Set_amount.insert(END, '0')
         self.Set_amount.place(x=630, y=600)
 
         self.Button_amount = Button(frame, image=self.set_amount_btn, borderwidth=0, bg=BG_COLOR)
-        self.Button_amount.bind("<ButtonRelease-1>", Amount)
+        self.Button_amount.bind("<ButtonRelease-1>", run_set_amount)
         self.Button_amount.place(x=660, y=595)
 
         # Excel doc entries:
@@ -723,8 +738,6 @@ class ProgramInterface(Frame):
             return (clean(gui_input_1) + ";" + clean(gui_input_2) + ";" + clean(gui_input_3) + ";" +
                     clean(gui_input_4) + ";" + clean(gui_input_5) + ";")
 
-
-        
         # Function to add all the info from gui to class which then can be used to make excel
         def add_info_from_gui() -> EMI:
             emi = EMI()
@@ -770,6 +783,7 @@ class ProgramInterface(Frame):
                 # add_info_from_gui()
             except:
                 messagebox.showerror("Error", "Failed to create excel")
+            return event
 
         self.test = Button(frame, text="test", font=font11, fg="#424c58")
         self.test.bind("<ButtonRelease-1>", test_excel_maker)
@@ -795,12 +809,13 @@ class ProgramInterface(Frame):
                 except:
                     pass
 
-def Gui():
+
+def gui():
     ProgramInterface().mainloop()
 
 
 def main():
-    Gui()
+    gui()
 
 
 main()
