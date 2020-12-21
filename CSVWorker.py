@@ -27,7 +27,8 @@ class CSVWorker:
                 parameters = self.job_queue.get()
                 print("Writing:", parameters['seller_sku'])
                 ExcelEditor.add_to_excel(**parameters)
-            else: #wait for some jobs to be added
+            else:
+                # wait for some jobs to be added
                 if not sleepy:
                     print("Nothing for csv worker todo, going to sleep...")
                     sleepy = True

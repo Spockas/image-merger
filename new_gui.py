@@ -169,6 +169,28 @@ class ProgramInterface(Frame):
         # End of set opacity section
         # --------------------=--------------------
 
+        def click_main_left_arrow(event):
+            try:
+                merger.set_previous_main_image()
+                picture_in_GUI()
+            except:
+                messagebox.showerror("Error", "Couldn't select previous main image")
+
+        self.main_left_arrow_key = Button(frame, image=self.left_arrow_btn, borderwidth=0, bg=BG_COLOR)
+        self.main_left_arrow_key.bind("<ButtonRelease-1>", click_main_left_arrow)
+        self.main_left_arrow_key.place(x=35, y=455)
+
+        def click_main_right_arrow(event):
+            try:
+                merger.set_next_main_image()
+                picture_in_GUI()
+            except:
+                messagebox.showerror("Error", "Couldn't select next main image")
+
+        self.main_right_arrow_key = Button(frame,image=self.right_arrow_btn, borderwidth=0, bg=BG_COLOR)
+        self.main_right_arrow_key.bind("<ButtonRelease-1>", click_main_right_arrow)
+        self.main_right_arrow_key.place(x=300, y=455)
+
         # Move design section:
         # Arrows to move design on cloth
         def click_left_arrow(event):
@@ -294,7 +316,7 @@ class ProgramInterface(Frame):
         # Text label for increase/decrease design
         self.Info1 = Label(frame, text="Increase/decrease design height with +/-", bg=BG_COLOR, font=font11,
                            fg="#424c58")
-        self.Info1.place(x=50, y=490)
+        self.Info1.place(x=35, y=490)
 
         # End of design height section
         # --------------------=--------------------

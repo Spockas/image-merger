@@ -68,4 +68,4 @@ def init_excel():
         create()
         print("Created csv files")
     except FileExistsError:
-        print("Files already exist")
+        print("Some (all) files already exist")

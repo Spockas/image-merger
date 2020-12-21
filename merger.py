@@ -117,11 +117,16 @@ class Merger:
             return False
 
     def set_next_main_image(self):
-        try:
-            self.main_image_counter += 1
-            self.set_main_image(self.main_images_names[self.main_image_counter])
-        except IndexError:
-            self.error_log("No more designs left")
+        self.main_image_counter += 1
+        self.main_image_counter %= len(self.main_images_names)
+        print("Main image Nr:", self.main_image_counter)
+        self.set_main_image(self.main_images_names[self.main_image_counter])
+
+    def set_previous_main_image(self):
+        self.main_image_counter -= 1
+        self.main_image_counter %= len(self.main_images_names)
+        print("Main image Nr:", self.main_image_counter)
+        self.set_main_image(self.main_images_names[self.main_image_counter])
 
     def open_main_image_folder(self, folder_location):  # returns image_id and image name
         try:
