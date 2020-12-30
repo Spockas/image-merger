@@ -2,6 +2,7 @@ import queue
 import time
 
 import ExcelEditor
+import CsvToXlsx
 
 
 class CSVWorker:
@@ -9,6 +10,7 @@ class CSVWorker:
         ExcelEditor.init_excel()
         self.job_queue = queue.Queue()
         self.run = True
+        self.convert = False
 
     def add_job(self, **kwargs) -> None:
         self.job_queue.put(kwargs)
@@ -27,8 +29,17 @@ class CSVWorker:
                 parameters = self.job_queue.get()
                 print("Writing:", parameters['seller_sku'])
                 ExcelEditor.add_to_excel(**parameters)
+                if self.convert:
+                    print("Converting to xlsx")
+                    CsvToXlsx.convert_all()
+                    self.convert = False
+
             else:
                 # wait for some jobs to be added
+                if self.convert:
+                    print("Converting to xlsx")
+                    CsvToXlsx.convert_all()
+                    self.convert = False
                 if not sleepy:
                     print("Nothing for csv worker todo, going to sleep...")
                     sleepy = True

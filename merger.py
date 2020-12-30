@@ -206,7 +206,7 @@ class Merger:
             if csv:
                 self.write_excel(emi=emi, url=url, design_name=design_name, design_id=design_id, csv_worker=csv_worker)
             print(counter, "/", total_amount, design_id, design_name)
-        CsvToXlsx.convert_all()
+        csv_worker.convert = True
         self.set_next_main_image()
         self.merged_image = None
         self.set_design_image(self.filenames[0])
