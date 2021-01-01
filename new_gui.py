@@ -14,7 +14,6 @@ ENTRY_BG_COLOR = "#f7e6ad"
 BG_COLOR = "#ffffff"
 
 
-# noinspection PyBroadException
 class ProgramInterface(Frame):
     def __init__(self):
         Frame.__init__(self)
@@ -28,7 +27,7 @@ class ProgramInterface(Frame):
         self.csv_worker_thread = threading.Thread(target=self.csv_worker.main_loop, daemon=True)
         self.csv_worker_thread.start()
         # GUI ico
-        self.master.iconbitmap('shirt.ico')
+        self.master.iconbitmap('Resources/shirt.ico')
         # GUI title
         self.master.title('Design applier')
         # GUI size
@@ -42,18 +41,19 @@ class ProgramInterface(Frame):
         font11 = font.Font(family="Roboto", size=11, weight='bold')
         #  Packing decision
         frame.pack(fill="both", expand=True)
+        self.save_btn = PhotoImage(file='Resources/button_save.png')
+        self.select_btn = PhotoImage(file='Resources/button_select.png')
+        self.left_arrow_btn = PhotoImage(file='Resources/left_arrow_button.png')
+        self.right_arrow_btn = PhotoImage(file='Resources/right_arrow_button.png')
+        self.up_arrow_btn = PhotoImage(file='Resources/button_up.png')
+        self.down_arrow_btn = PhotoImage(file='Resources/button_down.png')
+        self.set_btn = PhotoImage(file='Resources/button_set.png')
+        self.plus_btn = PhotoImage(file='Resources/button_plus.png')
+        self.minus_btn = PhotoImage(file='Resources/button_minus.png')
+        self.merge_all_btn = PhotoImage(file='Resources/button_merge-all.png')
+        # self.set_amount_btn = PhotoImage(file='Resources/button_set-amount.png')
+        #
 
-        self.save_btn = PhotoImage(file='button_save.png')
-        self.select_btn = PhotoImage(file='button_select.png')
-        self.left_arrow_btn = PhotoImage(file='left_arrow_button.png')
-        self.right_arrow_btn = PhotoImage(file='right_arrow_button.png')
-        self.up_arrow_btn = PhotoImage(file='button_up.png')
-        self.down_arrow_btn = PhotoImage(file='button_down.png')
-        self.set_btn = PhotoImage(file='button_set.png')
-        self.plus_btn = PhotoImage(file='button_plus.png')
-        self.minus_btn = PhotoImage(file='button_minus.png')
-        self.merge_all_btn = PhotoImage(file='button_merge-all.png')
-        self.set_amount_btn = PhotoImage(file='button_set-amount.png')
 
         # Select cloths folder section:
         # Text label for cloth
@@ -158,16 +158,16 @@ class ProgramInterface(Frame):
         # Button for setting opacity
         self.opacity_Button = Button(frame, image=self.set_btn, borderwidth=0, bg=BG_COLOR)
         self.opacity_Button.bind("<ButtonRelease-1>", opacity_set)
-        self.opacity_Button.place(x=160, y=525)
+        self.opacity_Button.place(x=162, y=525)
 
         # Opacity entry
         self.opacity_Entry = Entry(frame, width=3, bg=ENTRY_BG_COLOR)
         self.opacity_Entry.insert(END, str(merger.opacity))
-        self.opacity_Entry.place(x=130, y=531)
+        self.opacity_Entry.place(x=132, y=531)
 
         # Text label for setting opacity
         self.Info1 = Label(frame, text="Set opacity", bg=BG_COLOR, font=font11, fg="#424c58")
-        self.Info1.place(x=120, y=560)
+        self.Info1.place(x=122, y=560)
 
         # End of set opacity section
         # --------------------=--------------------
@@ -182,7 +182,7 @@ class ProgramInterface(Frame):
 
         self.main_left_arrow_key = Button(frame, image=self.left_arrow_btn, borderwidth=0, bg=BG_COLOR)
         self.main_left_arrow_key.bind("<ButtonRelease-1>", click_main_left_arrow)
-        self.main_left_arrow_key.place(x=20, y=455)
+        self.main_left_arrow_key.place(x=20, y=485)
 
         def click_main_right_arrow(event):
             try:
@@ -194,7 +194,7 @@ class ProgramInterface(Frame):
 
         self.main_right_arrow_key = Button(frame, image=self.right_arrow_btn, borderwidth=0, bg=BG_COLOR)
         self.main_right_arrow_key.bind("<ButtonRelease-1>", click_main_right_arrow)
-        self.main_right_arrow_key.place(x=286, y=455)
+        self.main_right_arrow_key.place(x=286, y=485)
 
         # Move design section:
         # Arrows to move design on cloth
@@ -208,7 +208,7 @@ class ProgramInterface(Frame):
 
         self.left_arrow_key = Button(frame, image=self.left_arrow_btn, borderwidth=0, bg=BG_COLOR)
         self.left_arrow_key.bind("<ButtonRelease-1>", click_left_arrow)
-        self.left_arrow_key.place(x=405, y=150)
+        self.left_arrow_key.place(x=415, y=150)
 
         def click_right_arrow(event):
             try:
@@ -220,7 +220,7 @@ class ProgramInterface(Frame):
 
         self.right_arrow_key = Button(frame, image=self.right_arrow_btn, borderwidth=0, bg=BG_COLOR)
         self.right_arrow_key.bind("<ButtonRelease-1>", click_right_arrow)
-        self.right_arrow_key.place(x=465, y=150)
+        self.right_arrow_key.place(x=475, y=150)
 
         def click_up_arrow(event):
             try:
@@ -232,7 +232,7 @@ class ProgramInterface(Frame):
 
         self.up_arrow_key = Button(frame, image=self.up_arrow_btn, borderwidth=0, bg=BG_COLOR)
         self.up_arrow_key.bind("<ButtonRelease-1>", click_up_arrow)
-        self.up_arrow_key.place(x=431, y=130)
+        self.up_arrow_key.place(x=441, y=130)
 
         def click_down_arrow(event):
             try:
@@ -244,16 +244,16 @@ class ProgramInterface(Frame):
 
         self.down_arrow_key = Button(frame, image=self.down_arrow_btn, borderwidth=0, bg=BG_COLOR)
         self.down_arrow_key.bind("<ButtonRelease-1>", click_down_arrow)
-        self.down_arrow_key.place(x=431, y=180)
+        self.down_arrow_key.place(x=441, y=180)
 
         # Default amount of pixels to move design
         self.Pix_move_Entry = Entry(frame, width=4, bg=ENTRY_BG_COLOR)
         self.Pix_move_Entry.insert(END, '100')
-        self.Pix_move_Entry.place(x=435, y=157)
+        self.Pix_move_Entry.place(x=445, y=157)
 
         # Text label for moving design
-        self.Info = Label(frame, text="Move design with arrow keys", bg=BG_COLOR, font=font11, fg="#424c58")
-        self.Info.place(x=340, y=215)
+        self.Info = Label(frame, text="Move design", bg=BG_COLOR, font=font11, fg="#424c58")
+        self.Info.place(x=410, y=210)
 
         # End of move design section
         # --------------------=--------------------
@@ -270,7 +270,7 @@ class ProgramInterface(Frame):
 
         self.plus_key = Button(frame, image=self.plus_btn, borderwidth=0, bg=BG_COLOR)
         self.plus_key.bind("<ButtonRelease-1>", click_plus)
-        self.plus_key.place(x=120, y=595)
+        self.plus_key.place(x=50, y=595)
 
         def click_minus(event):
             try:
@@ -282,16 +282,16 @@ class ProgramInterface(Frame):
 
         self.minus_key = Button(frame, image=self.minus_btn, borderwidth=0, bg=BG_COLOR)
         self.minus_key.bind("<ButtonRelease-1>", click_minus)
-        self.minus_key.place(x=181, y=595)
+        self.minus_key.place(x=111, y=595)
 
         # Default amount of pixels to increase/decrease design size
         self.Design_size_Entry = Entry(frame, width=4, bg=ENTRY_BG_COLOR)
-        self.Design_size_Entry.insert(END, '100')
-        self.Design_size_Entry.place(x=150, y=602)
+        self.Design_size_Entry.insert(END, '50')
+        self.Design_size_Entry.place(x=80, y=602)
 
         # Text label for increase/decrease design
-        self.Info1 = Label(frame, text="Increase/decrease design with +/-", bg=BG_COLOR, font=font11, fg="#424c58")
-        self.Info1.place(x=50, y=630)
+        self.Info1 = Label(frame, text="Design width", bg=BG_COLOR, font=font11, fg="#424c58")
+        self.Info1.place(x=45, y=630)
 
         # End of design size section
         # --------------------=--------------------
@@ -307,7 +307,7 @@ class ProgramInterface(Frame):
 
         self.plus_key_height = Button(frame, image=self.plus_btn, borderwidth=0, bg=BG_COLOR)
         self.plus_key_height.bind("<ButtonRelease-1>", click_plus_height)
-        self.plus_key_height.place(x=120, y=455)
+        self.plus_key_height.place(x=195, y=595)
 
         def click_minus_height(event):
             try:
@@ -319,17 +319,17 @@ class ProgramInterface(Frame):
 
         self.minus_key_height = Button(frame, image=self.minus_btn, borderwidth=0, bg=BG_COLOR)
         self.minus_key_height.bind("<ButtonRelease-1>", click_minus_height)
-        self.minus_key_height.place(x=181, y=455)
+        self.minus_key_height.place(x=256, y=595)
 
         # Default amount of pixels to increase/decrease design size
         self.Design_height_entry = Entry(frame, width=4, bg=ENTRY_BG_COLOR)
-        self.Design_height_entry.insert(END, '20')
-        self.Design_height_entry.place(x=150, y=462)
+        self.Design_height_entry.insert(END, '50')
+        self.Design_height_entry.place(x=225, y=602)
 
         # Text label for increase/decrease design
-        self.Info1 = Label(frame, text="Increase/decrease design height with +/-", bg=BG_COLOR, font=font11,
+        self.Info1 = Label(frame, text="Design height", bg=BG_COLOR, font=font11,
                            fg="#424c58")
-        self.Info1.place(x=20, y=490)
+        self.Info1.place(x=185, y=630)
 
         # End of design height section
         # --------------------=--------------------
@@ -352,29 +352,29 @@ class ProgramInterface(Frame):
 
         self.up_arrow_key = Button(frame, image=self.merge_all_btn, borderwidth=0, bg=BG_COLOR)
         self.up_arrow_key.bind("<ButtonRelease-1>", run_merger)
-        self.up_arrow_key.place(x=800, y=595)
+        self.up_arrow_key.place(x=730, y=595)
 
-        def run_set_amount(event):
-            try:
-                start = time.time()
-                print((time.time() - start))
-                print("Testing some starts")
-                start = time.time()
-                merger.set_options(product_type=clean(self.product_name_UK_Entry.get()))
-                emi = add_info_from_gui()
-                merger.merge_all(maxi=int(self.Set_amount.get()), emi=emi, csv=False, csv_worker=self.csv_worker)
-                print("{:.1f}".format(time.time() - start), "Seconds")
-            except:
-                messagebox.showerror("Error", "Couldn't start script (Set amount)")
-            return event
-
-        self.Set_amount = Entry(frame, width=3, bg=ENTRY_BG_COLOR)
-        self.Set_amount.insert(END, '0')
-        self.Set_amount.place(x=630, y=600)
-
-        self.Button_amount = Button(frame, image=self.set_amount_btn, borderwidth=0, bg=BG_COLOR)
-        self.Button_amount.bind("<ButtonRelease-1>", run_set_amount)
-        self.Button_amount.place(x=660, y=595)
+        # def run_set_amount(event):
+        #     try:
+        #         start = time.time()
+        #         print((time.time() - start))
+        #         print("Testing some starts")
+        #         start = time.time()
+        #         merger.set_options(product_type=clean(self.product_name_UK_Entry.get()))
+        #         emi = add_info_from_gui()
+        #         merger.merge_all(maxi=int(self.Set_amount.get()), emi=emi, csv=False, csv_worker=self.csv_worker)
+        #         print("{:.1f}".format(time.time() - start), "Seconds")
+        #     except:
+        #         messagebox.showerror("Error", "Couldn't start script (Set amount)")
+        #     return event
+        #
+        # self.Set_amount = Entry(frame, width=3, bg=ENTRY_BG_COLOR)
+        # self.Set_amount.insert(END, '0')
+        # self.Set_amount.place(x=630, y=600)
+        #
+        # self.Button_amount = Button(frame, image=self.set_amount_btn, borderwidth=0, bg=BG_COLOR)
+        # self.Button_amount.bind("<ButtonRelease-1>", run_set_amount)
+        # self.Button_amount.place(x=660, y=595)
 
         # Excel doc entries:
         # Excel Maker label
@@ -776,18 +776,18 @@ class ProgramInterface(Frame):
             # CsvToXlsx.convert_all()
             return emi
 
-        # Button to test excel maker
-        def test_excel_maker(event):
-            try:
-                clear_excel_entries_from_gui()
-                # add_info_from_gui()
-            except:
-                messagebox.showerror("Error", "Failed to create excel")
-            return event
-
-        self.test = Button(frame, text="test", font=font11, fg="#424c58")
-        self.test.bind("<ButtonRelease-1>", test_excel_maker)
-        self.test.place(x=800, y=635)
+        # # Button to test excel maker
+        # def test_excel_maker(event):
+        #     try:
+        #         clear_excel_entries_from_gui()
+        #         # add_info_from_gui()
+        #     except:
+        #         messagebox.showerror("Error", "Failed to create excel")
+        #     return event
+        #
+        # self.test = Button(frame, text="test", font=font11, fg="#424c58")
+        # self.test.bind("<ButtonRelease-1>", test_excel_maker)
+        # self.test.place(x=800, y=635)
 
         def clear_excel_entries_from_gui():
             ids = ['product_type_Entry', 'seller_SKU_Entry', 'brand_name_Entry', 'product_name_UK_Entry',
