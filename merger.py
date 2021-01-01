@@ -265,7 +265,7 @@ class Merger:
         self.design_image_resized = None
 
     def get_rectangle(self, size=400):
-        rectangle = Image.open("rectangle.png")
+        rectangle = Image.open("Resources/rectangle.png")
         self.rectangle = rectangle
 
     def get_display(self, size=400, rectangle=True) -> Image:
