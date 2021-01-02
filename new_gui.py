@@ -105,23 +105,23 @@ class ProgramInterface(Frame):
 
         # Function which displays cloth and design on GUI
         def picture_in_gui():
-            try:
-                self.img = ImageTk.PhotoImage(image=merger.get_display())
-                self.panel = Label(frame, image=self.img)
-                self.panel.place(x=22, y=110)
-            except:
-                messagebox.showerror("Error", "Mistake in directory to picture")
+            # try:
+            self.img = ImageTk.PhotoImage(image=merger.get_display(size=(280, 375)))
+            self.panel = Label(frame, image=self.img)
+            self.panel.place(x=20, y=110)
+            # except:
+            #     messagebox.showerror("Error", "Mistake in directory to picture")
 
         # Function which happens after clicking save design folder
         def click_fold_desi(event):
-            try:
-                design_path = str(self.fold_desi_Entry.get())
-                merger.set_design_folder(design_path)
-                merger.resize_to_set_size()
-                picture_in_gui()
-            except Exception as ex:
-                print(ex)
-                messagebox.showerror("Error", "Mistake in directory to folder with designs")
+            # try:
+            design_path = str(self.fold_desi_Entry.get())
+            merger.set_design_folder(design_path)
+            merger.resize_to_set_size()
+            picture_in_gui()
+            # except Exception as ex:
+            #     print(ex)
+            #     messagebox.showerror("Error", "Mistake in directory to folder with designs")
             return event
 
         # Button to save design folder

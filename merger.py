@@ -268,15 +268,14 @@ class Merger:
         rectangle = Image.open("Resources/rectangle.png")
         self.rectangle = rectangle
 
-    def get_display(self, size=400, rectangle=True) -> Image:
+    def get_display(self, size=(300, 400), rectangle=True) -> Image:
         if rectangle:
             self.set_rectangle()
             self.merge_current(fit=False)
         if self.merged_image is None:
             self.merge_current()
         if self.display_image is None:
-            self.display_image = self.merged_image.resize(fit_to_size(self.merged_image.size,
-                                                                      (int(size / 1.414196123147092), size)))
+            self.display_image = self.merged_image.resize(fit_to_size(self.merged_image.size, size))
         return self.display_image
 
     def set_output_path(self, path):
